@@ -12,6 +12,8 @@ import { PartialUser, RequestedUser, SearchUsers, User, UserNameHistory } from "
 		* Get user from username
 */
 
+
+
 class WrapBlox {
 	constructor(cookie? : string, apiKey? : string) {
 		this.cookie = cookie;
@@ -37,7 +39,6 @@ class WrapBlox {
 	}
 	
 	// Request methods
-	
 	async request(endpoint : Endpoints, route : string, method : Methods, params? : {[key : string] : string}, body? : any ) : Promise<RequestResponse> {
 		let url = this.baseURLs[endpoint] + route; // The URL to send the request to
 		body = body || {};
@@ -88,6 +89,7 @@ class WrapBlox {
 	async post (endpoint : Endpoints, route : string, params? : {[key : string] : string}, body? : any) {
 		return await this.request(endpoint, route, "POST", params, body);
 	}
+
 	
 	// User methods
 	
@@ -125,6 +127,13 @@ class WrapBlox {
 		});
 		if (!user.ok) return undefined;
 		return user.body.data[0];
+	}
+	
+	async getCurrentUserRoles() {
+		if (!this.cookie) return undefined;
+		const response = await this.get("users", "users/authenticated/roles");
+		if (!response.ok) return undefined;
+		return response.body;
 	}
 	
 	
