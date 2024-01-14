@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 Date format is `MM/DD/YYYY`.
 
-## [Unreleased]
+## [0.1.0] - 1/15/2024
 
 ### Added
 
