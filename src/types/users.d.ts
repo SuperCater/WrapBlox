@@ -11,6 +11,12 @@ export type User = {
 	displayName : string,
 }
 
+export type SelfUser = {
+	name : string,
+	displayName : string,
+	id : number,
+}
+
 export type PartialUser = {
 	id : number,
 	name : string,
@@ -21,6 +27,13 @@ export type PartialUser = {
 
 export type RequestedUser = {
 	requestedUsername : string,
+	hasVerifiedBadge : boolean,
+	id : number,
+	name : string,
+	displayName : string,
+}
+
+export type RequestedIDUser = {
 	hasVerifiedBadge : boolean,
 	id : number,
 	name : string,

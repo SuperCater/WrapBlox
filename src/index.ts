@@ -1,6 +1,6 @@
 import { RequestResponse } from "./types/bases.js";
 import { Endpoints, Methods } from "./types/misc.js";
-import { PartialUser, RequestedUser, SearchUsers, User, UserNameHistory } from "./types/users.js";
+import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
 /*
 	* WrapBlox Feature support
@@ -134,6 +134,29 @@ class WrapBlox {
 		const response = await this.get("users", "users/authenticated/roles");
 		if (!response.ok) return undefined;
 		return response.body;
+	}
+	
+	async getSelf() : Promise<SelfUser | undefined> {
+		if (!this.cookie) return undefined;
+		const response = await this.get("users", "users/authenticated");
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	async getUsers(ids : number[]) : Promise<RequestedIDUser[] | undefined> {
+		const response = await this.post("users", "users", {}, {
+			userIds : ids,
+		});
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	async GetUsersByUsernames(usernames : string[]) : Promise<RequestedUser[] | undefined> {
+		const response = await this.post("users", "usernames/users", {}, {
+			usernames : usernames,
+		});
+		if (!response.ok) return undefined;
+		return response.body.data;
 	}
 	
 	
