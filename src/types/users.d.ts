@@ -36,3 +36,7 @@ export type UserNameHistory = {
 export type SearchUsers = {
 	data : PartialUser[],
 } & BaseCursor
+
+export type CurrentRules = {
+	roles : string[],
+}

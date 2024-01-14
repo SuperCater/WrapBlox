@@ -129,12 +129,14 @@ class WrapBlox {
 		return user.body.data[0];
 	}
 	
-	async getCurrentUserRoles() {
+	async getCurrentUserRoles() : Promise<string[] | undefined> {
 		if (!this.cookie) return undefined;
 		const response = await this.get("users", "users/authenticated/roles");
 		if (!response.ok) return undefined;
 		return response.body;
 	}
+	
+	
 	
 	
 	
