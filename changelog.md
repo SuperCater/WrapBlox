@@ -12,6 +12,11 @@ Date format is `MM/DD/YYYY`.
 - getSelf() method to get the current user's information
 - getUsers() method to get a list of users via IDs
 - getUsersByUserNames() method to get a list of users via usernames
+- getGroups() method to get a list of groups via IDs
+- groups base URL
+- groups2 base URL
+- getWallPosts() method to get a list of wall posts
+- getUserRoles() method to get a list of roles for a user
 
 ## [0.0.1] - 1/14/2024
 
