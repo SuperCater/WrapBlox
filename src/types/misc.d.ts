@@ -1,2 +1,4 @@
 export type Methods = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-export type Endpoints = "users"
+export type Endpoints = "users" | "groups" | "groups2"
+
+export type Params = {[key : string] : string | number | boolean | undefined | string[] | number[] | boolean[] | undefined[]};

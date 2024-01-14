@@ -11,6 +11,12 @@ export type User = {
 	displayName : string,
 }
 
+export type SelfUser = {
+	name : string,
+	displayName : string,
+	id : number,
+}
+
 export type PartialUser = {
 	id : number,
 	name : string,
@@ -27,6 +33,13 @@ export type RequestedUser = {
 	displayName : string,
 }
 
+export type RequestedIDUser = {
+	hasVerifiedBadge : boolean,
+	id : number,
+	name : string,
+	displayName : string,
+}
+
 export type UserNameHistory = {
 	data : {
 		name : string,
@@ -36,3 +49,7 @@ export type UserNameHistory = {
 export type SearchUsers = {
 	data : PartialUser[],
 } & BaseCursor
+
+export type CurrentRules = {
+	roles : string[],
+}

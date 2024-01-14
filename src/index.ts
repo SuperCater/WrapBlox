@@ -1,6 +1,7 @@
 import { RequestResponse } from "./types/bases.js";
-import { Endpoints, Methods } from "./types/misc.js";
-import { PartialUser, RequestedUser, SearchUsers, User, UserNameHistory } from "./types/users.js";
+import { PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
+import { Endpoints, Methods, Params } from "./types/misc.js";
+import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
 /*
 	* WrapBlox Feature support
@@ -12,6 +13,8 @@ import { PartialUser, RequestedUser, SearchUsers, User, UserNameHistory } from "
 		* Get user from username
 */
 
+
+
 class WrapBlox {
 	constructor(cookie? : string, apiKey? : string) {
 		this.cookie = cookie;
@@ -21,6 +24,8 @@ class WrapBlox {
 	// Properties
 	baseURLs = {
 		["users"] : "https://users.roblox.com/v1/",
+		["groups"] : "https://groups.roblox.com/v1/",
+		["groups2"] : "https://groups.roblox.com/v2/",
 	}
 	cookie? : string;
 	apiKey? : string;
@@ -37,8 +42,7 @@ class WrapBlox {
 	}
 	
 	// Request methods
-	
-	async request(endpoint : Endpoints, route : string, method : Methods, params? : {[key : string] : string}, body? : any ) : Promise<RequestResponse> {
+	async request(endpoint : Endpoints, route : string, method : Methods, params? : Params, body? : any ) : Promise<RequestResponse> {
 		let url = this.baseURLs[endpoint] + route; // The URL to send the request to
 		body = body || {};
 		params = params || {};
@@ -81,13 +85,14 @@ class WrapBlox {
 		return returnData;
 	}
 	
-	async get (endpoint : Endpoints, route : string, params? : {[key : string] : string}) {
+	async get (endpoint : Endpoints, route : string, params? : Params) {
 		return await this.request(endpoint, route, "GET", params);
 	}
 	
-	async post (endpoint : Endpoints, route : string, params? : {[key : string] : string}, body? : any) {
+	async post (endpoint : Endpoints, route : string, params? : Params, body? : any) {
 		return await this.request(endpoint, route, "POST", params, body);
 	}
+
 	
 	// User methods
 	
@@ -126,6 +131,68 @@ class WrapBlox {
 		if (!user.ok) return undefined;
 		return user.body.data[0];
 	}
+	
+	async getCurrentUserRoles() : Promise<string[] | undefined> {
+		if (!this.cookie) return undefined;
+		const response = await this.get("users", "users/authenticated/roles");
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	async getSelf() : Promise<SelfUser | undefined> {
+		if (!this.cookie) return undefined;
+		const response = await this.get("users", "users/authenticated");
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	async getUsers(ids : number[]) : Promise<RequestedIDUser[] | undefined> {
+		const response = await this.post("users", "users", {}, {
+			userIds : ids,
+		});
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	async GetUsersByUsernames(usernames : string[]) : Promise<RequestedUser[] | undefined> {
+		const response = await this.post("users", "usernames/users", {}, {
+			usernames : usernames,
+		});
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	// GROUPS 2
+	
+	async getGroups(ids : number[]) : Promise<PartialGroup[] | undefined> {
+		const response = await this.post("groups2", "groups", {}, {
+			groupIds : ids,
+		});
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	async getUserRoles(id : number, includeLocked? : boolean) : Promise<RoleGroups[] | undefined> {
+		const params = {} as Params;
+		params.includeLocked = includeLocked ?? false;
+		const response = await this.get("groups2", `users/${id}/groups/roles`, params);
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	async getWallPosts(id : number, sortOrder? : "Asc" | "Desc", limit? : number, cursor? : string) : Promise<WallPosts | undefined> {
+		const params = {} as Params;
+		if (sortOrder) params.sortOrder = sortOrder;
+		if (limit) params.limit = limit;
+		if (cursor) params.cursor = cursor;
+		const response = await this.get("groups2", `groups/${id}/wall/posts`, params);
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	
+	
+	
 	
 	
 	
