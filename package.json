@@ -1,0 +1,25 @@
+{
+	"name": "wrapblox",
+	"version": "0.0.0",
+	"description": "A wrapper for Roblox's API",
+	"main": "./dist/index.mjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"test": "node .",
+		"build": "tsup"
+	},
+	"keywords": [
+		"roblox"
+	],
+	"author": "SuperCater",
+	"license": "GPL-3.0-or-later",
+	"devDependencies": {
+		"ts-node": "^10.9.2",
+		"tsup": "^8.0.1",
+		"typescript": "^5.3.3"
+	}
+}
