@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 Date format is `MM/DD/YYYY`.
 
+## [Unreleased]
+
+### Added
+
+- getGroup() method to get a group via ID
+- getGroupAuditLogs() method to get a group's audit logs
+
+
 ## [0.1.0] - 1/15/2024
 
 ### Added

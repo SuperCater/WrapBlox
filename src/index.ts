@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -189,6 +189,29 @@ class WrapBlox {
 		if (!response.ok) return undefined;
 		return response.body;
 	}
+	
+	// V1 Methods
+	
+	async getGroup(id : number) : Promise<Group | undefined> {
+		const response = await this.get("groups", `groups/${id}`);
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	async getGroupAuditLogs(id : number, actionType? : ActionTypes, userId? : number, limit? : number, cursor? : string, sortOrder? : "Asc" | "Desc") : Promise<AuditLogs | undefined> {
+		if (!this.cookie) return undefined; // Requires cookie
+		const params = {} as Params;
+		if (actionType) params.actionType = actionType;
+		if (userId) params.userId = userId;
+		if (limit) params.limit = limit;
+		if (cursor) params.cursor = cursor;
+		if (sortOrder) params.sortOrder = sortOrder;
+		const response = await this.get("groups", `groups/${id}/audit-log`, params);
+		if (!response.ok) return undefined;
+		return response.body;
+		
+	}
+	
 	
 	
 	

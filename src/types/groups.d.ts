@@ -50,3 +50,53 @@ export type WallPosts = {
 		updated : string,
 	}[]
 } & BaseCursor
+
+export type Group = {
+	id : number,
+	name : string,
+	description : string,
+	owner : {
+		buildersClubMembershipType : number,
+		hasVerifiedBadge : boolean,
+		userId : number,
+		username : string,
+		displayName : string,
+	},
+	shout : {
+		body : string,
+		created : string,
+		updated : string,
+	},
+	memberCount : number,
+	isBuildersClubOnly : boolean,
+	publicEntryAllowed : boolean,
+	isLocked : boolean,
+	hasverifiedBadge : boolean,
+}
+
+
+export type ActionTypes = "DeletePost" | "RemoveMember" | "AcceptJoinRequest" | "DeclineJoinRequest" | "PostStatus" | 'ChangeRank' | "BuyAd" | "SendAllyRequest" | 'CreateEnemy' | "AcceptAllyRequest" | "DeclineAllyRequest" | "DeleteAlly" | "DeleteEnemy" | "AddGroupPlace" | 'RemoveGroupPlace' | 'CreateItems' | 'ConfigureItems' | 'SpendGroupFunds' | 'ChangeOwner' | 'Delete' | 'AdjustCurrencyAmounts' | 'Abandon' | 'Claim' | 'Rename' | 'ChangeDescription' | 'InviteToClan' | 'KickFromClan' | 'CancelClanInvite' | 'BuyClan' | 'CreateGroupAsset' | 'UpdateGroupAsset' | 'ConfigureGroupAsset' | 'RevertGroupAsset' | 'CreateGroupDeveloperProduct' | 'ConfigureGroupGame' | 'CreateGroupDeveloperSubscriptionProduct' | 'Lock' | 'Unlock' | 'CreateGamePass' | 'CreateBadge' | 'ConfigureBadge' | 'SavePlace' | 'PublishPlace' | 'UpdateRolesetRank' | 'UpdateRolesetData'
+
+export type AuditLogs = {
+	data : {
+		actor : {
+			user : {
+				buildersClubMembershipType : number,
+				hasVerifiedBadge : boolean,
+				userId : number,
+				username : string,
+				displayName : string,
+			},
+			role : {
+				id : number,
+				name : string,
+				rank : number,
+				description : string,
+				memberCount : number,
+			}
+		},
+		actionType : ActionTypes,
+		description : string,
+		created : string,
+	}
+}
