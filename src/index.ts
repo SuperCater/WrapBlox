@@ -114,6 +114,10 @@ class WrapBlox {
 	async patch (endpoint : Endpoints, route : string, params? : Params, body? : any) {
 		return await this.request(endpoint, route, "PATCH", params, body);
 	}
+	
+	async delete (endpoint : Endpoints, route : string, params? : Params, body? : any) {
+		return await this.request(endpoint, route, "DELETE", params, body);
+	}
 
 	
 	// User methods
