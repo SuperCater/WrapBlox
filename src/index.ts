@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -447,6 +447,21 @@ class WrapBlox {
 		if (!this.cookie) return false;
 		const response = await this.post("groups", `groups/${id}/join-requests/users/${userId}`);
 		return response.ok;
+	}
+	
+	/**
+	 * 
+	 * @param id group ID
+	 * @returns was the request successful
+	 * @example wrapblox.setCookie("myCookie")
+	 * const membership = await wrapblox.getSelfGroupMembership(1)
+	 */
+	
+	async getSelfGroupMembership(groupId : number) : Promise<SelfMembership | undefined> {
+		if (!this.cookie) return undefined;
+		const response = await this.get("groups", `groups/${groupId}/membership`);
+		if (!response.ok) return undefined;
+		return response.body;
 	}
 	
 	
