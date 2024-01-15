@@ -587,6 +587,21 @@ class WrapBlox {
 		const response = await this.delete("groups", `groups/${groupId}/users/${userId}`);
 		return response.ok;
 	}
+	
+	/**
+	 * @description Set a users role in a group
+	 * @param {number} groupId The group ID to set the users role in
+	 * @param {number} userId The user ID to set the role of
+	 * @param {number} roleId The role ID to set the user to
+	 * @returns {boolean} Whether the request was successful
+	 */
+	
+	async setUsersRole(groupId: number, userId: number, roleId: number): Promise<boolean> {
+		const response = await this.patch("groups", `groups/${groupId}/users/${userId}`, {}, {
+			roleId: roleId,
+		});
+		return response.ok;
+	}
 
 
 
