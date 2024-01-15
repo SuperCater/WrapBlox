@@ -29,6 +29,7 @@ Date format is `MM/DD/YYYY`.
 - declineJoinRequest() method to decline a join request
 - getJoinRequest() method to get a join request
 - acceptJoinRequest() method to accept a join request
+- isLoggedIn() method to check if the user is logged in
 
 ### Fixed
 

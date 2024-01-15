@@ -58,6 +58,13 @@ class WrapBlox {
 		this.apiKey = apiKey;
 	}
 	
+	async isLoggedIn() : Promise<boolean> {
+		if (!this.cookie) return false;
+		const response = await this.get("users", "users/authenticated");
+		return response.ok;
+	}
+		
+	
 	// Request methods
 	async request(endpoint : Endpoints, route : string, method : Methods, params? : Params, body? : any ) : Promise<RequestResponse> {
 		let url = this.baseURLs[endpoint] + route; // The URL to send the request to
