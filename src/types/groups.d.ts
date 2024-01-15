@@ -156,3 +156,16 @@ export type SelfGroupMetadata = {
 	isGroupDetailsPolicyEnabled : boolean,
 	showPreviousGroupNames : boolean,
 }
+
+export type JoinRequests = {
+	data : {
+		requester : {
+			buildersClubMembershipType : number,
+			hasVerifiedBadge : boolean,
+			userId : number,
+			username : string,
+			displayName : string,
+		},
+		created : string,
+	}[]
+} & BaseCursor

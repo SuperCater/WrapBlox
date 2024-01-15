@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, PartialGroup, RoleGroups, SelfGroupMetadata, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -365,6 +365,25 @@ class WrapBlox {
 			UserIds : userIds,
 		});
 		return response.ok;
+	}
+	
+	/**
+	 * 
+	 * @param id group ID
+	 * @param sortOrder "Asc" or "Desc"
+	 * @param limit max amount of join requests to get
+	 * @param cursor the cursor of data to get
+	 * @returns {JoinRequests} The join requests
+	 */
+	
+	async getJoinRequests(id : number, sortOrder? : "Asc" | "Desc", limit? : number, cursor? : string) : Promise<JoinRequests | undefined> {
+		const params = {} as Params;
+		if (sortOrder) params.sortOrder = sortOrder;
+		if (limit) params.limit = limit;
+		if (cursor) params.cursor = cursor;
+		const response = await this.get("groups", `groups/${id}/join-requests`, params);
+		if (!response.ok) return undefined;
+		return response.body;
 	}
 	
 	

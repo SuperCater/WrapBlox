@@ -24,6 +24,7 @@ Date format is `MM/DD/YYYY`.
 - setGroupShout() method to set a group's shout (same as setGroupStatus())
 - delete() method to send a DELETE request
 - declineJoinRequests() method to batch decline join requests
+- getJoinRequests() method to get a list of join requests
 
 ### Fixed
 
