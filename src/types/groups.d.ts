@@ -116,3 +116,31 @@ export type GroupSettings = {
 	areGroupGamesVisible : boolean,
 	isGroupNameChangeEnabled : boolean,
 }
+
+export type GroupMetadata = {
+	groupConfiguration : {
+		nameMaxLength : number,
+		descriptionMaxLength : number,
+		iconMaxFileSize : number,
+		cost : number,
+		isUsingTwoStepWebviewComponent : boolean,
+	},
+	recurringPayoutsConfiguration : {
+		maxPayoutPartners : boolean,
+	},
+	roleConfiguration : {
+		nameMaxLength : number,
+		descriptionMaxLength : number,
+		limit : number,
+		cost : number,
+		minRank : number,
+		maxRank : number,
+	},
+	groupNameChangeConfiguration : {
+		cost : number,
+		cooldownInDays : number,
+		ownershipCooldownInDays : number,
+	},
+	isPremiumPayoutsEnabled : boolean,
+	isDefaultEmblemPolicyEnabled : boolean,
+}

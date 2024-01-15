@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupNameHistory, GroupSettings, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -232,18 +232,29 @@ class WrapBlox {
 		return response.body;
 	}
 	
-	// JSDOC
 	/**
 	 * 
-	 * @param id The group ID
-	 * @param settings The settings to update
-	 * @returns Whether or not the request was successful
+	 * @param {number} id The group ID
+	 * @param {GroupSettings} settings The settings to update
+	 * @returns {boolean} whether the request was successful
 	 * @example wrapblox.updateGroupSettings(1, {isApprovalRequired: true})
 	 */
 	async updateGroupSettings(id : number, settings : GroupSettings) : Promise<boolean> {
 		if (!this.cookie) return false;
 		const response = await this.patch("groups", `groups/${id}/settings`, {}, settings);
 		return response.ok;
+	}
+	
+	/**
+	 * 
+	 * @returns {GroupMetadata} The metadata for groups
+	 * @example wrapblox.getGroupsMetadata()
+	 */
+	
+	async getGroupsMetadata() : Promise<GroupMetadata | undefined> {
+		const response = await this.get("groups", `groups/configuration/metadata`);
+		if (!response.ok) return undefined;
+		return response.body;
 	}
 	
 	

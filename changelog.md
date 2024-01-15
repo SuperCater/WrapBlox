@@ -13,6 +13,7 @@ Date format is `MM/DD/YYYY`.
 - patch() method to send a PATCH request
 - getGroupSettings() method to get a group's settings
 - updateGroupSettings() method to set a group's settings
+- getGroupsMetadata() method to get groups metadata
 
 ### Fixed
 
