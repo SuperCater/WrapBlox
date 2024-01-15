@@ -107,3 +107,12 @@ export type GroupNameHistory = {
 		created : string,
 	}[]
 } & BaseCursor
+
+export type GroupSettings = {
+	isApprovalRequired : boolean,
+	isBuildersClubRequired : boolean,
+	areEnemiesAllowed : boolean,
+	areGroupFundsVisible : boolean,
+	areGroupGamesVisible : boolean,
+	isGroupNameChangeEnabled : boolean,
+}

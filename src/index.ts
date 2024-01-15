@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupNameHistory, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupNameHistory, GroupSettings, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -91,6 +91,10 @@ class WrapBlox {
 	
 	async post (endpoint : Endpoints, route : string, params? : Params, body? : any) {
 		return await this.request(endpoint, route, "POST", params, body);
+	}
+	
+	async patch (endpoint : Endpoints, route : string, params? : Params, body? : any) {
+		return await this.request(endpoint, route, "PATCH", params, body);
 	}
 
 	
@@ -220,6 +224,26 @@ class WrapBlox {
 		const response = await this.get("groups", `groups/${id}/name-history`, params);
 		if (!response.ok) return undefined;
 		return response.body;
+	}
+	
+	async getGroupSettings(id : number) : Promise<GroupSettings | undefined> {
+		const response = await this.get("groups", `groups/${id}/settings`);
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	// JSDOC
+	/**
+	 * 
+	 * @param id The group ID
+	 * @param settings The settings to update
+	 * @returns Whether or not the request was successful
+	 * @example wrapblox.updateGroupSettings(1, {isApprovalRequired: true})
+	 */
+	async updateGroupSettings(id : number, settings : GroupSettings) : Promise<boolean> {
+		if (!this.cookie) return false;
+		const response = await this.patch("groups", `groups/${id}/settings`, {}, settings);
+		return response.ok;
 	}
 	
 	
