@@ -554,14 +554,25 @@ class WrapBlox {
 	
 	/**
 	 * @description Change the group owner
-	 * @param {number} groupId The group ID to get the roles of
-	 * @returns {GroupRole[]} The roles of the group
+	 * @param {number} groupId The group ID to change the owner of
+	 * @returns {boolean} Whether the request was successful
 	 */
 	
 	async changeGroupOwner(groupId: number, userId: number): Promise<boolean> {
 		const response = await this.post("groups", `groups/${groupId}/change-owner`, {}, {
 			userId: userId,
 		});
+		return response.ok;
+	}
+	
+	/**
+	 * @description Claim ownership of a group as the current user
+	 * @param {number} groupId The group ID to get the roles of
+	 * @returns {boolean} Whether the request was successful
+	 */
+	
+	async claimGroupOwnership(groupId: number): Promise<boolean> {
+		const response = await this.post("groups", `groups/${groupId}/claim-ownership`);
 		return response.ok;
 	}
 
