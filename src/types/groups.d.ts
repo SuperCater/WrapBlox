@@ -231,3 +231,10 @@ export type SelfMembership = {
 	areEnemiesAllowed : boolean,
 	canConfigure : boolean,
 }
+
+export type GroupRole = {
+	id : number,
+	name : string,
+	rank : number,
+	memberCount : number,
+}

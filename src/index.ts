@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -462,6 +462,18 @@ class WrapBlox {
 		const response = await this.get("groups", `groups/${groupId}/membership`);
 		if (!response.ok) return undefined;
 		return response.body;
+	}
+	
+	/**
+	 * 
+	 * @param id group ID
+	 * @returns the roles of the group
+	 */
+	
+	async getGroupRoles(id : number) : Promise<GroupRole[] | undefined> {
+		const response = await this.get("groups", `groups/${id}/roles`);
+		if (!response.ok) return undefined;
+		return response.body.roles;
 	}
 	
 	

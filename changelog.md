@@ -30,6 +30,7 @@ Date format is `MM/DD/YYYY`.
 - getJoinRequest() method to get a join request
 - acceptJoinRequest() method to accept a join request
 - isLoggedIn() method to check if the user is logged in
+- getGroupRoles() method to get a list of roles for a group
 
 ### Fixed
 
