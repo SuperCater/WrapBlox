@@ -19,6 +19,7 @@ Date format is `MM/DD/YYYY`.
 - options param to constructor to set some options
 - Wrapblox.settings object for settings
 - Wrapblox.settings.debugMode to enable debug mode
+- updateGroupName() method to update a group's name
 
 ### Fixed
 

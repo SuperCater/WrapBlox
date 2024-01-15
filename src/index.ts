@@ -30,6 +30,8 @@ class WrapBlox {
 		if (options) {
 			if (options.debugMode) this.settings.debugMode = options.debugMode;
 		}
+		
+		if (this.settings.debugMode) console.warn("[WrapBlox] Debugmode enabled - this will log stuff from wrapblox to the console");
 	}
 	
 	settings = {
@@ -301,6 +303,24 @@ class WrapBlox {
 		});
 		return response.ok;
 	}
+	
+	/**
+	 * 
+	 * @param id 
+	 * @param name 
+	 * @returns {boolean} Whether the request was successful
+	 * @example wrapblox.updateGroupName(1, "New name")
+	 */
+	
+	async updateGroupName(id : number, name : string) : Promise<boolean> {
+		if (!this.cookie) return false;
+		const response = await this.patch("groups", `groups/${id}/name`, {}, {
+			name : name,
+		});
+		return response.ok;
+	}
+	
+	
 	
 	
 	
