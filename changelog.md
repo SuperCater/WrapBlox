@@ -38,6 +38,8 @@ Date format is `MM/DD/YYYY`.
 - why to use wrapblox section to readme.md
 - getSelfPendingGroups() method to get a list of pending groups for the current user
 - getFriendGroups() method to get a list of groups for a users friends
+- getUsersRoles() method to get a list of roles for a user
+- changeGroupOwner() method to change a group's owner
 
 ### Fixed
 

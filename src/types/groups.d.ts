@@ -102,6 +102,17 @@ export type FriendGroup = {
 	}[]
 }
 
+export type GroupRoles = {
+	group : Group,
+	role : {
+		id : number,
+		name : string,
+		rank : number,
+		memberCount : number,
+	},
+	isPrimaryGroup : boolean,
+}
+
 
 
 

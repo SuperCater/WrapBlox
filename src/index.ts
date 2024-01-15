@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupRoles, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
 import { Body, Endpoints, Methods, Params, SortOrder, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -532,7 +532,7 @@ class WrapBlox {
 	
 	/**
 	 * @param {number} userId The user ID to get the friends groups of
-	 * @returns {Group[]} Groups that the user is in
+	 * @returns {FriendGroup[]} Groups that the user is in
 	 */
 	
 	async getFriendGroups(userId: number): Promise<FriendGroup[] | undefined> {
@@ -541,8 +541,28 @@ class WrapBlox {
 		return response.body.data;
 	}
 	
-	async getUsersRoles(userid  : number) {
-		
+	/**
+	 * @param {number} userid The user ID to get the friends groups of
+	 * @returns {GroupRoles[]} Groups that the user is in
+	 */
+	
+	async getUsersRoles(userid  : number) : Promise<GroupRoles[] | undefined> {
+		const response = await this.get("groups", `users/${userid}/groups/roles`);
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	/**
+	 * @description Change the group owner
+	 * @param {number} groupId The group ID to get the roles of
+	 * @returns {GroupRole[]} The roles of the group
+	 */
+	
+	async changeGroupOwner(groupId: number, userId: number): Promise<boolean> {
+		const response = await this.post("groups", `groups/${groupId}/change-owner`, {}, {
+			userId: userId,
+		});
+		return response.ok;
 	}
 
 
