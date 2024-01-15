@@ -31,6 +31,7 @@ Date format is `MM/DD/YYYY`.
 - acceptJoinRequest() method to accept a join request
 - isLoggedIn() method to check if the user is logged in
 - getGroupRoles() method to get a list of roles for a group
+- getGroupRoleMembers() method to get a list of members for a group role
 
 ### Fixed
 

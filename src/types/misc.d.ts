@@ -5,3 +5,4 @@ export type Params = {[key : string] : string | number | boolean | undefined | s
 export type WrapBloxOptions = {
 	debugMode? : boolean,
 }
+export type SortOrder = "Asc" | "Desc";

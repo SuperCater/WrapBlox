@@ -238,3 +238,13 @@ export type GroupRole = {
 	rank : number,
 	memberCount : number,
 }
+
+export type GroupRoleMembers = {
+	data : {
+		buildersClubMembershipType : number,
+		hasVerifiedBadge : boolean,
+		userId : number,
+		username : string,
+		displayName : string,
+	}[]
+} & BaseCursor

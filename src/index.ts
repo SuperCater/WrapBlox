@@ -1,6 +1,6 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
-import { Endpoints, Methods, Params, WrapBloxOptions } from "./types/misc.js";
+import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
+import { Endpoints, Methods, Params, SortOrder, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
 /*
@@ -476,6 +476,24 @@ class WrapBlox {
 		return response.body.roles;
 	}
 	
+	/**
+	 * 
+	 * @param id group ID
+	 * @param roleId role ID
+	 * @param limit max amount of members to get
+	 * @param cursor the cursor of data to get
+	 * @returns the members in the role
+	 */
+	
+	async getGroupRoleMembers(id : number, roleId : number, sortOrder? : SortOrder, limit? : number, cursor? : string) : Promise<GroupRoleMembers | undefined> {
+		const params = {} as Params;
+		if (limit) params.limit = limit;
+		if (cursor) params.cursor = cursor;
+		if (sortOrder) params.sortOrder = sortOrder;
+		const response = await this.get("groups", `groups/${id}/roles/${roleId}/users`, params);
+		if (!response.ok) return undefined;
+		return response.body
+	}
 	
 	
 	
