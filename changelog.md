@@ -27,6 +27,7 @@ Date format is `MM/DD/YYYY`.
 - getJoinRequests() method to get a list of join requests
 - acceptJoinRequests() method to batch accept join requests
 - declineJoinRequest() method to decline a join request
+- getJoinRequest() method to get a join request
 
 ### Fixed
 

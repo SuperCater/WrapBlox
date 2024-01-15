@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -414,6 +414,19 @@ class WrapBlox {
 		if (!this.cookie) return false;
 		const response = await this.delete("groups", `groups/${id}/join-requests/users/${userId}`);
 		return response.ok;
+	}
+	
+	/**
+	 * 
+	 * @param id group ID
+	 * @param userId user ID to get join request of
+	 * @returns was the request successful
+	 */
+	
+	async getJoinRequest(id : number, userId : number) : Promise<JoinRequest | undefined> {
+		const response = await this.get("groups", `groups/${id}/join-requests/users/${userId}`);
+		if (!response.ok) return undefined;
+		return response.body;
 	}
 	
 	

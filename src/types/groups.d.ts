@@ -158,14 +158,17 @@ export type SelfGroupMetadata = {
 }
 
 export type JoinRequests = {
-	data : {
-		requester : {
-			buildersClubMembershipType : number,
-			hasVerifiedBadge : boolean,
-			userId : number,
-			username : string,
-			displayName : string,
-		},
-		created : string,
-	}[]
+	data : JoinRequest[]
 } & BaseCursor
+
+
+export type JoinRequest = {
+	requester : {
+		buildersClubMembershipType : number,
+		hasVerifiedBadge : boolean,
+		userId : number,
+		username : string,
+		displayName : string,
+	},
+	created : string
+}
