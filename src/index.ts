@@ -97,10 +97,10 @@ class WrapBlox {
 
 
 		const json = await response.json();
-		
+
 		// Error Support
 		if (!response.ok && this.settings.useErrors) throw new Error(`[WrapBlox] Got error ${response.status} from ${url} with body ${JSON.stringify(body)}`);
-			
+
 
 		const returnData = {
 			status: response.status,
@@ -170,14 +170,14 @@ class WrapBlox {
 	}
 
 	async getCurrentUserRoles(): Promise<string[] | undefined> {
-		
+
 		const response = await this.get("users", "users/authenticated/roles");
 		if (!response.ok) return undefined;
 		return response.body;
 	}
 
 	async getSelf(): Promise<SelfUser | undefined> {
-		
+
 		const response = await this.get("users", "users/authenticated");
 		if (!response.ok) return undefined;
 		return response.body;
@@ -236,7 +236,7 @@ class WrapBlox {
 	}
 
 	async getGroupAuditLogs(id: number, actionType?: ActionTypes, userId?: number, limit?: number, cursor?: string, sortOrder?: "Asc" | "Desc"): Promise<AuditLogs | undefined> {
-		
+
 		const params = {} as Params;
 		if (actionType) params.actionType = actionType;
 		if (userId) params.userId = userId;
@@ -273,7 +273,7 @@ class WrapBlox {
 	 * @example wrapblox.updateGroupSettings(1, {isApprovalRequired: true})
 	 */
 	async updateGroupSettings(id: number, settings: GroupSettings): Promise<boolean> {
-		
+
 		const response = await this.patch("groups", `groups/${id}/settings`, {}, settings);
 		return response.ok;
 	}
@@ -297,7 +297,7 @@ class WrapBlox {
 	 */
 
 	async getSelfGroupMetadata(): Promise<SelfGroupMetadata | undefined> {
-		
+
 		const response = await this.get("groups", "groups/metadata");
 		if (!response.ok) return undefined;
 		return response.body;
@@ -312,7 +312,7 @@ class WrapBlox {
 	 */
 
 	async updateGroupDescription(id: number, description: string): Promise<boolean> {
-		
+
 		const response = await this.patch("groups", `groups/${id}/description`, {}, {
 			description: description,
 		});
@@ -328,7 +328,7 @@ class WrapBlox {
 	 */
 
 	async updateGroupName(id: number, name: string): Promise<boolean> {
-		
+
 		const response = await this.patch("groups", `groups/${id}/name`, {}, {
 			name: name,
 		});
@@ -344,7 +344,7 @@ class WrapBlox {
 	 */
 
 	async setGroupStatus(id: number, status: string): Promise<boolean> {
-		
+
 		const response = await this.patch("groups", `groups/${id}/status`, {}, {
 			message: status,
 		});
@@ -371,7 +371,7 @@ class WrapBlox {
 	 */
 
 	async declineJoinRequests(id: number, userIds: number[]): Promise<boolean> {
-		
+
 		const response = await this.delete("groups", `groups/${id}/join-requests`, {}, {
 			UserIds: userIds,
 		});
@@ -407,7 +407,7 @@ class WrapBlox {
 	 */
 
 	async acceptJoinRequests(id: number, userIds: number[]): Promise<boolean> {
-		
+
 		const response = await this.post("groups", `groups/${id}/join-requests`, {}, {
 			UserIds: userIds,
 		});
@@ -422,7 +422,7 @@ class WrapBlox {
 	 */
 
 	async declineJoinRequest(id: number, userId: number): Promise<boolean> {
-		
+
 		const response = await this.delete("groups", `groups/${id}/join-requests/users/${userId}`);
 		return response.ok;
 	}
@@ -448,7 +448,7 @@ class WrapBlox {
 	 */
 
 	async acceptJoinRequest(id: number, userId: number): Promise<boolean> {
-		
+
 		const response = await this.post("groups", `groups/${id}/join-requests/users/${userId}`);
 		return response.ok;
 	}
@@ -462,7 +462,7 @@ class WrapBlox {
 	 */
 
 	async getSelfGroupMembership(groupId: number): Promise<SelfMembership | undefined> {
-		
+
 		const response = await this.get("groups", `groups/${groupId}/membership`);
 		if (!response.ok) return undefined;
 		return response.body;
@@ -517,7 +517,9 @@ class WrapBlox {
 		if (!response.ok) return undefined;
 		return response.body;
 	}
-
+	
+	
+	
 
 
 
