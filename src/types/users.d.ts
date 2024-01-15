@@ -2,54 +2,54 @@ import { BaseCursor } from "./bases.js"
 
 export type User = {
 	description: string,
-	created : string,
-	isBanned : boolean,
-	externalAppDisplayName : null, // Need to type this
-	hasVerifiedBadge : boolean,
-	id : number,
-	name : string,
-	displayName : string,
+	created: string,
+	isBanned: boolean,
+	externalAppDisplayName: null, // Need to type this
+	hasVerifiedBadge: boolean,
+	id: number,
+	name: string,
+	displayName: string,
 }
 
 export type SelfUser = {
-	name : string,
-	displayName : string,
-	id : number,
+	name: string,
+	displayName: string,
+	id: number,
 }
 
 export type PartialUser = {
-	id : number,
-	name : string,
-	displayName : string,
-	hasVerifiedBadge : boolean,
-	previousUsernames : string[],
+	id: number,
+	name: string,
+	displayName: string,
+	hasVerifiedBadge: boolean,
+	previousUsernames: string[],
 }
 
 export type RequestedUser = {
-	requestedUsername : string,
-	hasVerifiedBadge : boolean,
-	id : number,
-	name : string,
-	displayName : string,
+	requestedUsername: string,
+	hasVerifiedBadge: boolean,
+	id: number,
+	name: string,
+	displayName: string,
 }
 
 export type RequestedIDUser = {
-	hasVerifiedBadge : boolean,
-	id : number,
-	name : string,
-	displayName : string,
+	hasVerifiedBadge: boolean,
+	id: number,
+	name: string,
+	displayName: string,
 }
 
 export type UserNameHistory = {
-	data : {
-		name : string,
+	data: {
+		name: string,
 	}[],
 } & BaseCursor
 
 export type SearchUsers = {
-	data : PartialUser[],
+	data: PartialUser[],
 } & BaseCursor
 
 export type CurrentRules = {
-	roles : string[],
+	roles: string[],
 }

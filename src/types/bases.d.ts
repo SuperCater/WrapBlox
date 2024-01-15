@@ -7,6 +7,6 @@ export type BaseCursor = {
 
 export type RequestResponse = {
 	status: number,
-	ok : boolean,
+	ok: boolean,
 	body: Body,
 }

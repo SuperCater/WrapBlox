@@ -517,77 +517,77 @@ class WrapBlox {
 		if (!response.ok) return undefined;
 		return response.body;
 	}
-	
+
 	/**
 	 * 
 	 * @returns {Group[]} Groups that the user is pending in
 	 */
-	
-	
+
+
 	async getSelfPendingGroups(): Promise<Group[] | undefined> {
 		const response = await this.get("groups", "user/groups/pending");
 		if (!response.ok) return undefined;
 		return response.body.data;
 	}
-	
+
 	/**
 	 * @param {number} userId The user ID to get the friends groups of
 	 * @returns {FriendGroup[]} Groups that the user is in
 	 */
-	
+
 	async getFriendGroups(userId: number): Promise<FriendGroup[] | undefined> {
 		const response = await this.get("groups", `users/${userId}/friends/groups/roles`);
 		if (!response.ok) return undefined;
 		return response.body.data;
 	}
-	
+
 	/**
 	 * @param {number} userid The user ID to get the friends groups of
 	 * @returns {GroupRoles[]} Groups that the user is in
 	 */
-	
-	async getUsersRoles(userid  : number) : Promise<GroupRoles[] | undefined> {
+
+	async getUsersRoles(userid: number): Promise<GroupRoles[] | undefined> {
 		const response = await this.get("groups", `users/${userid}/groups/roles`);
 		if (!response.ok) return undefined;
 		return response.body.data;
 	}
-	
+
 	/**
 	 * @description Change the group owner
 	 * @param {number} groupId The group ID to change the owner of
 	 * @returns {boolean} Whether the request was successful
 	 */
-	
+
 	async changeGroupOwner(groupId: number, userId: number): Promise<boolean> {
 		const response = await this.post("groups", `groups/${groupId}/change-owner`, {}, {
 			userId: userId,
 		});
 		return response.ok;
 	}
-	
+
 	/**
 	 * @description Claim ownership of a group as the current user
 	 * @param {number} groupId The group ID to get the roles of
 	 * @returns {boolean} Whether the request was successful
 	 */
-	
+
 	async claimGroupOwnership(groupId: number): Promise<boolean> {
 		const response = await this.post("groups", `groups/${groupId}/claim-ownership`);
 		return response.ok;
 	}
-	
+
 	/**
 	 * @description Exile a user from a group
 	 * @param {number} groupId The group ID to exile the user from
 	 * @param {number} userId The user ID to exile
 	 * @returns {boolean} Whether the request was successful
 	 */
-	
+
 	async exileUserFromGroup(groupId: number, userId: number): Promise<boolean> {
 		const response = await this.delete("groups", `groups/${groupId}/users/${userId}`);
 		return response.ok;
 	}
-	
+
 	/**
 	 * @description Set a users role in a group
 	 * @param {number} groupId The group ID to set the users role in
@@ -595,80 +595,66 @@ class WrapBlox {
 	 * @param {number} roleId The role ID to set the user to
 	 * @returns {boolean} Whether the request was successful
 	 */
-	
+
 	async setUsersRole(groupId: number, userId: number, roleId: number): Promise<boolean> {
 		const response = await this.patch("groups", `groups/${groupId}/users/${userId}`, {}, {
 			roleId: roleId,
 		});
 		return response.ok;
 	}
-	
+
 	// Revenue Methods
-	
+
 	/**
 	 * @description Get the payout restrictions of a group
 	 * @param groupId The group ID to get the payout restrictions of
 	 * @returns {{canUseRecurringPayout: boolean, canUseOneTimePayout: boolean} | undefined} The payout restrictions of the group
 	 */
-	
-	async getPayoutRestrictions(groupId: number): Promise<{canUseRecurringPayout: boolean, canUseOneTimePayout: boolean} | undefined> {
+
+	async getPayoutRestrictions(groupId: number): Promise<{ canUseRecurringPayout: boolean, canUseOneTimePayout: boolean } | undefined> {
 		const response = await this.get("groups", `groups/${groupId}/payout-restrictions`);
 		if (!response.ok) return undefined;
 		return response.body;
 	}
-	
+
 	/**
 	 * @description Get the payout percentages of a group
 	 * @param groupId The group ID to get the payout percentages of
 	 * @returns {PayoutPercentages | undefined} The payout percentages of the group
 	 */
-	async getGroupPayoutPercentages(groupId: number) : Promise<PayoutPercentages | undefined> {
+	async getGroupPayoutPercentages(groupId: number): Promise<PayoutPercentages | undefined> {
 		const response = await this.get("groups", `groups/${groupId}/payouts`);
 		if (!response.ok) return undefined;
 		return response.body.data;
 	}
-	
+
 	/**
 	 * @description Gets information about roles
 	 * @param roleIDs The role IDs to get
 	 * @returns {Role[] | undefined} The roles
 	 */
-	
-	async GetRoles(roleIDs : number[]) : Promise<Role[] | undefined> {
+
+	async GetRoles(roleIDs: number[]): Promise<Role[] | undefined> {
 		const params = {
 			ids: roleIDs,
 		}
 		const response = await this.get("groups", "roles", params);
-		
+
 		if (!response.ok) return undefined;
 		return response.body.data;
 	}
-	
+
 	/**
 	 * @description Gets information about a role
 	 * @param roleID The role ID to get
 	 * @returns {Role | undefined} The role
 	 */
-	
-	async GetRole(roleID : number) : Promise<Role | undefined> {
-		const response = await this.get("groups", "roles", {ids : [roleID]});
+
+	async GetRole(roleID: number): Promise<Role | undefined> {
+		const response = await this.get("groups", "roles", { ids: [roleID] });
 		if (!response.ok) return undefined;
 		return response.body.data[0];
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
