@@ -16,6 +16,9 @@ Date format is `MM/DD/YYYY`.
 - getGroupsMetadata() method to get groups metadata
 - getSelfGroupMetadata() method to get the current user's groups metadata
 - updateGroupDescription() method to update a group's description
+- options param to constructor to set some options
+- Wrapblox.settings object for settings
+- Wrapblox.settings.debugMode to enable debug mode
 
 ### Fixed
 

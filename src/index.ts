@@ -14,6 +14,13 @@ import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, Use
 */
 
 
+/**
+ * 
+ * @param {string} cookie The cookie to use (optional)
+ * @param {string} apiKey The API key to use (optional)
+ * @param {WrapBloxOptions} options The options to use for wrapblox (optional)
+ * @example const wrapblox = new WrapBlox("cookie", "apiKey", {debugMode: true})
+ */
 
 class WrapBlox {
 	constructor(cookie? : string, apiKey? : string, options? : WrapBloxOptions) {
@@ -74,8 +81,9 @@ class WrapBlox {
 		
 		if (body && method !== "GET") options.body = JSON.stringify(body);
 		
-		
+		if (this.settings.debugMode) console.log(`[WrapBlox] Sending ${method} request to ${url} with body ${JSON.stringify(body)}`);
 		const response = await fetch(url, options);
+		if (this.settings.debugMode) console.log(`[WrapBlox] Got response ${response.status} from ${url}`);
 		
 
 		
