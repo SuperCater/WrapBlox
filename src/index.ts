@@ -270,6 +270,24 @@ class WrapBlox {
 		return response.body;
 	}
 	
+	/**
+	 * 
+	 * @param {number} id The group ID
+	 * @param {string} description The description to update
+	 * @returns {boolean} Whether the request was successful
+	 * @example wrapblox.updateGroupDescription(1, "This is a description")
+	 */
+	
+	async updateGroupDescription(id : number, description : string) : Promise<boolean> {
+		if (!this.cookie) return false;
+		const response = await this.patch("groups", `groups/${id}`, {}, {
+			description : description,
+		});
+		return response.ok;
+	}
+	
+	
+	
 	
 	
 	

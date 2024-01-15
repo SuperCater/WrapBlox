@@ -15,6 +15,7 @@ Date format is `MM/DD/YYYY`.
 - updateGroupSettings() method to set a group's settings
 - getGroupsMetadata() method to get groups metadata
 - getSelfGroupMetadata() method to get the current user's groups metadata
+- updateGroupDescription() method to update a group's description
 
 ### Fixed
 
