@@ -374,6 +374,8 @@ class WrapBlox {
 	 * @param limit max amount of join requests to get
 	 * @param cursor the cursor of data to get
 	 * @returns {JoinRequests} The join requests
+	 * @example const joinRequests = await wrapblox.getJoinRequests(1, "Asc", 100)
+	 * const newRequests = await wrapblox.getJoinRequests(1, "Desc", 100, joinRequests.nextPageCursor)
 	 */
 	
 	async getJoinRequests(id : number, sortOrder? : "Asc" | "Desc", limit? : number, cursor? : string) : Promise<JoinRequests | undefined> {
@@ -385,6 +387,8 @@ class WrapBlox {
 		if (!response.ok) return undefined;
 		return response.body;
 	}
+	
+	
 	
 	
 	
