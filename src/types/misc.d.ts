@@ -6,3 +6,6 @@ export type WrapBloxOptions = {
 	debugMode? : boolean,
 }
 export type SortOrder = "Asc" | "Desc";
+
+// biome-ignore lint/suspicious/noExplicitAny: <Body is any because it's the body of a request>
+export  type Body = any;

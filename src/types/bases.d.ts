@@ -1,3 +1,5 @@
+import { Body } from "./misc"
+
 export type BaseCursor = {
 	previousPageCursor: string | null,
 	nextPageCursor: string | null,
@@ -6,5 +8,5 @@ export type BaseCursor = {
 export type RequestResponse = {
 	status: number,
 	ok : boolean,
-	body: any,
+	body: Body,
 }
