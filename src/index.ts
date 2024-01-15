@@ -352,9 +352,16 @@ class WrapBlox {
 		return await this.setGroupStatus(id, shout);
 	}
 	
+	/**
+	 * 
+	 * @param id ID of the group
+	 * @param userIds Array of user IDs to decline
+	 * @returns was the request successful
+	 */
+	
 	async declineJoinRequests(id : number, userIds : number[]) : Promise<boolean> {
 		if (!this.cookie) return false;
-		const response = await this.delete("groups", `groups/${id}/join-requests/decline`, {}, {
+		const response = await this.delete("groups", `groups/${id}/join-requests`, {}, {
 			UserIds : userIds,
 		});
 		return response.ok;
