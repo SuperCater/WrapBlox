@@ -17,5 +17,5 @@ import WrapBlox from "wrapblox";
 
 const wrapblox = new WrapBlox("optional cookie", "optional API Key");
 
-const user = await wrapblox.getUser("1"); // Returns a user object
+const user = await wrapblox.getUser(1); // Returns a user object
 ```
