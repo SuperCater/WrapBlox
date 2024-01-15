@@ -4,6 +4,7 @@ export type Endpoints = "users" | "groups" | "groups2"
 export type Params = {[key : string] : string | number | boolean | undefined | string[] | number[] | boolean[] | undefined[]};
 export type WrapBloxOptions = {
 	debugMode? : boolean,
+	useErrors? : boolean,
 }
 export type SortOrder = "Asc" | "Desc";
 

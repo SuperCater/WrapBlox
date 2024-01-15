@@ -33,6 +33,7 @@ Date format is `MM/DD/YYYY`.
 - getGroupRoles() method to get a list of roles for a group
 - getGroupRoleMembers() method to get a list of members for a group role
 - getGroupMembers() method to get a list of members for a group
+- useErrors option to constructor to throw errors instead of returning undefined
 
 ### Fixed
 

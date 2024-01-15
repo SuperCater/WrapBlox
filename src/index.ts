@@ -28,7 +28,8 @@ class WrapBlox {
 		this.apiKey = apiKey;
 
 		if (options) {
-			if (options.debugMode) this.settings.debugMode = options.debugMode;
+			if (typeof options.debugMode === "boolean") this.settings.debugMode = options.debugMode;
+			if (typeof options.useErrors === "boolean") this.settings.useErrors = options.useErrors;
 		}
 
 		if (this.settings.debugMode) console.warn("[WrapBlox] Debugmode enabled - this will log stuff from wrapblox to the console");
@@ -36,6 +37,7 @@ class WrapBlox {
 
 	settings = {
 		debugMode: false,
+		useErrors: false,
 	}
 
 	// Properties
@@ -94,8 +96,11 @@ class WrapBlox {
 		if (this.settings.debugMode) console.log(`[WrapBlox] Got response ${response.status} from ${url}`);
 
 
-
 		const json = await response.json();
+		
+		// Error Support
+		if (!response.ok && this.settings.useErrors) throw new Error(`[WrapBlox] Got error ${response.status} from ${url} with body ${JSON.stringify(body)}`);
+			
 
 		const returnData = {
 			status: response.status,
