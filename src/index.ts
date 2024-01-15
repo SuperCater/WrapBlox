@@ -320,6 +320,34 @@ class WrapBlox {
 		return response.ok;
 	}
 	
+	/**
+	 * 
+	 * @param id 
+	 * @param status  The status/shout of the group
+	 * @returns {boolean} Whether the request was successful
+	 * @example wrapblox.setGroupStatus(1, "Status! or Shout!")
+	 */
+	
+	async setGroupStatus(id : number, status : string) : Promise<boolean> {
+		if (!this.cookie) return false;
+		const response = await this.patch("groups", `groups/${id}/status`, {}, {
+			message : status,
+		});
+		return response.ok;
+	}
+	
+	/**
+	 * 
+	 * @param id 
+	 * @param shout The shout/status of the group
+	 * @returns {boolean} Whether the request was successful
+	 * @example wrapblox.setGroupStatus(1, "Status! or Shout!")
+	 */
+	
+	async setGroupShout(id : number, shout : string) : Promise<boolean> {
+		return await this.setGroupStatus(id, shout);
+	}
+	
 	
 	
 	

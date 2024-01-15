@@ -20,6 +20,8 @@ Date format is `MM/DD/YYYY`.
 - Wrapblox.settings object for settings
 - Wrapblox.settings.debugMode to enable debug mode
 - updateGroupName() method to update a group's name
+- setGroupStatus() method to set a group's status
+- setGroupShout() method to set a group's shout (same as setGroupStatus())
 
 ### Fixed
 
