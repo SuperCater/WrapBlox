@@ -34,6 +34,8 @@ Date format is `MM/DD/YYYY`.
 - getGroupRoleMembers() method to get a list of members for a group role
 - getGroupMembers() method to get a list of members for a group
 - useErrors option to constructor to throw errors instead of returning undefined
+- FAQ section to readme.md
+- why to use wrapblox section to readme.md
 
 ### Fixed
 
