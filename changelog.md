@@ -47,6 +47,7 @@ Date format is `MM/DD/YYYY`.
 - getGroupPayoutPercentages() method to get a group's payout percentages for users
 - getRoles() method to get a list of roles
 - getRole() method to get a role via ID
+- testing with jest
 
 ### Fixed
 
