@@ -495,6 +495,26 @@ class WrapBlox {
 		return response.body
 	}
 	
+	/**
+	 * 
+	 * @param id group ID
+	 * @param roleId role ID
+	 * @param userIds Array of user IDs to add
+	 * @returns was the request successful
+	 */
+	
+	async getGroupMembers(id : number, limit? : number, sortOrder? : SortOrder, cursor? : string) : Promise<GroupRoleMembers | undefined> {
+		const params = {} as Params;
+		if (limit) params.limit = limit;
+		if (cursor) params.cursor = cursor;
+		if (sortOrder) params.sortOrder = sortOrder;
+		const response = await this.get("groups", `groups/${id}/users`, params);
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	
+	
 	
 	
 	
