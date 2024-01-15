@@ -41,6 +41,7 @@ Date format is `MM/DD/YYYY`.
 - getUsersRoles() method to get a list of roles for a user
 - changeGroupOwner() method to change a group's owner
 - claimGroupOwnership() method to claim ownership of a group
+- exileUserFromGroup() method to exile a user from a group
 
 ### Fixed
 

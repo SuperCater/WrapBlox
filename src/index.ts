@@ -575,6 +575,18 @@ class WrapBlox {
 		const response = await this.post("groups", `groups/${groupId}/claim-ownership`);
 		return response.ok;
 	}
+	
+	/**
+	 * @description Exile a user from a group
+	 * @param {number} groupId The group ID to exile the user from
+	 * @param {number} userId The user ID to exile
+	 * @returns {boolean} Whether the request was successful
+	 */
+	
+	async exileUserFromGroup(groupId: number, userId: number): Promise<boolean> {
+		const response = await this.delete("groups", `groups/${groupId}/users/${userId}`);
+		return response.ok;
+	}
 
 
 
