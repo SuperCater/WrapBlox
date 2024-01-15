@@ -1,6 +1,6 @@
 import { RequestResponse } from "./types/bases.js";
 import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, PartialGroup, RoleGroups, SelfGroupMetadata, WallPosts } from "./types/groups.js";
-import { Endpoints, Methods, Params } from "./types/misc.js";
+import { Endpoints, Methods, Params, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
 /*
@@ -16,9 +16,17 @@ import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, Use
 
 
 class WrapBlox {
-	constructor(cookie? : string, apiKey? : string) {
+	constructor(cookie? : string, apiKey? : string, options? : WrapBloxOptions) {
 		this.cookie = cookie;
 		this.apiKey = apiKey;
+		
+		if (options) {
+			if (options.debugMode) this.settings.debugMode = options.debugMode;
+		}
+	}
+	
+	settings = {
+		debugMode : false,
 	}
 	
 	// Properties
@@ -280,7 +288,7 @@ class WrapBlox {
 	
 	async updateGroupDescription(id : number, description : string) : Promise<boolean> {
 		if (!this.cookie) return false;
-		const response = await this.patch("groups", `groups/${id}`, {}, {
+		const response = await this.patch("groups", `groups/${id}/description`, {}, {
 			description : description,
 		});
 		return response.ok;
