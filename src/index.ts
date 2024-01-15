@@ -352,6 +352,14 @@ class WrapBlox {
 		return await this.setGroupStatus(id, shout);
 	}
 	
+	async declineJoinRequests(id : number, userIds : number[]) : Promise<boolean> {
+		if (!this.cookie) return false;
+		const response = await this.delete("groups", `groups/${id}/join-requests/decline`, {}, {
+			UserIds : userIds,
+		});
+		return response.ok;
+	}
+	
 	
 	
 	
