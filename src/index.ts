@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupRoles, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupRoles, GroupSettings, JoinRequest, JoinRequests, PartialGroup, PayoutPercentages, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
 import { Body, Endpoints, Methods, Params, SortOrder, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -601,6 +601,31 @@ class WrapBlox {
 			roleId: roleId,
 		});
 		return response.ok;
+	}
+	
+	// Revenue Methods
+	
+	/**
+	 * @description Get the payout restrictions of a group
+	 * @param groupId The group ID to get the payout restrictions of
+	 * @returns {{canUseRecurringPayout: boolean, canUseOneTimePayout: boolean} | undefined} The payout restrictions of the group
+	 */
+	
+	async getPayoutRestrictions(groupId: number): Promise<{canUseRecurringPayout: boolean, canUseOneTimePayout: boolean} | undefined> {
+		const response = await this.get("groups", `groups/${groupId}/payout-restrictions`);
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	/**
+	 * @description Get the payout percentages of a group
+	 * @param groupId The group ID to get the payout percentages of
+	 * @returns {PayoutPercentages | undefined} The payout percentages of the group
+	 */
+	async getGroupPayoutPercentages(groupId: number) : Promise<PayoutPercentages | undefined> {
+		const response = await this.get("groups", `groups/${groupId}/payouts`);
+		if (!response.ok) return undefined;
+		return response.body.data;
 	}
 
 

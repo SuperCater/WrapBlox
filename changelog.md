@@ -43,6 +43,8 @@ Date format is `MM/DD/YYYY`.
 - claimGroupOwnership() method to claim ownership of a group
 - exileUserFromGroup() method to exile a user from a group
 - setUsersRole() method to set a user's role
+- getPayoutRestrictions() method to get a group's payout restrictions
+- getGroupPayoutPercentages() method to get a group's payout percentages for users
 
 ### Fixed
 

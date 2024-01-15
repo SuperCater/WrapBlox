@@ -308,3 +308,14 @@ export type GroupMembers = {
 		}
 	}[]
 } & BaseCursor
+
+export type PayoutPercentages = {
+	user : {
+		buildersClubMembershipType : number,
+		hasVerifiedBadge : boolean,
+		userId : number,
+		username : string,
+		displayName : string,
+	},
+	percentage : number,
+}
