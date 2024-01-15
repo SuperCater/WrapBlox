@@ -388,7 +388,20 @@ class WrapBlox {
 		return response.body;
 	}
 	
+	/**
+	 * 
+	 * @param id group ID
+	 * @param userIds Array of user IDs to accept
+	 * @returns was the request successful
+	 */
 	
+	async acceptJoinRequests(id : number, userIds : number[]) : Promise<boolean> {
+		if (!this.cookie) return false;
+		const response = await this.post("groups", `groups/${id}/join-requests`, {}, {
+			UserIds : userIds,
+		});
+		return response.ok;
+	}
 	
 	
 	
