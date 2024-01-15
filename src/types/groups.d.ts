@@ -64,6 +64,13 @@ export type Group = {
 	},
 	shout : {
 		body : string,
+		poster : {
+			buildersClubMembershipType : number,
+			hasVerifiedBadge : boolean,
+			userId : number,
+			username : string,
+			displayName : string,
+		}
 		created : string,
 		updated : string,
 	},
@@ -73,6 +80,29 @@ export type Group = {
 	isLocked : boolean,
 	hasverifiedBadge : boolean,
 }
+
+export type FriendGroup = {
+	user : {
+		buildersClubMembershipType : number,
+		hasVerifiedBadge : boolean,
+		userId : number,
+		username : string,
+		displayName : string,
+	},
+	groups : {
+		group : Group,
+		role : {
+			id : number,
+			name : string,
+			rank : number,
+			description : string,
+			memberCount : number,
+		},
+		isPrimaryGroup : boolean,
+	}[]
+}
+
+
 
 
 export type ActionTypes = "DeletePost" | "RemoveMember" | "AcceptJoinRequest" | "DeclineJoinRequest" | "PostStatus" | 'ChangeRank' | "BuyAd" | "SendAllyRequest" | 'CreateEnemy' | "AcceptAllyRequest" | "DeclineAllyRequest" | "DeleteAlly" | "DeleteEnemy" | "AddGroupPlace" | 'RemoveGroupPlace' | 'CreateItems' | 'ConfigureItems' | 'SpendGroupFunds' | 'ChangeOwner' | 'Delete' | 'AdjustCurrencyAmounts' | 'Abandon' | 'Claim' | 'Rename' | 'ChangeDescription' | 'InviteToClan' | 'KickFromClan' | 'CancelClanInvite' | 'BuyClan' | 'CreateGroupAsset' | 'UpdateGroupAsset' | 'ConfigureGroupAsset' | 'RevertGroupAsset' | 'CreateGroupDeveloperProduct' | 'ConfigureGroupGame' | 'CreateGroupDeveloperSubscriptionProduct' | 'Lock' | 'Unlock' | 'CreateGamePass' | 'CreateBadge' | 'ConfigureBadge' | 'SavePlace' | 'PublishPlace' | 'UpdateRolesetRank' | 'UpdateRolesetData'

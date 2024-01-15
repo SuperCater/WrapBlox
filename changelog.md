@@ -36,6 +36,8 @@ Date format is `MM/DD/YYYY`.
 - useErrors option to constructor to throw errors instead of returning undefined
 - FAQ section to readme.md
 - why to use wrapblox section to readme.md
+- getSelfPendingGroups() method to get a list of pending groups for the current user
+- getFriendGroups() method to get a list of groups for a users friends
 
 ### Fixed
 

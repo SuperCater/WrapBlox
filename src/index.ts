@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupSettings, JoinRequest, JoinRequests, PartialGroup, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
 import { Body, Endpoints, Methods, Params, SortOrder, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -518,8 +518,32 @@ class WrapBlox {
 		return response.body;
 	}
 	
+	/**
+	 * 
+	 * @returns {Group[]} Groups that the user is pending in
+	 */
 	
 	
+	async getSelfPendingGroups(): Promise<Group[] | undefined> {
+		const response = await this.get("groups", "user/groups/pending");
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	/**
+	 * @param {number} userId The user ID to get the friends groups of
+	 * @returns {Group[]} Groups that the user is in
+	 */
+	
+	async getFriendGroups(userId: number): Promise<FriendGroup[] | undefined> {
+		const response = await this.get("groups", `users/${userId}/friends/groups/roles`);
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	async getUsersRoles(userid  : number) {
+		
+	}
 
 
 
