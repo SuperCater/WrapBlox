@@ -45,6 +45,8 @@ Date format is `MM/DD/YYYY`.
 - setUsersRole() method to set a user's role
 - getPayoutRestrictions() method to get a group's payout restrictions
 - getGroupPayoutPercentages() method to get a group's payout percentages for users
+- getRoles() method to get a list of roles
+- getRole() method to get a role via ID
 
 ### Fixed
 

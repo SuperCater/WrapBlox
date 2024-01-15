@@ -319,3 +319,12 @@ export type PayoutPercentages = {
 	},
 	percentage : number,
 }
+
+export type Role = {
+	groupId : number,
+	id : number,
+	name : string,
+	description : string,
+	rank : number,
+	memberCount : number,
+}

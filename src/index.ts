@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupRoles, GroupSettings, JoinRequest, JoinRequests, PartialGroup, PayoutPercentages, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupRoles, GroupSettings, JoinRequest, JoinRequests, PartialGroup, PayoutPercentages, Role, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
 import { Body, Endpoints, Methods, Params, SortOrder, WrapBloxOptions } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -626,6 +626,34 @@ class WrapBlox {
 		const response = await this.get("groups", `groups/${groupId}/payouts`);
 		if (!response.ok) return undefined;
 		return response.body.data;
+	}
+	
+	/**
+	 * @description Gets information about roles
+	 * @param roleIDs The role IDs to get
+	 * @returns {Role[] | undefined} The roles
+	 */
+	
+	async GetRoles(roleIDs : number[]) : Promise<Role[] | undefined> {
+		const params = {
+			ids: roleIDs,
+		}
+		const response = await this.get("groups", "roles", params);
+		
+		if (!response.ok) return undefined;
+		return response.body.data;
+	}
+	
+	/**
+	 * @description Gets information about a role
+	 * @param roleID The role ID to get
+	 * @returns {Role | undefined} The role
+	 */
+	
+	async GetRole(roleID : number) : Promise<Role | undefined> {
+		const response = await this.get("groups", "roles", {ids : [roleID]});
+		if (!response.ok) return undefined;
+		return response.body.data[0];
 	}
 
 
