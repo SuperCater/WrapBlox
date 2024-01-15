@@ -9,6 +9,11 @@ Date format is `MM/DD/YYYY`.
 
 - getGroup() method to get a group via ID
 - getGroupAuditLogs() method to get a group's audit logs
+- getGroupNameHistory() method to get a group's name history
+
+### Fixed
+
+- readme.md incorrect usage of `getUser()`
 
 
 ## [0.1.0] - 1/15/2024

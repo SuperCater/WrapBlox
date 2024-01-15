@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupNameHistory, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -212,6 +212,15 @@ class WrapBlox {
 		
 	}
 	
+	async getGroupNameHistory(id : number, limit? : number, cursor? : string, sortOrder? : "Asc" | "Desc") : Promise<GroupNameHistory | undefined> {
+		const params = {} as Params;
+		if (limit) params.limit = limit;
+		if (cursor) params.cursor = cursor;
+		if (sortOrder) params.sortOrder = sortOrder;
+		const response = await this.get("groups", `groups/${id}/name-history`, params);
+		if (!response.ok) return undefined;
+		return response.body;
+	}
 	
 	
 	

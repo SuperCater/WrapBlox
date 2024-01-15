@@ -100,3 +100,10 @@ export type AuditLogs = {
 		created : string,
 	}
 }
+
+export type GroupNameHistory = {
+	data : {
+		name : string,
+		created : string,
+	}[]
+} & BaseCursor
