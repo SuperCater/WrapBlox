@@ -1,5 +1,5 @@
 import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, PartialGroup, RoleGroups, WallPosts } from "./types/groups.js";
+import { ActionTypes, AuditLogs, Group, GroupMetadata, GroupNameHistory, GroupSettings, PartialGroup, RoleGroups, SelfGroupMetadata, WallPosts } from "./types/groups.js";
 import { Endpoints, Methods, Params } from "./types/misc.js";
 import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
 
@@ -256,6 +256,21 @@ class WrapBlox {
 		if (!response.ok) return undefined;
 		return response.body;
 	}
+	
+	/**
+	 * 
+	 * @returns {SelfGroupMetadata} The groups metadata for the current user
+	 * @example wrapblox.getSelfGroupMetadata()
+	 */
+	
+	async getSelfGroupMetadata() : Promise<SelfGroupMetadata | undefined> {
+		if (!this.cookie) return undefined;
+		const response = await this.get("groups", `groups/metadata`);
+		if (!response.ok) return undefined;
+		return response.body;
+	}
+	
+	
 	
 	
 	

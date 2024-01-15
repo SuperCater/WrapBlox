@@ -144,3 +144,15 @@ export type GroupMetadata = {
 	isPremiumPayoutsEnabled : boolean,
 	isDefaultEmblemPolicyEnabled : boolean,
 }
+
+export type SelfGroupMetadata = {
+	groupLimit : number,
+	currentGroupCount : number,
+	groupStatusMaxLength : number,
+	groupPostMaxLength : number,
+	isGroupWallNotificationsEnabled : boolean,
+	groupWallNotificationsSubscribeIntervalInMilliseconds : number,
+	areProfileGroupsHidden : boolean,
+	isGroupDetailsPolicyEnabled : boolean,
+	showPreviousGroupNames : boolean,
+}
