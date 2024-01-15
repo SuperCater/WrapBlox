@@ -1,6 +1,6 @@
 # WrapBlox
 
-Wrapblox is an API wrapper for the Roblox API written in typescript. It is currently in development and really isnt meant for production.
+Wrapblox is a promise based API wrapper for the Roblox API written in typescript. It is currently in development and really isnt meant for production.
 
 ## Installation
 
