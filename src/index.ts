@@ -659,8 +659,3 @@ class WrapBlox {
 
 
 export default WrapBlox;
-// Export types
-export * from "./types/bases.js";
-export * from "./types/groups.js";
-export * from "./types/misc.js";
-export * from "./types/users.js";
