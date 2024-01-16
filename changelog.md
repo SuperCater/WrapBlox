@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 Date format is `MM/DD/YYYY`.
 
+## [0.2.1b] - 1/16/2024
+
+### Fixed
+
+- i actually fixed the types this time
+
 ## [0.2.1a] - 1/16/2024
 
 ### Fixed

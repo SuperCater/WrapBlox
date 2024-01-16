@@ -1,7 +1,11 @@
-import { RequestResponse } from "./types/bases.js";
-import { ActionTypes, AuditLogs, FriendGroup, Group, GroupMetadata, GroupNameHistory, GroupRole, GroupRoleMembers, GroupRoles, GroupSettings, JoinRequest, JoinRequests, PartialGroup, PayoutPercentages, Role, RoleGroups, SelfGroupMetadata, SelfMembership, WallPosts } from "./types/groups.js";
-import { Body, Endpoints, Methods, Params, SortOrder, WrapBloxOptions } from "./types/misc.js";
-import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, User, UserNameHistory } from "./types/users.js";
+import type * as BaseTypes from "./types/bases.js";
+import type * as GroupTypes from "./types/groups.js";
+import type * as MiscTypes from "./types/misc.js";
+import type * as UserTypes from "./types/users.js";
+
+
+
+
 
 /*
 	* WrapBlox Feature support
@@ -23,7 +27,7 @@ import { PartialUser, RequestedIDUser, RequestedUser, SearchUsers, SelfUser, Use
  */
 
 class WrapBlox {
-	constructor(cookie?: string, apiKey?: string, options?: WrapBloxOptions) {
+	constructor(cookie?: string, apiKey?: string, options?: MiscTypes.WrapBloxOptions) {
 		this.cookie = cookie;
 		this.apiKey = apiKey;
 
@@ -68,7 +72,7 @@ class WrapBlox {
 
 
 	// Request methods
-	async request(endpoint: Endpoints, route: string, method: Methods, params?: Params, body?: Body): Promise<RequestResponse> {
+	async request(endpoint: MiscTypes.Endpoints, route: string, method: MiscTypes.Methods, params?: MiscTypes.Params, body?: MiscTypes.Body): Promise<BaseTypes.RequestResponse> {
 		let url = this.baseURLs[endpoint] + route; // The URL to send the request to
 		const headers: { [key: string]: string } = {
 			"Content-Type": "application/json",
@@ -114,33 +118,33 @@ class WrapBlox {
 		return returnData;
 	}
 
-	async get(endpoint: Endpoints, route: string, params?: Params) {
+	async get(endpoint: MiscTypes.Endpoints, route: string, params?: MiscTypes.Params) {
 		return await this.request(endpoint, route, "GET", params);
 	}
 
-	async post(endpoint: Endpoints, route: string, params?: Params, body?: Body) {
+	async post(endpoint: MiscTypes.Endpoints, route: string, params?: MiscTypes.Params, body?: MiscTypes.Body) {
 		return await this.request(endpoint, route, "POST", params, body);
 	}
 
-	async patch(endpoint: Endpoints, route: string, params?: Params, body?: Body) {
+	async patch(endpoint: MiscTypes.Endpoints, route: string, params?: MiscTypes.Params, body?: MiscTypes.Body) {
 		return await this.request(endpoint, route, "PATCH", params, body);
 	}
 
-	async delete(endpoint: Endpoints, route: string, params?: Params, body?: Body) {
+	async delete(endpoint: MiscTypes.Endpoints, route: string, params?: MiscTypes.Params, body?: MiscTypes.Body) {
 		return await this.request(endpoint, route, "DELETE", params, body);
 	}
 
 
 	// User methods
 
-	async getUser(id: number): Promise<User | undefined> {
+	async getUser(id: number): Promise<UserTypes.User | undefined> {
 		const response = await this.get("users", `users/${id}`);
 		if (!response.ok) return undefined;
 
 		return response.body; // USer data
 	}
 
-	async getUsernameHistory(id: number, limit?: number, sortOrder?: "Asc" | "Desc", cursor?: string): Promise<UserNameHistory | undefined> {
+	async getUsernameHistory(id: number, limit?: number, sortOrder?: "Asc" | "Desc", cursor?: string): Promise<UserTypes.UserNameHistory | undefined> {
 		const params = {} as { [key: string]: string };
 		if (limit) params.limit = limit.toString();
 		if (sortOrder) params.sortOrder = sortOrder;
@@ -151,7 +155,7 @@ class WrapBlox {
 		return response.body;
 	}
 
-	async searchUsers(keyword: string, limit?: number, cursor?: string): Promise<SearchUsers | undefined> {
+	async searchUsers(keyword: string, limit?: number, cursor?: string): Promise<UserTypes.SearchUsers | undefined> {
 		const params = {} as { [key: string]: string };
 		if (limit) params.limit = limit.toString();
 		if (cursor) params.cursor = cursor;
@@ -161,7 +165,7 @@ class WrapBlox {
 		return response.body;
 	}
 
-	async getUserFromUsername(username: string): Promise<RequestedUser | undefined> {
+	async getUserFromUsername(username: string): Promise<UserTypes.RequestedUser | undefined> {
 		const user = await this.post("users", "usernames/users", {}, {
 			usernames: [username],
 		});
@@ -176,14 +180,14 @@ class WrapBlox {
 		return response.body;
 	}
 
-	async getSelf(): Promise<SelfUser | undefined> {
+	async getSelf(): Promise<UserTypes.SelfUser | undefined> {
 
 		const response = await this.get("users", "users/authenticated");
 		if (!response.ok) return undefined;
 		return response.body;
 	}
 
-	async getUsers(ids: number[]): Promise<RequestedIDUser[] | undefined> {
+	async getUsers(ids: number[]): Promise<UserTypes.RequestedIDUser[] | undefined> {
 		const response = await this.post("users", "users", {}, {
 			userIds: ids,
 		});
@@ -191,7 +195,7 @@ class WrapBlox {
 		return response.body.data;
 	}
 
-	async GetUsersByUsernames(usernames: string[]): Promise<RequestedUser[] | undefined> {
+	async GetUsersByUsernames(usernames: string[]): Promise<UserTypes.RequestedUser[] | undefined> {
 		const response = await this.post("users", "usernames/users", {}, {
 			usernames: usernames,
 		});
@@ -201,7 +205,7 @@ class WrapBlox {
 
 	// GROUPS 2
 
-	async getGroups(ids: number[]): Promise<PartialGroup[] | undefined> {
+	async getGroups(ids: number[]): Promise<GroupTypes.PartialGroup[] | undefined> {
 		const response = await this.post("groups2", "groups", {}, {
 			groupIds: ids,
 		});
@@ -209,16 +213,16 @@ class WrapBlox {
 		return response.body.data;
 	}
 
-	async getUserRoles(id: number, includeLocked?: boolean): Promise<RoleGroups[] | undefined> {
-		const params = {} as Params;
+	async getUserRoles(id: number, includeLocked?: boolean): Promise<GroupTypes.RoleGroups[] | undefined> {
+		const params = {} as MiscTypes.Params;
 		params.includeLocked = includeLocked ?? false;
 		const response = await this.get("groups2", `users/${id}/groups/roles`, params);
 		if (!response.ok) return undefined;
 		return response.body.data;
 	}
 
-	async getWallPosts(id: number, sortOrder?: "Asc" | "Desc", limit?: number, cursor?: string): Promise<WallPosts | undefined> {
-		const params = {} as Params;
+	async getWallPosts(id: number, sortOrder?: "Asc" | "Desc", limit?: number, cursor?: string): Promise<GroupTypes.WallPosts | undefined> {
+		const params = {} as MiscTypes.Params;
 		if (sortOrder) params.sortOrder = sortOrder;
 		if (limit) params.limit = limit;
 		if (cursor) params.cursor = cursor;
@@ -229,15 +233,15 @@ class WrapBlox {
 
 	// V1 Methods
 
-	async getGroup(id: number): Promise<Group | undefined> {
+	async getGroup(id: number): Promise<GroupTypes.Group | undefined> {
 		const response = await this.get("groups", `groups/${id}`);
 		if (!response.ok) return undefined;
 		return response.body;
 	}
 
-	async getGroupAuditLogs(id: number, actionType?: ActionTypes, userId?: number, limit?: number, cursor?: string, sortOrder?: "Asc" | "Desc"): Promise<AuditLogs | undefined> {
+	async getGroupAuditLogs(id: number, actionType?: GroupTypes.ActionTypes, userId?: number, limit?: number, cursor?: string, sortOrder?: "Asc" | "Desc"): Promise<GroupTypes.AuditLogs | undefined> {
 
-		const params = {} as Params;
+		const params = {} as MiscTypes.Params;
 		if (actionType) params.actionType = actionType;
 		if (userId) params.userId = userId;
 		if (limit) params.limit = limit;
@@ -249,8 +253,8 @@ class WrapBlox {
 
 	}
 
-	async getGroupNameHistory(id: number, limit?: number, cursor?: string, sortOrder?: "Asc" | "Desc"): Promise<GroupNameHistory | undefined> {
-		const params = {} as Params;
+	async getGroupNameHistory(id: number, limit?: number, cursor?: string, sortOrder?: "Asc" | "Desc"): Promise<GroupTypes.GroupNameHistory | undefined> {
+		const params = {} as MiscTypes.Params;
 		if (limit) params.limit = limit;
 		if (cursor) params.cursor = cursor;
 		if (sortOrder) params.sortOrder = sortOrder;
@@ -259,7 +263,7 @@ class WrapBlox {
 		return response.body;
 	}
 
-	async getGroupSettings(id: number): Promise<GroupSettings | undefined> {
+	async getGroupSettings(id: number): Promise<GroupTypes.GroupSettings | undefined> {
 		const response = await this.get("groups", `groups/${id}/settings`);
 		if (!response.ok) return undefined;
 		return response.body;
@@ -272,7 +276,7 @@ class WrapBlox {
 	 * @returns {boolean} whether the request was successful
 	 * @example wrapblox.updateGroupSettings(1, {isApprovalRequired: true})
 	 */
-	async updateGroupSettings(id: number, settings: GroupSettings): Promise<boolean> {
+	async updateGroupSettings(id: number, settings: GroupTypes.GroupSettings): Promise<boolean> {
 
 		const response = await this.patch("groups", `groups/${id}/settings`, {}, settings);
 		return response.ok;
@@ -284,7 +288,7 @@ class WrapBlox {
 	 * @example wrapblox.getGroupsMetadata()
 	 */
 
-	async getGroupsMetadata(): Promise<GroupMetadata | undefined> {
+	async getGroupsMetadata(): Promise<GroupTypes.GroupMetadata | undefined> {
 		const response = await this.get("groups", "groups/configuration/metadata");
 		if (!response.ok) return undefined;
 		return response.body;
@@ -296,7 +300,7 @@ class WrapBlox {
 	 * @example wrapblox.getSelfGroupMetadata()
 	 */
 
-	async getSelfGroupMetadata(): Promise<SelfGroupMetadata | undefined> {
+	async getSelfGroupMetadata(): Promise<GroupTypes.SelfGroupMetadata | undefined> {
 
 		const response = await this.get("groups", "groups/metadata");
 		if (!response.ok) return undefined;
@@ -389,8 +393,8 @@ class WrapBlox {
 	 * const newRequests = await wrapblox.getJoinRequests(1, "Desc", 100, joinRequests.nextPageCursor)
 	 */
 
-	async getJoinRequests(id: number, sortOrder?: "Asc" | "Desc", limit?: number, cursor?: string): Promise<JoinRequests | undefined> {
-		const params = {} as Params;
+	async getJoinRequests(id: number, sortOrder?: "Asc" | "Desc", limit?: number, cursor?: string): Promise<GroupTypes.JoinRequests | undefined> {
+		const params = {} as MiscTypes.Params;
 		if (sortOrder) params.sortOrder = sortOrder;
 		if (limit) params.limit = limit;
 		if (cursor) params.cursor = cursor;
@@ -434,7 +438,7 @@ class WrapBlox {
 	 * @returns was the request successful
 	 */
 
-	async getJoinRequest(id: number, userId: number): Promise<JoinRequest | undefined> {
+	async getJoinRequest(id: number, userId: number): Promise<GroupTypes.JoinRequest | undefined> {
 		const response = await this.get("groups", `groups/${id}/join-requests/users/${userId}`);
 		if (!response.ok) return undefined;
 		return response.body;
@@ -461,7 +465,7 @@ class WrapBlox {
 	 * const membership = await wrapblox.getSelfGroupMembership(1)
 	 */
 
-	async getSelfGroupMembership(groupId: number): Promise<SelfMembership | undefined> {
+	async getSelfGroupMembership(groupId: number): Promise<GroupTypes.SelfMembership | undefined> {
 
 		const response = await this.get("groups", `groups/${groupId}/membership`);
 		if (!response.ok) return undefined;
@@ -474,7 +478,7 @@ class WrapBlox {
 	 * @returns the roles of the group
 	 */
 
-	async getGroupRoles(id: number): Promise<GroupRole[] | undefined> {
+	async getGroupRoles(id: number): Promise<GroupTypes.GroupRole[] | undefined> {
 		const response = await this.get("groups", `groups/${id}/roles`);
 		if (!response.ok) return undefined;
 		return response.body.roles;
@@ -489,8 +493,8 @@ class WrapBlox {
 	 * @returns the members in the role
 	 */
 
-	async getGroupRoleMembers(id: number, roleId: number, sortOrder?: SortOrder, limit?: number, cursor?: string): Promise<GroupRoleMembers | undefined> {
-		const params = {} as Params;
+	async getGroupRoleMembers(id: number, roleId: number, sortOrder?: MiscTypes.SortOrder, limit?: number, cursor?: string): Promise<GroupTypes.GroupRoleMembers | undefined> {
+		const params = {} as MiscTypes.Params;
 		if (limit) params.limit = limit;
 		if (cursor) params.cursor = cursor;
 		if (sortOrder) params.sortOrder = sortOrder;
@@ -508,8 +512,8 @@ class WrapBlox {
 	 * @returns {boolean} was the request successful
 	 */
 
-	async getGroupMembers(id: number, limit?: number, sortOrder?: SortOrder, cursor?: string): Promise<GroupRoleMembers | undefined> {
-		const params = {} as Params;
+	async getGroupMembers(id: number, limit?: number, sortOrder?: MiscTypes.SortOrder, cursor?: string): Promise<GroupTypes.GroupRoleMembers | undefined> {
+		const params = {} as MiscTypes.Params;
 		if (limit) params.limit = limit;
 		if (cursor) params.cursor = cursor;
 		if (sortOrder) params.sortOrder = sortOrder;
@@ -524,7 +528,7 @@ class WrapBlox {
 	 */
 
 
-	async getSelfPendingGroups(): Promise<Group[] | undefined> {
+	async getSelfPendingGroups(): Promise<GroupTypes.Group[] | undefined> {
 		const response = await this.get("groups", "user/groups/pending");
 		if (!response.ok) return undefined;
 		return response.body.data;
@@ -535,7 +539,7 @@ class WrapBlox {
 	 * @returns {FriendGroup[]} Groups that the user is in
 	 */
 
-	async getFriendGroups(userId: number): Promise<FriendGroup[] | undefined> {
+	async getFriendGroups(userId: number): Promise<GroupTypes.FriendGroup[] | undefined> {
 		const response = await this.get("groups", `users/${userId}/friends/groups/roles`);
 		if (!response.ok) return undefined;
 		return response.body.data;
@@ -546,7 +550,7 @@ class WrapBlox {
 	 * @returns {GroupRoles[]} Groups that the user is in
 	 */
 
-	async getUsersRoles(userid: number): Promise<GroupRoles[] | undefined> {
+	async getUsersRoles(userid: number): Promise<GroupTypes.GroupRoles[] | undefined> {
 		const response = await this.get("groups", `users/${userid}/groups/roles`);
 		if (!response.ok) return undefined;
 		return response.body.data;
@@ -622,7 +626,7 @@ class WrapBlox {
 	 * @param groupId The group ID to get the payout percentages of
 	 * @returns {PayoutPercentages | undefined} The payout percentages of the group
 	 */
-	async getGroupPayoutPercentages(groupId: number): Promise<PayoutPercentages | undefined> {
+	async getGroupPayoutPercentages(groupId: number): Promise<GroupTypes.PayoutPercentages | undefined> {
 		const response = await this.get("groups", `groups/${groupId}/payouts`);
 		if (!response.ok) return undefined;
 		return response.body.data;
@@ -634,7 +638,7 @@ class WrapBlox {
 	 * @returns {Role[] | undefined} The roles
 	 */
 
-	async GetRoles(roleIDs: number[]): Promise<Role[] | undefined> {
+	async GetRoles(roleIDs: number[]): Promise<GroupTypes.Role[] | undefined> {
 		const params = {
 			ids: roleIDs,
 		}
@@ -650,7 +654,7 @@ class WrapBlox {
 	 * @returns {Role | undefined} The role
 	 */
 
-	async GetRole(roleID: number): Promise<Role | undefined> {
+	async GetRole(roleID: number): Promise<GroupTypes.Role | undefined> {
 		const response = await this.get("groups", "roles", { ids: [roleID] });
 		if (!response.ok) return undefined;
 		return response.body.data[0];
@@ -659,3 +663,4 @@ class WrapBlox {
 
 
 export default WrapBlox;
+export type {BaseTypes, GroupTypes, MiscTypes, UserTypes};
