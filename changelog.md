@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 Date format is `MM/DD/YYYY`.
 
+## [0.2.1] - 1/16/2024
+
+### Changed
+
+- Types are now exported from index.ts
+
 ## [0.2.0] - 1/16/2024
 
 ### Added
