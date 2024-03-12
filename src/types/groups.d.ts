@@ -1,5 +1,6 @@
 import { BaseCursor } from "./bases"
 
+
 export type PartialGroup = {
 	id: number,
 	name: string,
