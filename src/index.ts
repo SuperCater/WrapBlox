@@ -1,10 +1,11 @@
 import FetchHandler from "./Modules/fetchHandler.js";
 
 class WrapBlox {
+	
+	fetchUser = async (userId : number) => {
+		return await FetchHandler.fetch('GET', 'Users', `/users/${userId}`);
+	}
 }
-
-
-console.log(await FetchHandler.fetch('GET', 'Users', '/users/1'));
 
 
 export default WrapBlox;
