@@ -1,4 +1,4 @@
-import { RawGroupData } from "../Types/GroupTypes";
+import { RawGroupData } from "../Types/GroupTypes.js";
 
 class Group {
 	rawdata : RawGroupData;
@@ -6,6 +6,7 @@ class Group {
 	name : string;
 	description : string;
 	id : number;
+
 	
 	
 	constructor(rawdata : RawGroupData) {
