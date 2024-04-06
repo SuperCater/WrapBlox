@@ -21,7 +21,7 @@ test("getJoinRequests" , async () => {
 	
 	const group = await client.fetchGroup(10345148);
 	const joinRequests = await group.fetchJoinRequests();
-	console.log(joinRequests);
+
 	expect(joinRequests).toBeDefined();
 });
 
@@ -29,6 +29,6 @@ test("getMembers" , async () => {
 	
 	const group = await client.fetchGroup(10345148);
 	const members = await group.fetchMembers();
-	console.log(members);
+	
 	expect(members).toBeDefined();
 });
