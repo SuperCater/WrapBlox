@@ -16,13 +16,6 @@ class User {
 		this.description = rawdata.description;
 	}
 	
-	IsBanned() {
-		return this.rawData.isBanned;
-	}
-	
-	GetUsernameHistory() {
-	}
-	
 	
 }
 
