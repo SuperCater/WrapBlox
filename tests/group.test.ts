@@ -18,7 +18,10 @@ test("getGroup", async () => {
 
 
 test("getJoinRequests" , async () => {
-	
+	if (process.env.TESTCOOKIE === undefined) {
+		console.log("No cookie provided, skipping test");
+		return;
+	}
 	const group = await client.fetchGroup(10345148);
 	const joinRequests = await group.fetchJoinRequests();
 
