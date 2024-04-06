@@ -15,10 +15,6 @@ class Group {
 		this.description = rawdata.description;
 		this.id = rawdata.id;
 	}
-	
-	public async fetchOwner() {
-		
-	}
 }
 
 export default Group;

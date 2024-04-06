@@ -4,6 +4,7 @@ import { HttpMethods, ValidUrls } from "../Types/BaseTypes.js"
 const FetchHandler = {
 	urls : {
 		Users : 'https://users.roblox.com/v1',
+		Groups : 'https://groups.roblox.com/v1',
 	},
 	
 	fetch : async (method : HttpMethods, url : ValidUrls, route : string, params? : {[key : string | number]: unknown} ) => {

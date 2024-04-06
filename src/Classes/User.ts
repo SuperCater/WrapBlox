@@ -5,6 +5,7 @@ class User {
 	id : number;
 	name : string;
 	displayName : string;
+	description : string;
 	
 	
 	constructor(rawdata : RawUserData) {
@@ -12,6 +13,7 @@ class User {
 		this.id = rawdata.id;
 		this.name = rawdata.name;
 		this.displayName = rawdata.displayName;
+		this.description = rawdata.description;
 	}
 	
 	IsBanned() {
