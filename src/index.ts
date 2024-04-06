@@ -39,7 +39,7 @@ class WrapBlox {
 	 */
 	fetchGroup = async (groupId : number) => {
 		const rawData = await this.fetchRawGroup(groupId);
-		return new Group(rawData);
+		return new Group(this, rawData);
 	}
 	
 }
