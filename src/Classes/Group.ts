@@ -1,5 +1,6 @@
-import { RawGroupData } from "../Types/GroupTypes.js";
+import { RawGroupData, RawMemberData } from "../Types/GroupTypes.js";
 import WrapBlox from "../index.js";
+import Member from "./Member.js";
 
 class Group {
 	rawdata : RawGroupData;
@@ -26,6 +27,15 @@ class Group {
 	async fetchJoinRequests() {
 		return await this.client.fetchHandler.fetchAll('GET', 'Groups', `/groups/${this.id}/join-requests`);
 	}
+	
+	async fetchMembers() : Promise<Member[]> {
+		const ret = await this.client.fetchHandler.fetchAll('GET', 'Groups', `/groups/${this.id}/users`)
+		return ret.map((member : RawMemberData) => {
+			return new Member(this.client, this, member);
+		});
+	}
+	
+	
 	
 	
 	
