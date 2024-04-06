@@ -2,6 +2,7 @@ import { HttpMethods, ValidUrls } from "../Types/BaseTypes.js"
 
 
 const FetchHandler = {
+	cookie : undefined as string | undefined,
 	urls : {
 		Users : 'https://users.roblox.com/v1',
 		Groups : 'https://groups.roblox.com/v1',
@@ -20,12 +21,15 @@ const FetchHandler = {
 			RealUrl += `?${query.toString()}`
 		}
 		
+		const headers = new Headers();
+		
+		if (FetchHandler.cookie) headers.set("Cookie", FetchHandler.cookie);
+		headers.set("Content-Type", "application/json");
 		
 		const response = await fetch(RealUrl, {
 			method : method,
-			headers : {
-				'Content-Type' : 'application/json',
-			}
+			credentials : 'include',
+			headers : headers,
 		})
 		
 		if (!response.ok) {
