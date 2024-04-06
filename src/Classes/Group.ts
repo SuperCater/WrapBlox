@@ -1,7 +1,5 @@
-import FetchHandler from "../Modules/fetchHandler.js";
 import { RawGroupData } from "../Types/GroupTypes.js";
 import WrapBlox from "../index.js";
-import User from "./User.js";
 
 class Group {
 	rawdata : RawGroupData;
@@ -26,7 +24,7 @@ class Group {
 	}
 	
 	async fetchJoinRequests() {
-		return await FetchHandler.fetchAll('GET', 'Groups', `/groups/${this.id}/join-requests`);
+		return await this.client.fetchHandler.fetchAll('GET', 'Groups', `/groups/${this.id}/join-requests`);
 	}
 	
 	

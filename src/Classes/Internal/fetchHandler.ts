@@ -1,16 +1,20 @@
-import { HttpMethods, ValidUrls } from "../Types/BaseTypes.js"
+import { HttpMethods, ValidUrls } from "../../Types/BaseTypes.js"
 
 
-const FetchHandler = {
-	cookie : undefined as string | undefined,
-	urls : {
+class FetchHandler {
+	cookie? : string;
+	urls = {
 		Users : 'https://users.roblox.com/v1',
 		Groups : 'https://groups.roblox.com/v1',
-	},
+	};
 	
-	fetch : async (method : HttpMethods, url : ValidUrls, route : string, params? : {[key : string | number]: unknown} ) => {
+	constructor(cookie? : string) {
+		this.cookie = cookie;
+	}
+	
+	fetch = async (method : HttpMethods, url : ValidUrls, route : string, params? : {[key : string | number]: unknown} ) => {
 		
-		let RealUrl = FetchHandler.urls[url] + route;
+		let RealUrl = this.urls[url] + route;
 		
 		if (params) {
 			const query = new URLSearchParams();
@@ -23,7 +27,7 @@ const FetchHandler = {
 		
 		const headers = new Headers();
 		
-		if (FetchHandler.cookie) headers.set("Cookie", FetchHandler.cookie);
+		if (this.cookie) headers.set("Cookie", this.cookie);
 		headers.set("Content-Type", "application/json");
 		
 		const response = await fetch(RealUrl, {
@@ -37,14 +41,14 @@ const FetchHandler = {
 		}
 		
 		return await response.json();
-	},
+	};
 	
-	fetchAll : async (method : HttpMethods, url : ValidUrls, route : string, params? : {[key : string | number]: unknown} ) => {
+	fetchAll = async (method : HttpMethods, url : ValidUrls, route : string, params? : {[key : string | number]: unknown} ) => {
 		const data = [];
 		let cursor = "";
 		while (true) {
 			
-			const response = await FetchHandler.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, params);
+			const response = await this.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, params);
 			data.push(...response.data);
 			if (!response.nextPageCursor) {
 				break;
@@ -52,7 +56,7 @@ const FetchHandler = {
 			cursor = response.nextPageCursor;
 		}
 		return data;
-	},
+	};
 	
 	
 }
