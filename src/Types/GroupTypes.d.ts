@@ -27,3 +27,17 @@ export type RawGroupData = {
 	isLocked : boolean,
 	hasVerifiedBadge : boolean,
 }
+
+export type RawMemberData = {
+	user : {
+		hasVerifiedBadge : boolean,
+		userId : number,
+		username : string,
+		displayName : string,
+	},
+	role : {
+		name : string,
+		rank : number,
+		id : number,
+	},
+}
