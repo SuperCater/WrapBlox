@@ -5,6 +5,12 @@ import { RawGroupData } from "./Types/GroupTypes.js";
 import { RawUserData } from "./Types/UserTypes.js";
 import Member from "./Classes/Member.js";
 
+export { Member, Group, User}
+
+export type * from "./Types/BaseTypes.js";
+export type * from "./Types/GroupTypes.js";
+export type * from "./Types/UserTypes.js";
+
 class WrapBlox {
 	fetchHandler : FetchHandler;
 	
@@ -54,7 +60,3 @@ class WrapBlox {
 
 
 export default WrapBlox;
-export { Group, User, Member };
-export * from "./Types/GroupTypes.js";
-export * from "./Types/UserTypes.js";
-export * from "./Types/BaseTypes.js";
