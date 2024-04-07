@@ -6,6 +6,7 @@ class FetchHandler {
 	urls = {
 		Users : 'https://users.roblox.com/v1',
 		Groups : 'https://groups.roblox.com/v1',
+		Thumbnails: 'https://thumbnails.roblox.com/v1',
 	};
 	
 	constructor(cookie? : string) {
@@ -22,7 +23,9 @@ class FetchHandler {
 				query.append(key, params[key] as string);
 			}
 			
-			RealUrl += `?${query.toString()}`
+			if (RealUrl.includes("?")) {
+				RealUrl += `&${query.toString()}`
+			} else RealUrl += `?${query.toString()}`
 		}
 		
 		const headers = new Headers();
@@ -37,6 +40,7 @@ class FetchHandler {
 		})
 		
 		if (!response.ok) {
+			console.log(RealUrl)
 			throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
 		}
 		

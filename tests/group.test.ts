@@ -35,3 +35,11 @@ test("getMembers" , async () => {
 	
 	expect(members).toBeDefined();
 });
+
+test("getIcon" , async () => {
+	const group = await client.fetchGroup(10345148);
+	const icon = await group.fetchIcon();
+	console.log(icon);
+	
+	expect(icon).toBeDefined();
+});

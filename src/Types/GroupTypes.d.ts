@@ -41,3 +41,12 @@ export type RawMemberData = {
 		id : number,
 	},
 }
+
+export type APIGroupSettings = {
+	isApprovalRequired : boolean,
+	areEnemiesAllowed : boolean,
+	areGroupFundsVisible : boolean,
+	areGroupGamesVisible : boolean,
+	isGroupNameChangeEnabled : boolean,
+	isBuildersClubRequired : boolean,
+}
