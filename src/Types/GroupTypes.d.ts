@@ -50,3 +50,14 @@ export type APIGroupSettings = {
 	isGroupNameChangeEnabled : boolean,
 	isBuildersClubRequired : boolean,
 }
+
+export type APIPayoutInfo = {
+	user : {
+        buildersClubMembershipType: number,
+        hasVerifiedBadge: boolean,
+        userId: number,
+        username: string,
+        displayName: string,
+	}
+	percentage : number,
+}

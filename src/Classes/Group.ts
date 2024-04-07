@@ -57,6 +57,23 @@ class Group {
 		return await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/settings`);
 	}
 	
+	async fetchPayoutInfo() {
+		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/payouts`);
+		return ret.data;
+	}
+	
+	async payoutUser(userId : number, amount : number) {
+		return await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.id}/payouts`, undefined, {
+			PayoutType : 1,
+			Recipients : [{
+				recipientId : userId,
+				recipientType : 1,
+				amount : amount
+			
+			}]
+		});
+	}
+	
 	
 	
 	

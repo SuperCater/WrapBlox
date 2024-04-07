@@ -13,7 +13,7 @@ class FetchHandler {
 		this.cookie = cookie;
 	}
 	
-	fetch = async (method : HttpMethods, url : ValidUrls, route : string, params? : {[key : string | number]: unknown} ) => {
+	fetch = async (method : HttpMethods, url : ValidUrls, route : string, params? : {[key : string | number]: unknown}, body? : {[key : string]: unknown} ) => {
 		
 		let RealUrl = this.urls[url] + route;
 		
@@ -37,6 +37,7 @@ class FetchHandler {
 			method : method,
 			credentials : 'include',
 			headers : headers,
+			body : body ? JSON.stringify(body) : undefined,
 		})
 		
 		if (!response.ok) {
