@@ -80,7 +80,7 @@ class Group {
 		return ret.roles;
 	}
 	
-	async fetchRoles(roleId : number) {
+	async fetchRoles() {
 		const ret = await this.fetchRawRoles();
 		return ret.map((role : APIRoles) => {
 			return new Role(this.client, this, role);

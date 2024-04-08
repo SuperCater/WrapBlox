@@ -1,6 +1,6 @@
 {
 	"name": "wrapblox",
-	"version": "0.3.5",
+	"version": "0.3.8",
 	"description": "A wrapper for Roblox's API",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
