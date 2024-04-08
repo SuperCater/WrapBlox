@@ -23,7 +23,6 @@ export default class Role {
 	async fetchMembers() {
 		const ret = await this.client.fetchHandler.fetchAll('GET', 'Groups', `/groups/${this.group.id}/roles/${this.id}/users`);
 		return ret.map((member) => {
-			console.log(member)
 			const newData = {
 				user: member,
 				role: {
