@@ -1,6 +1,7 @@
-import { APIGroupSettings, RawGroupData, RawMemberData } from "../Types/GroupTypes.js";
+import { APIGroupSettings, APIRoles, RawGroupData, RawMemberData } from "../Types/GroupTypes.js";
 import WrapBlox from "../index.js";
 import Member from "./Member.js";
+import Role from "./Role.js";
 
 class Group {
 	rawdata : RawGroupData;
@@ -71,6 +72,18 @@ class Group {
 				amount : amount
 			
 			}]
+		});
+	}
+	
+	async fetchRawRoles() : Promise<APIRoles[]> {
+		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/roles`);
+		return ret.roles;
+	}
+	
+	async fetchRoles(roleId : number) {
+		const ret = await this.fetchRawRoles();
+		return ret.map((role : APIRoles) => {
+			return new Role(this.client, this, role);
 		});
 	}
 	

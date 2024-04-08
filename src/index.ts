@@ -4,8 +4,9 @@ import FetchHandler from "./Classes/Internal/fetchHandler.js";
 import { RawGroupData } from "./Types/GroupTypes.js";
 import { RawUserData } from "./Types/UserTypes.js";
 import Member from "./Classes/Member.js";
+import Role from "./Classes/Role.js";
 
-export { Member, Group, User}
+export { Member, Group, User, Role}
 
 export type * from "./Types/BaseTypes.js";
 export type * from "./Types/GroupTypes.js";

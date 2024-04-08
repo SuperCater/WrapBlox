@@ -61,3 +61,11 @@ export type APIPayoutInfo = {
 	}
 	percentage : number,
 }
+
+export type APIRoles = {
+	id : number,
+	name : string,
+	description : string,
+	rank : number,
+	memberCount : number,
+}
