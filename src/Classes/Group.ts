@@ -1,5 +1,5 @@
 import { APIGroupSettings, APIRoles, RawGroupData, RawMemberData } from "../Types/GroupTypes.js";
-import WrapBlox from "../index.js";
+import WrapBlox, { SortOrder } from "../index.js";
 import Member from "./Member.js";
 import Role from "./Role.js";
 
@@ -85,6 +85,15 @@ class Group {
 		return ret.map((role : APIRoles) => {
 			return new Role(this.client, this, role);
 		});
+	}
+	
+	async fetchWallPosts(limit : 25 | 50 | 100 = 25, order : SortOrder = "Asc", cursor? : string) {
+		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/wall/posts`, {
+			limit : limit,
+			cursor : cursor,
+			sortOrder : order
+		});
+		return ret.data;
 	}
 	
 	

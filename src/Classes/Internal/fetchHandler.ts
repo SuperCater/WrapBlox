@@ -7,6 +7,7 @@ class FetchHandler {
 		Users: 'https://users.roblox.com/v1',
 		Groups: 'https://groups.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
+		Friends: "https://friends.roblox.com/v1",
 	};
 
 	constructor(cookie?: string) {
