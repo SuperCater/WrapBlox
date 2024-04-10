@@ -86,7 +86,9 @@ class WrapBlox {
 	}
 	
 	fetchRawGame = async (universeID : number) : Promise<APIGameData> => {
-		return (await this.fetchHandler.fetch('GET', 'Games', `/games/${universeID}`)).data[0];
+		return (await this.fetchHandler.fetch('GET', 'Games', "/games", {
+			universeIds: [universeID]
+		})).data[0];
 	}
 	
 	fetchGame = async (universeID : number) => {
