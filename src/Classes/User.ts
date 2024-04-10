@@ -34,6 +34,11 @@ class User {
 	async fetchNameHistory(): Promise<string[]> {
 		return (await this.client.fetchHandler.fetchAll('GET', 'Users', `/users/${this.id}/name-history`)).map((name : {name : string}) => name.name);
 	}
+	/*
+	async fetchFavoriteGames() : Promise<number[]> {
+		// WIP
+	}
+	*/
 }
 
 export default User;

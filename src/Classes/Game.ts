@@ -10,6 +10,7 @@ class Game {
 	client : WrapBlox;
 	playing : number;
 	visits : number;
+	maxPlayers : number;
 	created : Date;
 	updated : Date;
 	constructor(client : WrapBlox, rawdata : APIGameData) {
@@ -21,6 +22,7 @@ class Game {
 		this.client = client;
 		this.playing = rawdata.playing;
 		this.visits = rawdata.visits;
+		this.maxPlayers = rawdata.maxPlayers;
 		
 		this.created = new Date(rawdata.created);
 		this.updated = new Date(rawdata.updated);
@@ -29,6 +31,14 @@ class Game {
 	async fetchCreator() {
 		
 		return await this.client.fetchUser(this.creator.id);
+	}
+	
+	async favorite() {
+		return await this.client.fetchHandler.fetch('POST', 'Games', `/games/${this.id}/favorites`);
+	}
+	
+	async fetchFavoriteCount() {
+		return (await this.client.fetchHandler.fetch('GET', 'Games', `/games/${this.id}/favorites/count`)).count;
 	}
 	
 }
