@@ -6,6 +6,8 @@ import { RawUserData } from "./Types/UserTypes.js";
 import Member from "./Classes/Member.js";
 import Role from "./Classes/Role.js";
 import AuthedUser from "./Classes/AuthedUser.js";
+import { APIGameData } from "./Types/GameTypes.js";
+import Game from "./Classes/Game.js";
 
 export { Member, Group, User, Role}
 
@@ -81,6 +83,15 @@ class WrapBlox {
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		this.self = new AuthedUser(this, realUserData);
 		return this.self;
+	}
+	
+	fetchRawGame = async (universeID : number) : Promise<APIGameData> => {
+		return (await this.fetchHandler.fetch('GET', 'Games', `/games/${universeID}`)).data[0];
+	}
+	
+	fetchGame = async (universeID : number) => {
+		const rawData = await this.fetchRawGame(universeID);
+		return new Game(this, rawData);
 	}
 	
 }
