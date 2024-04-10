@@ -5,6 +5,7 @@ import { RawGroupData } from "./Types/GroupTypes.js";
 import { RawUserData } from "./Types/UserTypes.js";
 import Member from "./Classes/Member.js";
 import Role from "./Classes/Role.js";
+import AuthedUser from "./Classes/AuthedUser.js";
 
 export { Member, Group, User, Role}
 
@@ -14,6 +15,7 @@ export type * from "./Types/UserTypes.js";
 
 class WrapBlox {
 	fetchHandler : FetchHandler;
+	self : User | null = null;
 	
 	
 	constructor(cookie? : string) {
@@ -36,7 +38,17 @@ class WrapBlox {
 	 */
 	fetchUser = async (userId : number) => {
 		const rawData = await this.fetchRawUser(userId);
-		return new User(rawData);
+		return new User(this, rawData);
+	}
+	/**
+	 * Get the user object of a user by their username
+	 * @param username The username of the user to fetch
+	 * @returns The user object
+	 */
+	fetchUserByName = async (username : string) => {
+		const rawData = (await this.fetchHandler.fetch('POST', 'Users', "/usernames/users", undefined, {usernames: [username]})).data[0];
+		if (!rawData) throw new Error("User not found");
+		return await this.fetchUser(rawData.id);
 	}
 	/**
 	 * Get the raw data of a group
@@ -55,6 +67,20 @@ class WrapBlox {
 	fetchGroup = async (groupId : number) => {
 		const rawData = await this.fetchRawGroup(groupId);
 		return new Group(this, rawData);
+	}
+	
+	/**
+	 * Logs in with a cookie
+	 * @param cookie The cookie to log in with
+	 * @returns The user object of the logged in user
+	 */
+	
+	login = async (cookie : string) => {
+		this.fetchHandler.cookie = cookie;
+		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/authenticated/user');
+		const realUserData = await this.fetchRawUser(userInfo.id);
+		this.self = new AuthedUser(this, realUserData);
+		return this.self;
 	}
 	
 }
