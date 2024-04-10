@@ -36,6 +36,37 @@ export default class Role {
 		});
 
 	}
+	
+	async setRank(rank: number) {
+		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
+			rank: rank
+		});
+		this.rank = data.rank;
+		return this;
+	}
+	
+	async setName(name: string) {
+		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
+			name: name
+		});
+		this.name = data.name;
+		return this;
+	}
+	
+	async setDescription(description: string) {
+		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
+			description: description
+		});
+		this.rawdata.description = data.description;
+		return this;
+	}
+	
+	async delete() {
+		await this.client.fetchHandler.fetch('DELETE', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`);
+		return this;
+	}
+	
+	
 
 
 
