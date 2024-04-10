@@ -1,15 +1,18 @@
-import WrapBlox, { RawFriendRequest } from "../index.js";
+import WrapBlox, { RawFriendRequest, User } from "../index.js";
+import AuthedUser from "./AuthedUser.js";
 
 class FriendRequest {
 	client : WrapBlox;
 	rawdata : RawFriendRequest;
 	senderId : number;
 	created : Date;
-	constructor(client : WrapBlox, rawdata : RawFriendRequest) {
+	target : AuthedUser;
+	constructor(client : WrapBlox, rawdata : RawFriendRequest, target : AuthedUser) {
 		this.client = client;
 		this.rawdata = rawdata;
 		this.senderId = rawdata.friendRequest.senderId;
 		this.created = new Date(rawdata.friendRequest.sentAt);
+		this.target = target;
 	}
 	
 	async fetchUser() {

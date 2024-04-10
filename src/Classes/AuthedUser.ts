@@ -24,7 +24,7 @@ class AuthedUser extends User {
 		const ret = await this.client.fetchHandler.fetchAll('GET', 'Friends', "/my/friend-requests");
 		
 		return ret.map((friend : RawFriendRequest) => {
-			return new FriendRequest(this.client, friend);
+			return new FriendRequest(this.client, friend, this);
 		});
 	}
 }
