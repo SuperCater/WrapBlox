@@ -1,4 +1,4 @@
-import WrapBlox, { RawFriendRequest, User } from "../index.js";
+import WrapBlox, { RawFriendRequest } from "../index.js";
 import AuthedUser from "./AuthedUser.js";
 
 class FriendRequest {

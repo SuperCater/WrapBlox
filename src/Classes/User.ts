@@ -60,7 +60,7 @@ class User {
 
 
 	async fetchRawRoles(includelocked = false, includeNotificationPreferences = false): Promise<APIUserGroup[]> {
-		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/users/${this.id}/roles`, {
+		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/users/${this.id}/groups/roles`, {
 			includeLocked: includelocked,
 			includeNotificationPreferences: includeNotificationPreferences,
 		});
