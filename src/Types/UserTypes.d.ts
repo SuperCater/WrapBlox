@@ -1,3 +1,5 @@
+import { APIRoles, RawGroupData } from "./GroupTypes.js";
+
 export type RawUserData = {
 	name : string,
 	displayName : string,
@@ -26,10 +28,19 @@ export type RawFriendRequest = {
 		contactName : string,
 	},
 	mutualFriendsList : string[],
-} & RawUserData
+} & RawUserData;
+
+
+export type APIUserGroup = {
+	group: RawGroupData;
+	role: APIRoles;
+}
 
 export type BirthData = {
 	birthMonth : number,
 	birthDay : number,
 	birthYear : number,
 }
+
+
+export type AvatarImageTypes = "Png" | "Jpeg" | "WebP";

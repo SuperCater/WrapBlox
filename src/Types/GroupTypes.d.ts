@@ -3,7 +3,7 @@ export type RawGroupData = {
 	name : string,
 	description : string,
 	owner : {
-		buildersClubMembershipType : number,
+		buildersClubMembershipType? : number,
 		hasVerifiedBadge : boolean,
 		userId : number,
 		username : string,
@@ -60,6 +60,12 @@ export type APIPayoutInfo = {
         displayName: string,
 	}
 	percentage : number,
+}
+
+export type APIMemberRole = {
+	name : string,
+	rank : number,
+	id : number,
 }
 
 export type APIRoles = {

@@ -13,3 +13,12 @@ test("getUser", async () => {
 	
 	expect(user).toBeDefined();
 });
+
+
+test("getThumbnail", async () => {
+	const user = await client.fetchUser(1);
+	const thumbnail = await user.fetchUserAvatarThumbnailUrl();
+	
+	console.log(thumbnail);
+	expect(thumbnail).toBeDefined();
+})
