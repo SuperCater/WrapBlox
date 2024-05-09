@@ -87,6 +87,11 @@ class Group {
 		});
 	}
 	
+	async fetchRole(roleId : number) : Promise<Role | undefined> {
+		const roles = await this.fetchRoles();
+		return roles.find((role) => role.id === roleId);
+	}
+	
 	async fetchWallPosts(limit : 25 | 50 | 100 = 25, order : SortOrder = "Asc", cursor? : string) {
 		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/wall/posts`, {
 			limit : limit,
