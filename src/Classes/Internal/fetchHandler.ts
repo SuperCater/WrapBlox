@@ -1,4 +1,5 @@
 import { HttpMethods, ValidUrls } from "../../Types/BaseTypes.js"
+import CacheManager from "./cacheManager.js";
 
 
 class FetchHandler {
@@ -11,9 +12,16 @@ class FetchHandler {
 		GamesV2: "https://games.roblox.com/v2",
 		Games: "https://games.roblox.com/v1",
 	};
+	
+	cacheManager = new CacheManager<string, unknown>()
 
 	constructor(cookie?: string) {
 		this.cookie = cookie;
+	}
+	
+	
+	clearCache = () => {
+		this.cacheManager.clearCache();
 	}
 
 	fetch = async (method: HttpMethods, url: ValidUrls, route: string, params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }) => {
@@ -23,6 +31,7 @@ class FetchHandler {
 		if (params) {
 			const query = new URLSearchParams();
 			for (const key in params) {
+				if (params[key] === undefined) continue;
 				query.append(key, params[key] as string);
 			}
 
@@ -30,6 +39,9 @@ class FetchHandler {
 				RealUrl += `&${query.toString()}`
 			} else RealUrl += `?${query.toString()}`
 		}
+		
+		const cached = this.cacheManager.getValues(RealUrl);
+		if (cached) return cached;
 
 		const headers = new Headers();
 
@@ -47,8 +59,12 @@ class FetchHandler {
 			console.log(RealUrl)
 			throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
 		}
+		
+		const json = await response.json();
+		
+		if (method === "GET") this.cacheManager.setValues(RealUrl, json);
 
-		return await response.json();
+		return json;
 	};
 
 	fetchAll = async (method: HttpMethods, url: ValidUrls, route: string, params?: { [key: string | number]: unknown }) => {
