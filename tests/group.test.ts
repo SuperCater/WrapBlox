@@ -59,3 +59,9 @@ test("getRoleMembers" , async () => {
 	
 	expect(members).toBeDefined();
 })
+
+test("searchGroups" , async () => {
+	const groups = await client.searchGroups("Pinewood Builders");
+	
+	expect(groups.length).toBeGreaterThan(0);
+});

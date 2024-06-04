@@ -1,8 +1,8 @@
 import Group from "./Classes/Group.js";
 import User from "./Classes/User.js";
 import FetchHandler from "./Classes/Internal/fetchHandler.js";
-import { RawGroupData } from "./Types/GroupTypes.js";
-import { RawUserData } from "./Types/UserTypes.js";
+import { APIGroupLookup, RawGroupData } from "./Types/GroupTypes.js";
+import { APIUserLookup, RawUserData } from "./Types/UserTypes.js";
 import Member from "./Classes/Member.js";
 import Role from "./Classes/Role.js";
 import AuthedUser from "./Classes/AuthedUser.js";
@@ -96,6 +96,16 @@ class WrapBlox {
 		return new Game(this, rawData);
 	}
 	
+	
+	searchGroups =  async (query : string) : Promise<APIGroupLookup[]> => {
+		const rawData = (await this.fetchHandler.fetch('GET', 'Groups', "/groups/search/lookup", {groupName : query})).data;
+		return rawData
+	}
+	
+	searchUsers = async(query : string, limit = 10): Promise<APIUserLookup[]> => {
+		const rawData = (await this.fetchHandler.fetch('GET', 'Users', "/users/search", {keyword : query, limit})).data;
+		return rawData;
+	}
 }
 
 

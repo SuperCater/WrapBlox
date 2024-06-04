@@ -42,5 +42,13 @@ export type BirthData = {
 	birthYear : number,
 }
 
+export type APIUserLookup = {
+	previousUsernames: string[],
+	id: number,
+	hasVerifiedBadge : boolean,
+	name : string,
+	displayName : string,
+}
+
 
 export type AvatarImageTypes = "Png" | "Jpeg" | "WebP";

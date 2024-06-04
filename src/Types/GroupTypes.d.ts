@@ -28,6 +28,13 @@ export type RawGroupData = {
 	hasVerifiedBadge : boolean,
 }
 
+export type APIGroupLookup = {
+	id : number,
+	name : string,
+	memberCount : number,
+	hasVerifiedBadge : boolean,
+}
+
 export type RawMemberData = {
 	user : {
 		hasVerifiedBadge : boolean,

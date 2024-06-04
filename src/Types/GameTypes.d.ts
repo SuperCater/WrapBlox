@@ -14,7 +14,7 @@ export interface APIGameData {
 	description: string;
 	sourceName: string;
 	sourceDescription: string;
-	creator: Creator;
+	creator: APICreator;
 	price: number;
 	allowedGearGenres: string[];
 	allowedGearCategories: string[];
