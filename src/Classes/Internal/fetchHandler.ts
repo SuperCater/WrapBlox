@@ -24,7 +24,7 @@ class FetchHandler {
 		this.cacheManager.clearCache();
 	}
 
-	fetch = async (method: HttpMethods, url: ValidUrls, route: string, params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }) => {
+	fetch = async (method: HttpMethods, url: ValidUrls, route: string, params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true) => {
 
 		let RealUrl = this.urls[url] + route;
 
@@ -41,7 +41,7 @@ class FetchHandler {
 		}
 		
 		const cached = this.cacheManager.getValues(RealUrl);
-		if (cached) return cached;
+		if (cached && usecache) return cached;
 
 		const headers = new Headers();
 
@@ -56,7 +56,6 @@ class FetchHandler {
 		})
 
 		if (!response.ok) {
-			console.log(RealUrl)
 			throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
 		}
 		

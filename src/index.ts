@@ -1,5 +1,5 @@
 import Group from "./Classes/Group.js";
-import User from "./Classes/User.js";
+import User, {AvatarSize} from "./Classes/User.js";
 import FetchHandler from "./Classes/Internal/fetchHandler.js";
 import { APIGroupLookup, RawGroupData } from "./Types/GroupTypes.js";
 import { APIUserLookup, RawUserData } from "./Types/UserTypes.js";
@@ -9,11 +9,12 @@ import AuthedUser from "./Classes/AuthedUser.js";
 import { APIGameData } from "./Types/GameTypes.js";
 import Game from "./Classes/Game.js";
 
-export { Member, Group, User, Role}
+export { Member, Group, User, Role, AvatarSize}
 
 export type * from "./Types/BaseTypes.js";
 export type * from "./Types/GroupTypes.js";
 export type * from "./Types/UserTypes.js";
+
 
 class WrapBlox {
 	fetchHandler : FetchHandler;
@@ -29,8 +30,8 @@ class WrapBlox {
 	 * @param userId The ID of the user to fetch
 	 * @returns The raw data of the user
 	 */
-	fetchRawUser = async (userId : number) : Promise<RawUserData> => {
-		return await this.fetchHandler.fetch('GET', 'Users', `/users/${userId}`);
+	fetchRawUser = async (userId : number, usecache = true) : Promise<RawUserData> => {
+		return await this.fetchHandler.fetch('GET', 'Users', `/users/${userId}`, undefined, undefined, usecache);
 	}
 	
 	/**
@@ -38,8 +39,8 @@ class WrapBlox {
 	 * @param userId The ID of the user to fetch
 	 * @returns The user object
 	 */
-	fetchUser = async (userId : number) => {
-		const rawData = await this.fetchRawUser(userId);
+	fetchUser = async (userId : number, usecache = true) => {
+		const rawData = await this.fetchRawUser(userId, usecache);
 		return new User(this, rawData);
 	}
 	/**
@@ -47,18 +48,18 @@ class WrapBlox {
 	 * @param username The username of the user to fetch
 	 * @returns The user object
 	 */
-	fetchUserByName = async (username : string) => {
+	fetchUserByName = async (username : string, usecache = true) => {
 		const rawData = (await this.fetchHandler.fetch('POST', 'Users', "/usernames/users", undefined, {usernames: [username]})).data[0];
 		if (!rawData) throw new Error("User not found");
-		return await this.fetchUser(rawData.id);
+		return await this.fetchUser(rawData.id, usecache);
 	}
 	/**
 	 * Get the raw data of a group
 	 * @param groupId The ID of the group to fetch
 	 * @returns The raw data of the group
 	 */
-	fetchRawGroup = async (groupId : number) : Promise<RawGroupData> => {
-		return await this.fetchHandler.fetch('GET', 'Groups', `/groups/${groupId}`);
+	fetchRawGroup = async (groupId : number, usecache = true) : Promise<RawGroupData> => {
+		return await this.fetchHandler.fetch('GET', 'Groups', `/groups/${groupId}`, undefined, undefined, usecache);
 	}
 	
 	/**
@@ -66,8 +67,8 @@ class WrapBlox {
 	 * @param groupId The ID of the group to fetch
 	 * @returns The group object
 	 */
-	fetchGroup = async (groupId : number) => {
-		const rawData = await this.fetchRawGroup(groupId);
+	fetchGroup = async (groupId : number, usecache = true) => {
+		const rawData = await this.fetchRawGroup(groupId, usecache);
 		return new Group(this, rawData);
 	}
 	
