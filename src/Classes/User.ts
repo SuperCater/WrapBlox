@@ -98,6 +98,10 @@ class User {
 		return await this.ownsAsset(ItemTypes.Badge, badgeId);
 	}
 	
+	async ownsGamePass(gamePassId: number): Promise<boolean> {
+		return await this.ownsAsset(ItemTypes.GamePass, gamePassId);
+	}
+	
 	
 	async getBadgeAwardedDate(badgeId: number): Promise<Date | undefined> {
 		const response : AwardedBadge | undefined = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`)

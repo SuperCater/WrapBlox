@@ -21,14 +21,12 @@ test("role", async () => {
 	const roles = await user.fetchRoles()
 	const role = await roles.getRole(645836)
 	
-	console.log(role)
 	
 	expect(role).toBeDefined();
 });
 
 test("userLookup", async () => {
 	const users = await client.searchUsers("Cater")
-	console.log(users)
 	expect(users).toBeDefined();
 })
 

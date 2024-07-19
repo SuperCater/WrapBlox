@@ -17,7 +17,7 @@ export enum AvatarSize {
 
 export enum ItemTypes {
 	Asset = 0,
-	GamePasses = 1,
+	GamePass = 1,
 	Badge = 2,
 	Bundle = 3,
 }
