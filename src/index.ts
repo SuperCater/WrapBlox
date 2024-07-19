@@ -18,7 +18,7 @@ export type * from "./Types/UserTypes.js";
 
 class WrapBlox {
 	fetchHandler : FetchHandler;
-	self : User | null = null;
+	self : AuthedUser | null = null;
 	
 	
 	constructor(cookie? : string) {
