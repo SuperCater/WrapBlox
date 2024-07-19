@@ -1,28 +1,13 @@
 import { APIUserGroup, AvatarImageTypes, RawFriendData, RawUserData } from "../Types/UserTypes.js";
-import WrapBlox, { OwnedBadge } from "../index.js";
+import WrapBlox, { AwardedBadge, OwnedItem } from "../index.js";
 // import type Friend from "./Friend.js";
 import UserRoleManager from "./UserRoleManager.js";
 
 import Factory from "./Internal/factory.js";
 import Friend from "./Friend.js";
+import { AvatarSize, ItemTypes } from "../Types/Enums.js";
 
 
-export enum AvatarSize {
-	"30x30" = "30x30",
-	"48x48" = "48x48",
-	"60x60" = "60x60",
-	"75x75" = "75x75",
-	"100x100" = "100x100",
-	"110x110" = "110x110",
-	"140x140" = "140x140",
-	"150x150" = "150x150",
-	"150x200" = "150x200",
-	"180x180" = "180x180",
-	"250x250" = "250x250",
-	"352x352" = "352x352",
-	"420x420" = "420x420",
-	"720x720" = "720x720",
-}
 
 class User {
 	rawData: RawUserData;
@@ -91,22 +76,39 @@ class User {
 		return (await this.fetchRawRoles()).some((group) => group.group.id === groupId);
 	}
 	
+	async getOwnedAsset(type : ItemTypes, id : number): Promise<OwnedItem | undefined> {
+		try {
+			return await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`);
+		} catch {
+			return undefined;
+		}
+		
+	}
+	
+	async ownsAsset(type : ItemTypes, assetId: number): Promise<boolean> {
+		try {
+			return await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${assetId}/is-owned`);
+		} catch {
+			return false;
+		}
+	}
+	
 	
 	async ownsBadge(badgeId: number): Promise<boolean> {
-		const response = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`);
-		if (response) {
-			return true
-		}
-		return false
+		return await this.ownsAsset(ItemTypes.Badge, badgeId);
 	}
 	
 	
 	async getBadgeAwardedDate(badgeId: number): Promise<Date | undefined> {
-		const response : OwnedBadge | undefined = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`)
+		const response : AwardedBadge | undefined = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`)
 		if (response) {
 			return new Date(response.awardedDate);
 		}
 		
+	}
+	
+	async canViewInventory(): Promise<boolean> {
+		return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/can-view-inventory`)).canView;
 	}
 	
 		

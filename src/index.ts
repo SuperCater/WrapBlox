@@ -1,5 +1,5 @@
 import Group from "./Classes/Group.js";
-import User, {AvatarSize} from "./Classes/User.js";
+import User from "./Classes/User.js";
 import FetchHandler from "./Classes/Internal/fetchHandler.js";
 import { APIGroupLookup, RawGroupData } from "./Types/GroupTypes.js";
 import { APIUserLookup, RawUserData } from "./Types/UserTypes.js";
@@ -9,13 +9,15 @@ import AuthedUser from "./Classes/AuthedUser.js";
 import { APIGameData } from "./Types/GameTypes.js";
 import Game from "./Classes/Game.js";
 
-export { Member, Group, User, Role, AvatarSize}
+export { Member, Group, User, Role}
 
 export type * from "./Types/BaseTypes.js";
 export type * from "./Types/GroupTypes.js";
 export type * from "./Types/UserTypes.js";
 export type * from "./Types/GameTypes.js";
 export type * from "./Types/BadgeTypes.js"
+export type * from "./Types/InventoryTypes.js";
+export * from "./Types/Enums.js";
 
 
 class WrapBlox {

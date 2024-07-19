@@ -12,6 +12,7 @@ class FetchHandler {
 		GamesV2: "https://games.roblox.com/v2",
 		Games: "https://games.roblox.com/v1",
 		Badges: "https://badges.roblox.com/v1",
+		Inventory: "https://inventory.roblox.com/v1",
 	};
 
 	cacheManager = new CacheManager<string, unknown>()
