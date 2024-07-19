@@ -11,15 +11,16 @@ class FetchHandler {
 		Friends: "https://friends.roblox.com/v1",
 		GamesV2: "https://games.roblox.com/v2",
 		Games: "https://games.roblox.com/v1",
+		Badges: "https://badges.roblox.com/v1",
 	};
-	
+
 	cacheManager = new CacheManager<string, unknown>()
 
 	constructor(cookie?: string) {
 		this.cookie = cookie;
 	}
-	
-	
+
+
 	clearCache = () => {
 		this.cacheManager.clearCache();
 	}
@@ -39,7 +40,7 @@ class FetchHandler {
 				RealUrl += `&${query.toString()}`
 			} else RealUrl += `?${query.toString()}`
 		}
-		
+
 		const cached = this.cacheManager.getValues(RealUrl);
 		if (cached && usecache) return cached;
 
@@ -58,9 +59,10 @@ class FetchHandler {
 		if (!response.ok) {
 			throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
 		}
-		
+
+		if (!response.body) return;
 		const json = await response.json();
-		
+
 		if (method === "GET") this.cacheManager.setValues(RealUrl, json);
 
 		return json;

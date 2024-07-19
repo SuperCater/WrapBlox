@@ -31,3 +31,16 @@ test("userLookup", async () => {
 	console.log(users)
 	expect(users).toBeDefined();
 })
+
+test("badgeTest", async () => {
+	const user = await client.fetchUser(1494607434);
+	const ownsBadge = await user.ownsBadge(150538265);
+	const ownsBadge2 = await user.ownsBadge(2124453108);
+	
+	const date = await user.getBadgeAwardedDate(150538265);
+	
+	expect(date).toBeDefined();
+	expect(ownsBadge).toBeTruthy();
+	expect(ownsBadge2).toBeFalsy();
+	
+})

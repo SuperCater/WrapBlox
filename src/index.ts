@@ -14,6 +14,8 @@ export { Member, Group, User, Role, AvatarSize}
 export type * from "./Types/BaseTypes.js";
 export type * from "./Types/GroupTypes.js";
 export type * from "./Types/UserTypes.js";
+export type * from "./Types/GameTypes.js";
+export type * from "./Types/BadgeTypes.js"
 
 
 class WrapBlox {

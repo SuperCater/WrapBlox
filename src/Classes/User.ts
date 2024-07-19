@@ -1,5 +1,5 @@
 import { APIUserGroup, AvatarImageTypes, RawFriendData, RawUserData } from "../Types/UserTypes.js";
-import WrapBlox from "../index.js";
+import WrapBlox, { OwnedBadge } from "../index.js";
 // import type Friend from "./Friend.js";
 import UserRoleManager from "./UserRoleManager.js";
 
@@ -89,6 +89,24 @@ class User {
 	
 	async inGroup(groupId: number): Promise<boolean> {
 		return (await this.fetchRawRoles()).some((group) => group.group.id === groupId);
+	}
+	
+	
+	async ownsBadge(badgeId: number): Promise<boolean> {
+		const response = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`);
+		if (response) {
+			return true
+		}
+		return false
+	}
+	
+	
+	async getBadgeAwardedDate(badgeId: number): Promise<Date | undefined> {
+		const response : OwnedBadge | undefined = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`)
+		if (response) {
+			return new Date(response.awardedDate);
+		}
+		
 	}
 	
 		
