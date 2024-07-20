@@ -19,8 +19,12 @@ export default class Role {
 		this.memberCount = data.memberCount;
 		this.rank = data.rank;
 	}
-
-	async fetchMembers() {
+	
+	/**
+	 * Fetches all members in the role
+	 * @returns {Promise<Member[]>} Array of members in the role
+	 */
+	async fetchMembers(): Promise<Member[]> {
 		const ret = await this.client.fetchHandler.fetchAll('GET', 'Groups', `/groups/${this.group.id}/roles/${this.id}/users`);
 		return ret.map((member) => {
 			const newData = {
@@ -37,6 +41,11 @@ export default class Role {
 
 	}
 	
+	/**
+	 * Sets the rank number of the role
+	 * @param rank The rank number to set the role to
+	 * @returns this
+	 */
 	async setRank(rank: number) {
 		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
 			rank: rank
@@ -45,6 +54,11 @@ export default class Role {
 		return this;
 	}
 	
+	/**
+	 * Sets the name of the role
+	 * @param name The name to set the role to
+	 * @returns this
+	 */
 	async setName(name: string) {
 		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
 			name: name
@@ -53,6 +67,11 @@ export default class Role {
 		return this;
 	}
 	
+	/**
+	 * Sets the description of the role
+	 * @param description The description to set the role to
+	 * @returns this
+	 */
 	async setDescription(description: string) {
 		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
 			description: description
@@ -61,9 +80,11 @@ export default class Role {
 		return this;
 	}
 	
+	/**
+	 * Deletes the role
+	 */
 	async delete() {
 		await this.client.fetchHandler.fetch('DELETE', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`);
-		return this;
 	}
 	
 	

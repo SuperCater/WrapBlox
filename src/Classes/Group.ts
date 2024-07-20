@@ -39,7 +39,6 @@ class Group {
 	}
 	
 	async fetchIcon(format : "Png" | "Webp" = "Png", size : "150x150" | "420x420" = "150x150") : Promise<string | undefined> {
-		if (this.cachedIcon) return this.cachedIcon;
 		const ret = await this.client.fetchHandler.fetch('GET', 'Thumbnails', "/groups/icons", {
 			groupIds : [this.id],
 			format: format,
@@ -48,7 +47,6 @@ class Group {
 		
 		const real = ret.data[0];
 		if (!real) return undefined;
-		this.cachedIcon = real.imageUrl;
 		return real.imageUrl;
 		
 		
