@@ -35,7 +35,7 @@ class WrapBlox {
 	 * @returns The raw data of the user
 	 */
 	fetchRawUser = async (userId : number, usecache = true) : Promise<RawUserData> => {
-		return await this.fetchHandler.fetch('GET', 'Users', `/users/${userId}`, undefined, undefined, usecache);
+		return await this.fetchHandler.fetch('GET', 'Users', `/users/${userId}`, {usecache});
 	}
 	
 	/**
@@ -53,7 +53,12 @@ class WrapBlox {
 	 * @returns The user object
 	 */
 	fetchUserByName = async (username : string, usecache = true) => {
-		const rawData = (await this.fetchHandler.fetch('POST', 'Users', "/usernames/users", undefined, {usernames: [username]})).data[0];
+		// const rawData = (await this.fetchHandler.fetch('POST', 'Users', "/usernames/users", undefined, {usernames: [username]})).data[0];
+		const rawData = (await this.fetchHandler.fetch("POST", "Users", "/usernames/users", {
+			body: {
+				usernames: [username]
+			}
+		})).data[0];
 		if (!rawData) throw new Error("User not found");
 		return await this.fetchUser(rawData.id, usecache);
 	}
@@ -63,7 +68,7 @@ class WrapBlox {
 	 * @returns The raw data of the group
 	 */
 	fetchRawGroup = async (groupId : number, usecache = true) : Promise<RawGroupData> => {
-		return await this.fetchHandler.fetch('GET', 'Groups', `/groups/${groupId}`, undefined, undefined, usecache);
+		return await this.fetchHandler.fetch('GET', 'Groups', `/groups/${groupId}`, {usecache});
 	}
 	
 	/**
@@ -77,7 +82,7 @@ class WrapBlox {
 	}
 	
 	/**
-	 * Logs in with a cookie
+	 * Logs in with a cookie, and sets the client's self to the logged in user
 	 * @param cookie The cookie to log in with
 	 * @returns The user object of the logged in user
 	 */
@@ -86,13 +91,26 @@ class WrapBlox {
 		this.fetchHandler.cookie = cookie;
 		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/authenticated/user');
 		const realUserData = await this.fetchRawUser(userInfo.id);
-		this.self = new AuthedUser(this, realUserData);
+		this.self = new AuthedUser(this, realUserData, cookie);
 		return this.self;
+	}
+	
+	/**
+	 * Similar to login, but does not set the client's self to the logged in user
+	 * @param cookie The cookie to log in with
+	 * @returns The user object of the logged in user
+	 */
+	fetchAuthedUser = async (cookie : string) => {
+		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/authenticated/user');
+		const realUserData = await this.fetchRawUser(userInfo.id);
+		return new AuthedUser(this, realUserData, cookie);
 	}
 	
 	fetchRawGame = async (universeID : number) : Promise<APIGameData> => {
 		return (await this.fetchHandler.fetch('GET', 'Games', "/games", {
-			universeIds: [universeID]
+			params: {
+				universeIds: [universeID]
+			}
 		})).data[0];
 	}
 	
@@ -103,12 +121,12 @@ class WrapBlox {
 	
 	
 	searchGroups =  async (query : string) : Promise<APIGroupLookup[]> => {
-		const rawData = (await this.fetchHandler.fetch('GET', 'Groups', "/groups/search/lookup", {groupName : query})).data;
+		const rawData = (await this.fetchHandler.fetch('GET', 'Groups', "/groups/search/lookup", {params: {groupName : query}})).data;
 		return rawData
 	}
 	
 	searchUsers = async(query : string, limit = 10): Promise<APIUserLookup[]> => {
-		const rawData = (await this.fetchHandler.fetch('GET', 'Users', "/users/search", {keyword : query, limit})).data;
+		const rawData = (await this.fetchHandler.fetch('GET', 'Users', "/users/search", {params: {keyword : query, limit}})).data;
 		return rawData;
 	}
 }
