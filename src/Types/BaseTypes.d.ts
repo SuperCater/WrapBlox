@@ -3,3 +3,10 @@ export type ValidUrls = "Users" | "Groups" | "Thumbnails" | "Friends" | "GamesV2
 export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE"
 
 export type SortOrder = "Asc" | "Desc"
+
+export type FetchOptions = {
+	usecache?: boolean,
+	cookie?: string,
+	params?: { [key: string | number]: unknown },
+	body?: { [key: string]: unknown },
+}

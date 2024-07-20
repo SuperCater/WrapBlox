@@ -1,4 +1,4 @@
-import { HttpMethods, ValidUrls } from "../../Types/BaseTypes.js"
+import { FetchOptions, HttpMethods, ValidUrls } from "../../Types/BaseTypes.js"
 import CacheManager from "./cacheManager.js";
 
 
@@ -26,15 +26,15 @@ class FetchHandler {
 		this.cacheManager.clearCache();
 	}
 
-	fetch = async (method: HttpMethods, url: ValidUrls, route: string, params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true) => {
+	fetch = async (method: HttpMethods, url: ValidUrls, route: string, opts : FetchOptions = {}) => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
 
 		let RealUrl = this.urls[url] + route;
 
-		if (params) {
+		if (opts.params) {
 			const query = new URLSearchParams();
-			for (const key in params) {
-				if (params[key] === undefined) continue;
-				query.append(key, params[key] as string);
+			for (const key in opts.params) {
+				if (opts.params[key] === undefined) continue;
+				query.append(key, opts.params[key] as string);
 			}
 
 			if (RealUrl.includes("?")) {
@@ -43,18 +43,19 @@ class FetchHandler {
 		}
 
 		const cached = this.cacheManager.getValues(RealUrl);
-		if (cached && usecache) return cached;
+		if (cached && opts.usecache) return cached;
 
 		const headers = new Headers();
 
 		if (this.cookie) headers.set("Cookie", this.cookie);
+		if (opts.cookie) headers.set("Cookie", opts.cookie); // If the cookie is passed as a parameter, use that instead of the default cookie
 		headers.set("Content-Type", "application/json");
 
 		const response = await fetch(RealUrl, {
 			method: method,
 			credentials: 'include',
 			headers: headers,
-			body: body ? JSON.stringify(body) : undefined,
+			body: opts.body ? JSON.stringify(opts.body) : undefined,
 		})
 
 		if (!response.ok) {
