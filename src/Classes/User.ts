@@ -26,12 +26,12 @@ class User {
 		this.description = rawdata.description;
 		this.client = client;
 	}
-	
+
 	async fetchFriends(): Promise<Friend[]> {
 		const ret = await this.client.fetchHandler.fetch('GET', 'Friends', `/users/${this.id}/friends`);
-		
+
 		return ret.data.map((friend: RawFriendData) => {
-			Factory.createFriend(this.client, friend)
+			Factory.createFriend(this.client, friend, this);
 		});
 	}
 
@@ -46,76 +46,92 @@ class User {
 
 	async fetchRawRoles(includelocked = false, includeNotificationPreferences = false): Promise<APIUserGroup[]> {
 		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/users/${this.id}/groups/roles`, {
-			includeLocked: includelocked,
-			includeNotificationPreferences: includeNotificationPreferences,
+			params: {
+				includeLocked: includelocked,
+				includeNotificationPreferences: includeNotificationPreferences,
+			}
 		});
 
 		return ret.data;
 
 	}
-	
-	
-	async fetchUserAvatarThumbnailUrl(size : AvatarSize = AvatarSize["150x150"], format : AvatarImageTypes = "Png", isCircular = false): Promise<string> {
+
+
+	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false): Promise<string> {
 		const ret = await this.client.fetchHandler.fetch('GET', "Thumbnails", "/users/avatar", {
-			userIds: [this.id],
-			size: size,
-			format: format,
-			isCircular: isCircular,
+			params: {
+				userIds: [this.id],
+				size: size,
+				format: format,
+				isCircular: isCircular,
+			}
 		});
 		return ret.data[0].imageUrl;
 	}
-
+	
+	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false): Promise<string> {
+		const ret = await this.client.fetchHandler.fetch('GET', "Thumbnails", "/users/avatar-headshot", {
+			params: {
+				userIds: [this.id],
+				size: size,
+				format: format,
+				isCircular: isCircular,
+			}
+		});
+		return ret.data[0].imageUrl;
+	}
+	
 	async fetchRoles(includelocked = false, includeNotificationPreferences = false): Promise<UserRoleManager> {
 		return new UserRoleManager(this.client, await this.fetchRawRoles(includelocked, includeNotificationPreferences));
 
 
 	}
-	
-	
+
+
 	async inGroup(groupId: number): Promise<boolean> {
 		return (await this.fetchRawRoles()).some((group) => group.group.id === groupId);
 	}
-	
-	async getOwnedAsset(type : ItemTypes, id : number): Promise<OwnedItem | undefined> {
+
+	async getOwnedAsset(type: ItemTypes, id: number): Promise<OwnedItem | undefined> {
 		try {
 			return await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`);
 		} catch {
 			return undefined;
 		}
-		
+
 	}
-	
-	async ownsAsset(type : ItemTypes, assetId: number): Promise<boolean> {
+
+	async ownsAsset(type: ItemTypes, assetId: number): Promise<boolean> {
 		try {
 			return await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${assetId}/is-owned`);
 		} catch {
 			return false;
 		}
 	}
-	
-	
+
+
 	async ownsBadge(badgeId: number): Promise<boolean> {
 		return await this.ownsAsset(ItemTypes.Badge, badgeId);
 	}
-	
+
 	async ownsGamePass(gamePassId: number): Promise<boolean> {
 		return await this.ownsAsset(ItemTypes.GamePass, gamePassId);
 	}
-	
-	
+
+
 	async getBadgeAwardedDate(badgeId: number): Promise<Date | undefined> {
-		const response : AwardedBadge | undefined = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`)
+		const response: AwardedBadge | undefined = await this.client.fetchHandler.fetch('GET', 'Badges', `/users/${this.id}/badges/${badgeId}/awarded-date`)
 		if (response) {
 			return new Date(response.awardedDate);
 		}
-		
+
 	}
-	
+
 	async canViewInventory(): Promise<boolean> {
 		return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/can-view-inventory`)).canView;
 	}
-	
-		
+
+
 	/*
 	async fetchFavoriteGames() : Promise<number[]> {
 		// WIP

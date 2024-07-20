@@ -5,14 +5,15 @@
 
 */
 
-import WrapBlox, { RawFriendData } from "../../index.js";
+import WrapBlox, { RawFriendData, User } from "../../index.js";
+import AuthedUser from "../AuthedUser.js";
 
 
 export default {
 	
-	async createFriend(client : WrapBlox, data : RawFriendData) {
+	async createFriend(client : WrapBlox, data : RawFriendData, friend : User | AuthedUser) {
 		const Friend = (await import('../Friend.js')).default;
 		
-		return new Friend(client, data);
+		return new Friend(client, data, friend);
 	}
 }

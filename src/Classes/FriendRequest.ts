@@ -20,11 +20,11 @@ class FriendRequest {
 	}
 	
 	async accept() : Promise<void> {
-		return await this.client.fetchHandler.fetch('POST', 'Friends', `/users/${this.senderId}/accept-friend-request`);
+		return await this.client.fetchHandler.fetch('POST', 'Friends', `/users/${this.senderId}/accept-friend-request`, {cookie : this.target.cookie});
 	}
 	
 	async decline() : Promise<void> {
-		return await this.client.fetchHandler.fetch('POST', 'Friends', `/users/${this.senderId}/decline-friend-request`);
+		return await this.client.fetchHandler.fetch('POST', 'Friends', `/users/${this.senderId}/decline-friend-request`, {cookie : this.target.cookie});
 	}
 	
 	

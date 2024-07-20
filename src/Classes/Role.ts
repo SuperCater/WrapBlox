@@ -47,8 +47,10 @@ export default class Role {
 	 * @returns this
 	 */
 	async setRank(rank: number) {
-		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
-			rank: rank
+		const data = await this.client.fetchHandler.fetch("PATCH", 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
+			body: {
+				rank: rank
+			},
 		});
 		this.rank = data.rank;
 		return this;
@@ -60,8 +62,10 @@ export default class Role {
 	 * @returns this
 	 */
 	async setName(name: string) {
-		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
-			name: name
+		const data = await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
+			body: {
+				name: name
+			}
 		});
 		this.name = data.name;
 		return this;
@@ -74,7 +78,9 @@ export default class Role {
 	 */
 	async setDescription(description: string) {
 		const data = await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`, {
-			description: description
+			body: {
+				description: description
+			}
 		});
 		this.rawdata.description = data.description;
 		return this;
