@@ -1,5 +1,6 @@
 import { FetchOptions, HttpMethods, ValidUrls } from "../../Types/BaseTypes.js"
 import CacheManager from "./cacheManager.js";
+import FetchError from "./FetchError.js";
 
 
 class FetchHandler {
@@ -47,8 +48,8 @@ class FetchHandler {
 
 		const headers = new Headers();
 
-		if (this.cookie) headers.set("Cookie", this.cookie);
-		if (opts.cookie) headers.set("Cookie", opts.cookie); // If the cookie is passed as a parameter, use that instead of the default cookie
+		if (this.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.cookie}`); // If the cookie is passed as a parameter, use that instead of the default cookie
+		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`); // If the cookie is passed as a parameter, use that instead of the default cookie
 		headers.set("Content-Type", "application/json");
 
 		const response = await fetch(RealUrl, {
@@ -59,7 +60,7 @@ class FetchHandler {
 		})
 
 		if (!response.ok) {
-			throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+			throw new FetchError(`Failed to fetch data: ${response.status} ${response.statusText}`, response.status, response);
 		}
 
 		if (!response.body) return;
@@ -81,8 +82,14 @@ class FetchHandler {
 					break;
 				}
 				cursor = response.nextPageCursor;
-			} catch {
-				// Retry the request
+			} catch (e) {
+				if (e instanceof FetchError) {
+					if (e.code === 429) {
+						await new Promise((resolve) => setTimeout(resolve, 1000));
+						continue;
+					}
+					throw e; // If it's not a rate limit error, throw it
+				}
 			}
 		}
 		return data;

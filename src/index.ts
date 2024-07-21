@@ -25,8 +25,8 @@ class WrapBlox {
 	self : AuthedUser | null = null;
 	
 	
-	constructor(cookie? : string) {
-		this.fetchHandler = new FetchHandler(cookie);
+	constructor() {
+		this.fetchHandler = new FetchHandler();
 	}
 	
 	/**
@@ -97,7 +97,7 @@ class WrapBlox {
 	
 	login = async (cookie : string) => {
 		this.fetchHandler.cookie = cookie;
-		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/authenticated/user');
+		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/users/authenticated');
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		this.self = new AuthedUser(this, realUserData, cookie);
 		return this.self;
@@ -109,7 +109,7 @@ class WrapBlox {
 	 * @returns The user object of the logged in user
 	 */
 	fetchAuthedUser = async (cookie : string) => {
-		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/authenticated/user');
+		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/users/authenticated', {cookie});
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		return new AuthedUser(this, realUserData, cookie);
 	}
