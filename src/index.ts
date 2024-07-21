@@ -30,6 +30,14 @@ class WrapBlox {
 	}
 	
 	/**
+	 * 
+	 */
+	
+	isLoggedIn = () : this is {self : AuthedUser} => {
+		return this.self !== null;
+	}
+	
+	/**
 	 * Get the raw data of a user
 	 * @param userId The ID of the user to fetch
 	 * @returns The raw data of the user
