@@ -93,6 +93,17 @@ class Group {
 		const roles = await this.fetchRoles();
 		return roles.find((role) => role.id === roleId);
 	}
+	
+	async fetchRoleByName(name: string): Promise<Role | undefined> {
+		const roles = await this.fetchRoles();
+		return roles.find((role) => role.name === name);
+	}
+	
+	async fetchRoleByRank(rank: number): Promise<Role | undefined> {
+		const roles = await this.fetchRoles();
+		return roles.find((role) => role.rank === rank);
+	
+	}
 
 	async fetchWallPosts(limit: 25 | 50 | 100 = 25, order: SortOrder = "Asc", cursor?: string) {
 		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/wall/posts`, {
@@ -103,6 +114,37 @@ class Group {
 			}
 		});
 		return ret.data;
+	}
+	
+	
+	async setRoleByRank(userid : number, rank : number) {
+		const role = await this.fetchRoleByRank(rank);
+		if (!role) throw new Error('Role not found');
+		
+		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/users/${userid}`, {
+			body: {
+				roleId: role.id,
+			}
+		});
+	}
+	
+	async setRoleByName(userid : number, name : string) {
+		const role = await this.fetchRoleByName(name);
+		if (!role) throw new Error('Role not found');
+		
+		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/users/${userid}`, {
+			body: {
+				roleId: role.id,
+			}
+		});
+	}
+	
+	async setRoleById(userid : number, roleid : number) {
+		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/users/${userid}`, {
+			body: {
+				roleId: roleid,
+			}
+		});
 	}
 
 
