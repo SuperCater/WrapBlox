@@ -5,6 +5,7 @@ import FetchError from "./FetchError.js";
 
 class FetchHandler {
 	cookie?: string;
+	CsrfToken?: string;
 	urls = {
 		Users: 'https://users.roblox.com/v1',
 		Groups: 'https://groups.roblox.com/v1',
@@ -27,7 +28,8 @@ class FetchHandler {
 		this.cacheManager.clearCache();
 	}
 
-	fetch = async (method: HttpMethods, url: ValidUrls, route: string, opts : FetchOptions = {}) => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+fetch  = async (method: HttpMethods, url: ValidUrls, route: string, opts : FetchOptions = {}) : Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
 
 		let RealUrl = this.urls[url] + route;
 
@@ -47,7 +49,8 @@ class FetchHandler {
 		if (cached && opts.usecache) return cached;
 
 		const headers = new Headers();
-
+		
+		if (this.CsrfToken) headers.set("X-Csrf-Token", this.CsrfToken);
 		if (this.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.cookie}`); // If the cookie is passed as a parameter, use that instead of the default cookie
 		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`); // If the cookie is passed as a parameter, use that instead of the default cookie
 		headers.set("Content-Type", "application/json");
@@ -58,6 +61,13 @@ class FetchHandler {
 			headers: headers,
 			body: opts.body ? JSON.stringify(opts.body) : undefined,
 		})
+		
+		if (!this.CsrfToken && response.headers.get("x-csrf-token")) {
+			this.CsrfToken = response.headers.get("x-csrf-token") as string;
+			if (response.status === 403) {
+				return await this.fetch(method, url, route, opts);
+			}
+		}
 
 		if (!response.ok) {
 			throw new FetchError(`Failed to fetch data: ${response.status} ${response.statusText}`, response.status, response);
