@@ -146,6 +146,14 @@ class Group {
 			}
 		});
 	}
+	
+	async setShout(message : string) {
+		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/status`, {
+			body: {
+				message: message
+			}
+		});
+	}
 
 
 

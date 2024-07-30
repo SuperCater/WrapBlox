@@ -1,3 +1,16 @@
+export type RawShout = {
+	body : string,
+	poster : {
+		buildersClubMembershipType : number,
+		hasVerifiedBadge : boolean,
+		userId : number,
+		username : string,
+		displayName : string,
+	},
+	created : string,
+	updated : string,
+}
+
 export type RawGroupData = {
 	id : number,
 	name : string,
@@ -9,18 +22,7 @@ export type RawGroupData = {
 		username : string,
 		displayName : string,
 	},
-	shout : {
-		body : string,
-		poster : {
-			buildersClubMembershipType : number,
-			hasVerifiedBadge : boolean,
-			userId : number,
-			username : string,
-			displayName : string,
-		},
-		created : string,
-		updated : string,
-	},
+	shout : RawShout,
 	memberCount : number,
 	isBuildersClubOnly : boolean,
 	publicEntryAllowed : boolean,
