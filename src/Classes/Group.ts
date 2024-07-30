@@ -1,4 +1,4 @@
-import { APIGroupSettings, APIRoles, RawGroupData, RawMemberData } from "../Types/GroupTypes.js";
+import { APIGroupSettings, APIRoles, RawGroupData, RawMemberData, RawShout } from "../Types/GroupTypes.js";
 import WrapBlox, { SortOrder } from "../index.js";
 import Member from "./Member.js";
 import Role from "./Role.js";
@@ -147,7 +147,7 @@ class Group {
 		});
 	}
 	
-	async setShout(message : string) {
+	async setShout(message : string): Promise<RawShout> {
 		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/status`, {
 			body: {
 				message: message
