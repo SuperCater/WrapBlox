@@ -42,3 +42,10 @@ test("badgeTest", async () => {
 	expect(ownsBadge2).toBeFalsy();
 	
 })
+
+test("getUser", async () => {
+	const user = await client.fetchUser(1);
+	console.log(user)
+	console.log(`Fetched ${user}`)
+	expect(user).toBeDefined();
+})

@@ -93,6 +93,9 @@ export default class Role {
 		await this.client.fetchHandler.fetch('DELETE', 'Groups', `/groups/${this.group.id}/rolesets/${this.id}`);
 	}
 	
+	toString() {
+		return `${this.name} (${this.rank})`;
+	}
 	
 
 

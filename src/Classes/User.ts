@@ -25,6 +25,8 @@ class User {
 		this.displayName = rawdata.displayName;
 		this.description = rawdata.description;
 		this.client = client;
+		
+		
 	}
 
 	async fetchFriends(): Promise<Friend[]> {
@@ -137,6 +139,12 @@ class User {
 		// WIP
 	}
 	*/
+	
+	toString() {
+		if (this.name === this.displayName) return this.name;
+		return `${this.displayName} (@${this.name})`;
+	}
 }
+
 
 export default User;

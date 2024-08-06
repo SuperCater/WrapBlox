@@ -13,6 +13,7 @@ export default class Member {
 		rank : number;
 	}
 	name : string;
+	displayName : string;
 	
 	
 	constructor(client : WrapBlox, group : Group, rawdata : RawMemberData) {
@@ -20,11 +21,17 @@ export default class Member {
 		this.rawdata = rawdata;
 		this.userId = rawdata.user.userId;
 		this.name = rawdata.user.username;
+		this.displayName = rawdata.user.displayName;
 		this.role = rawdata.role;
 		this.group = group;
 	};
 	
 	async fetchUser() {
 		return await this.client.fetchUser(this.userId);
+	}
+	
+	toString() {
+		if (this.name === this.displayName) return this.name;
+		return `${this.displayName} (@${this.name})`;
 	}
 }

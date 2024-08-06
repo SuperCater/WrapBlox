@@ -11,8 +11,6 @@ class Group {
 	id: number;
 	client: WrapBlox;
 
-	private cachedIcon?: string;
-
 
 
 	constructor(client: WrapBlox, rawdata: RawGroupData) {
@@ -153,6 +151,11 @@ class Group {
 				message: message
 			}
 		});
+	}
+	
+	
+	toString() {
+		return this.name;
 	}
 
 
