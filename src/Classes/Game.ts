@@ -43,7 +43,7 @@ class Game {
 	async fetchIcon(size: ThumbnailSize = ThumbnailSize["50x50"], format: ImageTypes = "Png", isCircular: boolean = false) {
 		return (await this.client.fetchHandler.fetch('GET', 'Thumbnails', '/games/icons', {
 			params: {
-				universeIds: await this.client.PlaceIdToUniverseId(this.id),
+				universeIds: this.id,
 				size: size,
 				format: format,
 				isCircular: isCircular
@@ -52,9 +52,8 @@ class Game {
 	}
 
 	async fetchThumbnail(size: ThumbnailSize = ThumbnailSize["150x150"], format: ImageTypes = "Png", isCircular: boolean = false) {
-		return (await this.client.fetchHandler.fetch('GET', 'Thumbnails', '/games/thumbnails', {
+		return (await this.client.fetchHandler.fetch('GET', 'Thumbnails', `/games/${this.id}/thumbnails`, {
 			params: {
-				universeIds: await this.client.PlaceIdToUniverseId(this.id),
 				size: size,
 				format: format,
 				isCircular: isCircular
