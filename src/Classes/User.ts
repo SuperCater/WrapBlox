@@ -1,5 +1,5 @@
-import { APIUserGroup, AvatarImageTypes, RawFriendData, RawUserData } from "../Types/UserTypes.js";
-import WrapBlox, { AwardedBadge, OwnedItem } from "../index.js";
+import { APIUserGroup, RawFriendData, RawUserData } from "../Types/UserTypes.js";
+import WrapBlox, { AwardedBadge, ImageTypes, OwnedItem } from "../index.js";
 // import type Friend from "./Friend.js";
 import UserRoleManager from "./UserRoleManager.js";
 
@@ -103,11 +103,11 @@ class User {
 	/**
 	 * Fetches the user's avatar thumbnail url
 	 * @param {AvatarSize} size - The size of the thumb=nail 
-	 * @param {AvatarImageTypes} format - The format of the thumbnail 
+	 * @param {ImageTypes} format - The format of the thumbnail 
 	 * @param {boolean} isCircular - Whether the thumbnail should be circular 
 	 * @returns {Promise<string>} The URL of the thumbnail
 	 */
-	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular: boolean = false): Promise<string> {
+	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: ImageTypes = "Png", isCircular: boolean = false): Promise<string> {
 		const ret = await this.client.fetchHandler.fetch('GET', "Thumbnails", "/users/avatar", {
 			params: {
 				userIds: [this.id],
@@ -122,11 +122,11 @@ class User {
 	/**
 	 * Fetches the user's headshot thumbnail url
 	 * @param {AvatarSize} size - The size of the thumbnail 
-	 * @param {AvatarImageTypes} format - The format of the thumbnail 
+	 * @param {ImageTypes} format - The format of the thumbnail 
 	 * @param {boolean} isCircular - Whether the thumbnail should be circular 
 	 * @returns {Promise<string>} The URL of the thumbnail
 	 */
-	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular: boolean = false): Promise<string> {
+	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: ImageTypes = "Png", isCircular: boolean = false): Promise<string> {
 		const ret = await this.client.fetchHandler.fetch('GET', "Thumbnails", "/users/avatar-headshot", {
 			params: {
 				userIds: [this.id],

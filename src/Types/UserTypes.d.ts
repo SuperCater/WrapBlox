@@ -49,6 +49,3 @@ export type APIUserLookup = {
 	name : string,
 	displayName : string,
 }
-
-
-export type AvatarImageTypes = "Png" | "Jpeg" | "WebP";

@@ -4,6 +4,8 @@ export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
 
 export type SortOrder = "Asc" | "Desc"
 
+export type ImageTypes = "Png" | "Jpeg" | "WebP";
+
 export type FetchOptions = {
 	usecache?: boolean,
 	cookie?: string,
