@@ -74,8 +74,8 @@ class User {
 
 	/**
 	 * Fetches the user's raw roles for all of the groups they are in
-	 * @param {boolean} includelocked 
-	 * @param {boolean} includeNotificationPreferences 
+	 * @param {boolean} includelocked - Whether to include locked groups
+	 * @param {boolean} includeNotificationPreferences - Whether to include notification preferences
 	 * @returns {Promise<APIUserGroup[]>} An array of the raw roles
 	 */
 	async fetchRawRoles(includelocked: boolean = false, includeNotificationPreferences: boolean = false): Promise<APIUserGroup[]> {
@@ -212,7 +212,10 @@ class User {
 	}
 	*/
 	
-	toString() {
+	/**
+	 * @returns {string} The user's name - If the user has a display name which is not the same as their username, it will return "{DisplayName} (@{Username}), otherwise it will return the username
+	 */
+	toString(): string {
 		if (this.name === this.displayName) return this.name;
 		return `${this.displayName} (@${this.name})`;
 	}
