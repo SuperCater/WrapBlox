@@ -7,6 +7,7 @@ class FetchHandler {
 	cookie?: string;
 	CsrfToken?: string;
 	urls = {
+		API: 'https://apis.roblox.com',
 		Users: 'https://users.roblox.com/v1',
 		Groups: 'https://groups.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
