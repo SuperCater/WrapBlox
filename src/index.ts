@@ -36,6 +36,10 @@ class WrapBlox {
 	isLoggedIn = () : this is {self : AuthedUser} => {
 		return this.self !== null;
 	}
+
+	PlaceIdToUniverseId = async (placeId : number) : Promise<number> => {
+		return await this.fetchHandler.fetch('GET', 'API', `/universes/v1/places/${placeId}/universe`);
+	}
 	
 	/**
 	 * Get the raw data of a user
