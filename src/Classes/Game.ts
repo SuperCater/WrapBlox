@@ -1,5 +1,5 @@
 import { APICreator, APIGameData } from "../Types/GameTypes.js";
-import WrapBlox from "../index.js";
+import WrapBlox, { ImageTypes, ThumbnailSize } from "../index.js";
 
 class Game {
 	rawdata : APIGameData;
@@ -29,7 +29,6 @@ class Game {
 	}
 	
 	async fetchCreator() {
-		
 		return await this.client.fetchUser(this.creator.id);
 	}
 	
@@ -39,6 +38,28 @@ class Game {
 	
 	async fetchFavoriteCount() {
 		return (await this.client.fetchHandler.fetch('GET', 'Games', `/games/${this.id}/favorites/count`)).count;
+	}
+
+	async fetchIcon(size: ThumbnailSize = ThumbnailSize["50x50"], format: ImageTypes = "Png", isCircular: boolean = false) {
+		return (await this.client.fetchHandler.fetch('GET', 'Thumbnails', '/games/icons', {
+			params: {
+				universeIds: await this.client.PlaceIdToUniverseId(this.id),
+				size: size,
+				format: format,
+				isCircular: isCircular
+			}
+		})).data.imageUrl
+	}
+
+	async fetchThumbnail(size: ThumbnailSize = ThumbnailSize["150x150"], format: ImageTypes = "Png", isCircular: boolean = false) {
+		return (await this.client.fetchHandler.fetch('GET', 'Thumbnails', '/games/thumbnails', {
+			params: {
+				universeIds: await this.client.PlaceIdToUniverseId(this.id),
+				size: size,
+				format: format,
+				isCircular: isCircular
+			}
+		})).data
 	}
 	
 }
