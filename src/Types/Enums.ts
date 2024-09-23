@@ -15,6 +15,15 @@ export enum AvatarSize {
 	"720x720" = "720x720",
 }
 
+export enum ThumbnailSize {
+	"50x50" = "50x50",
+	"128x128" = "128x128",
+	"150x150" = "150x150",
+	"256x256" = "256x256",
+	"420x420" = "420x420",
+	"512x512" = "512x512"
+}
+
 export enum ItemTypes {
 	Asset = 0,
 	GamePass = 1,
