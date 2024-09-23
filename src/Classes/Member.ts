@@ -30,7 +30,10 @@ export default class Member {
 		return await this.client.fetchUser(this.userId);
 	}
 	
-	toString() {
+	/**
+	 * @returns {string} The member's name - If the member has a display name which is not the same as their username, it will return "{DisplayName} (@{Username}), otherwise it will return the username
+	 */
+	toString(): string {
 		if (this.name === this.displayName) return this.name;
 		return `${this.displayName} (@${this.name})`;
 	}
