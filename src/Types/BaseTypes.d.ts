@@ -1,4 +1,4 @@
-export type ValidUrls = "Users" | "Groups" | "Thumbnails" | "Friends" | "GamesV2" | "Games" | "Badges" | "Inventory"
+export type ValidUrls = "API" | "Users" | "Groups" | "Thumbnails" | "Friends" | "GamesV2" | "Games" | "Badges" | "Inventory"
 
 export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
 
