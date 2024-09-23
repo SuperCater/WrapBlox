@@ -50,16 +50,6 @@ class Game {
 			}
 		})).data.imageUrl
 	}
-
-	async fetchThumbnail(size: ThumbnailSize = ThumbnailSize["150x150"], format: ImageTypes = "Png", isCircular: boolean = false) {
-		return (await this.client.fetchHandler.fetch('GET', 'Thumbnails', `/games/${this.id}/thumbnails`, {
-			params: {
-				size: size,
-				format: format,
-				isCircular: isCircular
-			}
-		})).data
-	}
 	
 }
 
