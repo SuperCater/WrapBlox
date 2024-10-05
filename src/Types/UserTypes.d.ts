@@ -1,4 +1,4 @@
-import { APIRoles, RawGroupData } from "./GroupTypes.js";
+import type { APIRoles, RawGroupData } from "./GroupTypes.js";
 
 export type RawUserData = {
 	name : string,

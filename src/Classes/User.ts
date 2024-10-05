@@ -1,10 +1,11 @@
-import { APIUserGroup, AvatarImageTypes, RawFriendData, RawUserData } from "../Types/UserTypes.js";
-import WrapBlox, { AwardedBadge, OwnedItem } from "../index.js";
+import type { APIUserGroup, AvatarImageTypes, RawFriendData, RawUserData } from "../Types/UserTypes.js";
+import type WrapBlox from "../index.js";
+import type { AwardedBadge, OwnedItem } from "../index.js";
 // import type Friend from "./Friend.js";
 import UserRoleManager from "./UserRoleManager.js";
 
 import Factory from "./Internal/factory.js";
-import Friend from "./Friend.js";
+import type Friend from "./Friend.js";
 import { AvatarSize, ItemTypes } from "../Types/Enums.js";
 
 

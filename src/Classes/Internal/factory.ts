@@ -5,8 +5,9 @@
 
 */
 
-import WrapBlox, { RawFriendData, User } from "../../index.js";
-import AuthedUser from "../AuthedUser.js";
+import type WrapBlox from "../../index.js";
+import type { RawFriendData, User } from "../../index.js";
+import type AuthedUser from "../AuthedUser.js";
 
 
 export default {

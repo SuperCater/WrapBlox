@@ -1,6 +1,6 @@
-import { RawMemberData } from "../Types/GroupTypes.js";
-import WrapBlox from "../index.js";
-import Group from "./Group.js";
+import type { RawMemberData } from "../Types/GroupTypes.js";
+import type WrapBlox from "../index.js";
+import type Group from "./Group.js";
 
 export default class Member {
 	rawdata : RawMemberData;

@@ -1,5 +1,6 @@
-import { APIRoles } from "../Types/GroupTypes.js";
-import WrapBlox, { Group, Member } from "../index.js";
+import type { APIRoles } from "../Types/GroupTypes.js";
+import type WrapBlox from "../index.js";
+import { type Group, Member } from "../index.js"
 
 export default class Role {
 	id: number;

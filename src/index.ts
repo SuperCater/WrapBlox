@@ -1,12 +1,12 @@
 import Group from "./Classes/Group.js";
 import User from "./Classes/User.js";
 import FetchHandler from "./Classes/Internal/fetchHandler.js";
-import { APIGroupLookup, RawGroupData } from "./Types/GroupTypes.js";
-import { APIUserLookup, RawUserData } from "./Types/UserTypes.js";
+import type { APIGroupLookup, RawGroupData } from "./Types/GroupTypes.js";
+import type { APIUserLookup, RawUserData } from "./Types/UserTypes.js";
 import Member from "./Classes/Member.js";
 import Role from "./Classes/Role.js";
 import AuthedUser from "./Classes/AuthedUser.js";
-import { APIGameData } from "./Types/GameTypes.js";
+import type { APIGameData } from "./Types/GameTypes.js";
 import Game from "./Classes/Game.js";
 
 export { Member, Group, User, Role}

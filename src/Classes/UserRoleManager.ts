@@ -1,5 +1,6 @@
-import { APIUserGroup } from "../Types/UserTypes.js";
-import WrapBlox, { APIRoles, Group, Role } from "../index.js";
+import type { APIUserGroup } from "../Types/UserTypes.js";
+import type WrapBlox from "../index.js";
+import type { APIRoles, Group, Role } from "../index.js";
 
 class UserRoleManager {
 	rawdata : APIUserGroup[];
