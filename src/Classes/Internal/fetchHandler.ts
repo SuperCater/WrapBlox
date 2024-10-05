@@ -2,7 +2,6 @@ import { FetchOptions, HttpMethods, ValidUrls } from "../../Types/BaseTypes.js"
 import CacheManager from "./cacheManager.js";
 import FetchError from "./FetchError.js";
 
-
 class FetchHandler {
 	cookie?: string;
 	CsrfToken?: string;
@@ -15,7 +14,7 @@ class FetchHandler {
 		Games: "https://games.roblox.com/v1",
 		Badges: "https://badges.roblox.com/v1",
 		Inventory: "https://inventory.roblox.com/v1",
-	};
+	}
 
 	cacheManager = new CacheManager<string, unknown>()
 
@@ -29,7 +28,7 @@ class FetchHandler {
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	fetch = async (method: HttpMethods, url: ValidUrls, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+	fetch = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
 
 		let RealUrl = this.urls[url] + route;
 
@@ -107,6 +106,5 @@ class FetchHandler {
 
 
 }
-
 
 export default FetchHandler;
