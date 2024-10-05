@@ -29,7 +29,7 @@ class FetchHandler {
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-fetch  = async (method: HttpMethods, url: ValidUrls, route: string, opts : FetchOptions = {}) : Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+	fetch = async (method: HttpMethods, url: ValidUrls, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
 
 		let RealUrl = this.urls[url] + route;
 
@@ -49,10 +49,10 @@ fetch  = async (method: HttpMethods, url: ValidUrls, route: string, opts : Fetch
 		if (cached && opts.usecache) return cached;
 
 		const headers = new Headers();
-		
+
 		if (this.CsrfToken) headers.set("X-Csrf-Token", this.CsrfToken);
-		if (this.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.cookie}`); // If the cookie is passed as a parameter, use that instead of the default cookie
-		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`); // If the cookie is passed as a parameter, use that instead of the default cookie
+		if (this.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.cookie}`);
+		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`);
 		headers.set("Content-Type", "application/json");
 
 		const response = await fetch(RealUrl, {
@@ -61,7 +61,7 @@ fetch  = async (method: HttpMethods, url: ValidUrls, route: string, opts : Fetch
 			headers: headers,
 			body: opts.body ? JSON.stringify(opts.body) : undefined,
 		})
-		
+
 		if (!this.CsrfToken && response.headers.get("x-csrf-token")) {
 			this.CsrfToken = response.headers.get("x-csrf-token") as string;
 			if (response.status === 403) {
