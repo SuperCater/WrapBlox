@@ -1,6 +1,8 @@
 import { APICreator, APIGameData } from "../Types/GameTypes.js";
 import WrapBlox from "../index.js";
 
+// TODO: Turn into a "Universe"
+
 class Game {
 	rawdata : APIGameData;
 	name : string;

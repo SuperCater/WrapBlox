@@ -14,6 +14,8 @@ class FetchHandler {
 		Games: "https://games.roblox.com/v1",
 		Badges: "https://badges.roblox.com/v1",
 		Inventory: "https://inventory.roblox.com/v1",
+		APIs: "https://apis.roblox.com",
+		
 	}
 
 	cacheManager = new CacheManager<string, unknown>()
@@ -50,6 +52,7 @@ class FetchHandler {
 		const headers = new Headers();
 
 		if (this.CsrfToken) headers.set("X-Csrf-Token", this.CsrfToken);
+		if (opts.CsrfToken) headers.set("X-Csrf-Token", opts.CsrfToken);
 		if (this.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.cookie}`);
 		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`);
 		headers.set("Content-Type", "application/json");
