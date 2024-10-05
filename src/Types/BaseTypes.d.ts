@@ -11,8 +11,3 @@ export type FetchOptions = {
 	params?: { [key: string | number]: unknown },
 	body?: { [key: string]: unknown },
 }
-
-export type PageRequestOptions = {
-	maxPerPage: number,
-	maxResults: number,
-}
