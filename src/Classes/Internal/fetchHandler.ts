@@ -15,6 +15,7 @@ class FetchHandler {
 		Badges: "https://badges.roblox.com/v1",
 		Inventory: "https://inventory.roblox.com/v1",
 		AccountSettings: "https://accountsettings.roblox.com/v1",
+		PremiumFeatures: "https://premiumfeatures.roblox.com/v1",
 		APIs: "https://apis.roblox.com",
 	}
 
