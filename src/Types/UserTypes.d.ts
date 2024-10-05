@@ -11,6 +11,15 @@ export type RawUserData = {
 	description : string,
 }
 
+export type FriendMetadata = {
+	isFriendsFilterBarEnabled: boolean,
+	isFriendsPageSortExperimentEnabled: boolean,
+	isFriendsUserDataStoreCacheEnabled: boolean,
+	frequentFriendSortRollout: number,
+	userName: string,
+	displayName: string,
+}
+
 export type RawFriendData = {
 	isOnline : boolean,
 	isDeleted : boolean,
