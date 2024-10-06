@@ -62,7 +62,7 @@ export type APIUserLookup = {
 
 export type AvatarImageTypes = "Png" | "Jpeg" | "WebP";
 export type AvatarType = "R6" | "R15"
-export type AvatarAssetTypes =
+export type AvatarAssetType =
  | "Gear"
 
  | "Pants"
@@ -101,7 +101,7 @@ export type AvatarAssetTypes =
 	name: string,
 	assetType: {
 		id: number,
-		name: string
+		name: AvatarAssetType
 	},
 	currentVersionId: number,
 	meta?: {
