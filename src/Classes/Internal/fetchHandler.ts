@@ -7,15 +7,28 @@ class FetchHandler {
 	CsrfToken?: string;
 	urls = {
 		Users: 'https://users.roblox.com/v1',
-		Groups: 'https://groups.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
 		Friends: "https://friends.roblox.com/v1",
-		GamesV2: "https://games.roblox.com/v2",
+
+		Groups: 'https://groups.roblox.com/v1',
+		GroupsV2: 'https://groups.roblox.com/v2',
+
 		Games: "https://games.roblox.com/v1",
+		GamesV2: "https://games.roblox.com/v2",
+
 		Badges: "https://badges.roblox.com/v1",
+		BadgesV2: "https://badges.roblox.com/v2",
+
 		Inventory: "https://inventory.roblox.com/v1",
+		InventoryV2: "https://inventory.roblox.com/v2",
+
 		AccountSettings: "https://accountsettings.roblox.com/v1",
 		PremiumFeatures: "https://premiumfeatures.roblox.com/v1",
+
+		Auth: "https://auth.roblox.com/v1",
+		AuthV2: "https://auth.roblox.com/v2",
+		AuthV3: "https://auth.roblox.com/v3",
+
 		APIs: "https://apis.roblox.com",
 	}
 
