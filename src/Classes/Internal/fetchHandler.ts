@@ -29,6 +29,10 @@ class FetchHandler {
 		AuthV2: "https://auth.roblox.com/v2",
 		AuthV3: "https://auth.roblox.com/v3",
 
+		Avatar: "https://avatar.roblox.com/v1",
+		AvatarV2: "https://avatar.roblox.com/v2",
+		AvatarV3: "https://avatar.roblox.com/v3",
+
 		APIs: "https://apis.roblox.com",
 	}
 

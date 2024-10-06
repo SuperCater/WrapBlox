@@ -22,6 +22,10 @@ export type ValidUrls =
  | "AuthV2"
  | "AuthV3"
 
+ | "Avatar"
+ | "AvatarV2"
+ | "AvatarV3"
+
  | "APIs"
 
 export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
