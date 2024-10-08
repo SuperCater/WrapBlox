@@ -30,7 +30,7 @@ class FetchHandler {
 	}
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	fetch = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+	fetch = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {usecache : true}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
 
 		let RealUrl = this.urls[url] + route;
 
@@ -47,7 +47,7 @@ class FetchHandler {
 		}
 
 		const cached = this.cacheManager.getValues(RealUrl);
-		if (cached && opts.usecache) return cached;
+		if (cached && (opts.usecache || opts.usecache === undefined)) return cached;
 
 		const headers = new Headers();
 
