@@ -1,5 +1,5 @@
-import WrapBlox from "../index.js";
-import { BirthData, RawFriendData, RawFriendRequest, RawUserData } from "../Types/UserTypes.js";
+import type WrapBlox from "../index.js";
+import type { BirthData, RawFriendRequest, RawUserData } from "../Types/UserTypes.js";
 import FriendRequest from "./FriendRequest.js";
 import User from "./User.js";
 

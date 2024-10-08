@@ -1,4 +1,5 @@
-import WrapBlox, { RawFriendData } from "../index.js";
+import type WrapBlox from "../index.js";
+import type { RawFriendData } from "../index.js";
 import AuthedUser from "./AuthedUser.js";
 import User from "./User.js";
 

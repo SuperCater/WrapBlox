@@ -1,5 +1,6 @@
-import { APIGroupSettings, APIRoles, RawGroupData, RawMemberData, RawShout } from "../Types/GroupTypes.js";
-import WrapBlox, { SortOrder } from "../index.js";
+import type { APIGroupSettings, APIRoles, RawGroupData, RawMemberData, RawShout } from "../Types/GroupTypes.js";
+import type WrapBlox from "../index.js";
+import type { SortOrder } from "../index.js";
 import Member from "./Member.js";
 import Role from "./Role.js";
 
