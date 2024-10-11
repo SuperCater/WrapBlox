@@ -65,7 +65,7 @@ class FetchHandler {
 		}
 
 		const cached = this.cacheManager.getValues(RealUrl);
-		if (cached && opts.usecache) return cached;
+		if (cached && opts.useCache) return cached;
 
 		const headers = new Headers();
 
