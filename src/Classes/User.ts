@@ -43,7 +43,7 @@ class User {
 	}
 
 	/*
-		Methods related to the UsersV1 API
+		Methods related to the Users API
 		Docs: https://users.roblox.com/docs/index.html
 	*/
 
@@ -75,14 +75,15 @@ class User {
 	}
 
 	/*
-		Methods related to the GroupsV1 API
+		Methods related to the Groups API
 		Docs: https://groups.roblox.com/docs/index.html
 	*/
 
 	//! To be completed
+	
 
 	/*
-		Methods related to the InventoryV1 API
+		Methods related to the Inventory API
 		Docs: https://inventory.roblox.com/docs/index.html
 	*/
 
@@ -119,7 +120,7 @@ class User {
 	}
 
 	/*
-		Methods related to the AvatarV1 & V2 API
+		Methods related to the Avatar API
 		Docs: https://avatar.roblox.com/docs/index.html
 	*/
 
@@ -132,7 +133,7 @@ class User {
 	}
 
 	/*
-		Methods related to the ThumbnailsV1 API
+		Methods related to the Thumbnails API
 		Docs: https://thumbnails.roblox.com/docs/index.html
 	*/
 
@@ -159,7 +160,7 @@ class User {
 	}
 
 	/*
-		Methods related to the FriendsV1 API
+		Methods related to the Friends API
 		Docs: https://friends.roblox.com/docs/index.html
 	*/
 
@@ -265,7 +266,7 @@ class User {
 	}
 
 	/*
-		Methods related to the AccountSettingsV1 API
+		Methods related to the AccountSettings API
 		Docs: https://accountsettings.roblox.com/docs/index.html
 	*/
 
@@ -282,7 +283,7 @@ class User {
 	}
 
 	/*
-		Methods related to the PremiumFeaturesV1 API
+		Methods related to the PremiumFeatures API
 		Docs: https://premiumfeatures.roblox.com/docs/index.html
 	*/
 
