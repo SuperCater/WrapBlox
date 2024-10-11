@@ -1,15 +1,10 @@
-import Group from "./Classes/Group.js";
 import User from "./Classes/User.js";
 import FetchHandler from "./Classes/Internal/fetchHandler.js";
-import type { APIGroupLookup, RawGroupData } from "./Types/GroupTypes.js";
-import type { APIUserLookup, RawUserData } from "./Types/UserTypes.js";
-import Member from "./Classes/Member.js";
-import Role from "./Classes/Role.js";
+import type { RawUserData } from "./Types/UserTypes.js";
 import AuthedUser from "./Classes/AuthedUser.js";
 import type { APIGameData } from "./Types/GameTypes.js";
-import Game from "./Classes/Game.js";
 
-export { Member, Group, User, Role}
+export { User }
 
 export type * from "./Types/BaseTypes.js";
 export type * from "./Types/GroupTypes.js";
@@ -43,7 +38,7 @@ class WrapBlox {
 	 * @returns The raw data of the user
 	 */
 	fetchRawUser = async (userId : number, usecache = true) : Promise<RawUserData> => {
-		return await this.fetchHandler.fetch('GET', 'Users', `/users/${userId}`, {usecache});
+		return await this.fetchHandler.fetch('GET', 'Users', `/users/${userId}`, { useCache: usecache });
 	}
 	
 	/**
@@ -75,19 +70,19 @@ class WrapBlox {
 	 * @param groupId The ID of the group to fetch
 	 * @returns The raw data of the group
 	 */
-	fetchRawGroup = async (groupId : number, usecache = true) : Promise<RawGroupData> => {
-		return await this.fetchHandler.fetch('GET', 'Groups', `/groups/${groupId}`, {usecache});
-	}
+	//fetchRawGroup = async (groupId : number, usecache = true) : Promise<RawGroupData> => {
+	//	return await this.fetchHandler.fetch('GET', 'Groups', `/groups/${groupId}`, {usecache});
+	//}
 	
 	/**
 	 * Get the group object of a group
 	 * @param groupId The ID of the group to fetch
 	 * @returns The group object
 	 */
-	fetchGroup = async (groupId : number, usecache = true) => {
-		const rawData = await this.fetchRawGroup(groupId, usecache);
-		return new Group(this, rawData);
-	}
+	//fetchGroup = async (groupId : number, usecache = true) => {
+	//	const rawData = await this.fetchRawGroup(groupId, usecache);
+	//	return new Group(this, rawData);
+	//}
 	
 	/**
 	 * Logs in with a cookie, and sets the client's self to the logged in user
@@ -122,21 +117,21 @@ class WrapBlox {
 		})).data[0];
 	}
 	
-	fetchGame = async (universeID : number) => {
-		const rawData = await this.fetchRawGame(universeID);
-		return new Game(this, rawData);
-	}
+	//fetchGame = async (universeID : number) => {
+	//	const rawData = await this.fetchRawGame(universeID);
+	//	return new Game(this, rawData);
+	//}
 	
 	
-	searchGroups =  async (query : string) : Promise<APIGroupLookup[]> => {
-		const rawData = (await this.fetchHandler.fetch('GET', 'Groups', "/groups/search/lookup", {params: {groupName : query}})).data;
-		return rawData
-	}
+	//searchGroups =  async (query : string) : Promise<APIGroupLookup[]> => {
+	//	const rawData = (await this.fetchHandler.fetch('GET', 'Groups', "/groups/search/lookup", {params: {groupName : query}})).data;
+	//	return rawData
+	//}
 	
-	searchUsers = async(query : string, limit = 10): Promise<APIUserLookup[]> => {
-		const rawData = (await this.fetchHandler.fetch('GET', 'Users', "/users/search", {params: {keyword : query, limit}})).data;
-		return rawData;
-	}
+	//searchUsers = async(query : string, limit = 10): Promise<APIUserLookup[]> => {
+	//	const rawData = (await this.fetchHandler.fetch('GET', 'Users', "/users/search", {params: {keyword : query, limit}})).data;
+	//	return rawData;
+	//}
 }
 
 

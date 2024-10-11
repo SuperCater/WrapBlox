@@ -1,6 +1,5 @@
 import type WrapBlox from "../index.js";
 import type { BirthData, RawFriendRequest, RawUserData } from "../Types/UserTypes.js";
-import FriendRequest from "./FriendRequest.js";
 import User from "./User.js";
 
 class AuthedUser extends User {
@@ -25,14 +24,6 @@ class AuthedUser extends User {
 	
 	async fetchCountryCode() : Promise<string> {
 		return (await this.client.fetchHandler.fetch('GET', 'Users', `/users/${this.id}/country`, {cookie: this.cookie})).countryCode;
-	}
-	
-	async fetchFriendRequests() {
-		const ret = await this.client.fetchHandler.fetchAll('GET', 'Friends', "/my/friend-requests", {cookie: this.cookie});
-		
-		return ret.map((friend : RawFriendRequest) => {
-			return new FriendRequest(this.client, friend, this);
-		});
 	}
 }
 
