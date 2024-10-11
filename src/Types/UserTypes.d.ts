@@ -1,5 +1,6 @@
+import { IntRange } from "./BaseTypes.js";
 import { AvatarTypes } from "./Enums.ts";
-import type { APIRoles, RawGroupData } from "./GroupTypes.js";
+import type { APIRoles, RawGroupData, Role } from "./GroupTypes.js";
 
 export type RawUserData = {
 	name : string,
@@ -10,6 +11,17 @@ export type RawUserData = {
 	isBanned : boolean,
 	created : string,
 	description : string,
+}
+
+export type RawUserGroupRoles = {
+	group: {
+		id: number,
+		name: string,
+		memberCount: number,
+		hasVerifiedBadge: boolean
+	},
+	role: Role,
+	isNotificationsEnabled: boolean
 }
 
 export type FriendMetadata = {
@@ -40,24 +52,10 @@ export type RawFriendRequest = {
 	mutualFriendsList : string[],
 } & RawUserData;
 
-
-export type APIUserGroup = {
-	group: RawGroupData;
-	role: APIRoles;
-}
-
 export type BirthData = {
 	birthMonth : number,
 	birthDay : number,
 	birthYear : number,
-}
-
-export type APIUserLookup = {
-	previousUsernames: string[],
-	id: number,
-	hasVerifiedBadge : boolean,
-	name : string,
-	displayName : string,
 }
 
 export type AvatarImageTypes = "Png" | "Jpeg" | "WebP";
