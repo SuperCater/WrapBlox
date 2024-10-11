@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const client = new WrapBlox();
-const userId = 1;
+const userId = 2897964600;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
@@ -20,8 +20,8 @@ test("login", async () => {
 })
 
 /*
-		Methods related to the Users API
-		Docs: https://users.roblox.com/docs/index.html
+	Methods related to the Users API
+	Docs: https://users.roblox.com/docs/index.html
 */
 
 test("fetchUser", async () => {
