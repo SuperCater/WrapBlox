@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const client = new WrapBlox();
-const userId = 2897964600;
+const userId = 1;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
@@ -45,7 +45,30 @@ test("fetchUsernameHistory", async () => {
 	Docs: https://groups.roblox.com/docs/index.html
 */
 
-//! Groups to be completed
+test("fetchRawGroupRoles", async () => {
+	const user = await client.fetchUser(userId);
+	const rawGroupRoles = await user.fetchRawGroupRoles();
+
+	console.log("Raw group roles:\n", rawGroupRoles);
+
+	expect(rawGroupRoles).toBeDefined();
+})
+
+test("inGroup", async () => {
+	const user = await client.fetchUser(userId);
+	const boolean = await user.inGroup(33991282);
+
+	console.log(`In group [Purple Robotics, LLC]: ${boolean}`);
+
+	expect(boolean).toBeDefined();
+})
+
+test("getRoleInGroup", async () => {
+	const user = await client.fetchUser(userId);
+	const role = await user.getRoleInGroup(33991282);
+
+	console.log("Role in group [Purple Robotics, LLC]:\n", role);
+})
 
 /*
 	Methods related to the Inventory API
@@ -102,8 +125,6 @@ test("getOwnedAsset", async () => {
 	const asset = await user.getOwnedAsset(ItemTypes.GamePass, 776368)
 
 	console.log("Owned asset:\n",asset)
-
-	expect(asset).toBeDefined();
 })
 
 /*

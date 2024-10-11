@@ -1,15 +1,10 @@
-import type { APIUserGroup, AvatarImageTypes, FriendMetadata, RawFriendData, RawUserData, UserAvatarV1, UserAvatarV2 } from "../Types/UserTypes.js";
+import type { AvatarImageTypes, FriendMetadata, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2 } from "../Types/UserTypes.js";
 import type WrapBlox from "../index.js";
-import type { AwardedBadge, OwnedItem, SortOrder } from "../index.js";
-// import type Friend from "./Friend.js";
-import UserRoleManager from "./UserRoleManager.js";
+import type { OwnedItem, Role, SortOrder } from "../index.js";
 
-import Factory from "./Internal/factory.js";
 import Friend from "./Friend.js";
 import { AvatarSize, ItemTypes } from "../Types/Enums.js";
 import factory from "./Internal/factory.js";
-
-
 
 class User {
 	client: WrapBlox;
@@ -53,7 +48,7 @@ class User {
 
 		loop: while (nextPageCursor) {
 			const request = await this.client.fetchHandler.fetch("GET", "Users", `/users/${this.id}/username-history`, {
-				usecache: useCache,
+				useCache: useCache,
 				params: {
 					limit: 100,
 					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
@@ -79,44 +74,59 @@ class User {
 		Docs: https://groups.roblox.com/docs/index.html
 	*/
 
-	//! To be completed
-	
+	async fetchRawGroupRoles(includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<RawUserGroupRoles[]> {
+		return (await this.client.fetchHandler.fetch("GET", "GroupsV2", `/users/${this.id}/groups/roles`, {
+			useCache: useCache,
+			params: {
+				includeLocked: includelocked,
+				includeNotificationPreferences: includeNotificationPreferences,
+			}
+		})).data
+	}
 
+	async inGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<boolean> {
+		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).some((entry) => entry.group.id === groupId));
+	}
+
+	async getRoleInGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<Role | undefined> {
+		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).find((entry) => entry.group.id === groupId)?.role)
+	}
+	
 	/*
 		Methods related to the Inventory API
 		Docs: https://inventory.roblox.com/docs/index.html
 	*/
 
-	async canViewInventory(): Promise<boolean> {
-		return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/can-view-inventory`)).canView;
+	async canViewInventory(useCache = true): Promise<boolean> {
+		return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/can-view-inventory`, { useCache: useCache })).canView;
 	}
 
-	async getOwnedAsset(type: ItemTypes, id: number): Promise<OwnedItem | undefined> {
+	async getOwnedAsset(type: ItemTypes, id: number, useCache = true): Promise<OwnedItem | undefined> {
 		try {
-			return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`)).data[0];
+			return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`, { useCache: useCache })).data[0];
 		} catch {
 			return undefined;
 		}
 	}
 
-	async ownsAsset(type: ItemTypes, assetId: number): Promise<boolean> {
+	async ownsAsset(type: ItemTypes, assetId: number, useCache = true): Promise<boolean> {
 		try {
-			return await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${assetId}/is-owned`);
+			return await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${assetId}/is-owned`, { useCache: useCache });
 		} catch {
 			return false;
 		}
 	}
 
-	async ownsBadge(badgeId: number): Promise<boolean> {
-		return await this.ownsAsset(ItemTypes.Badge, badgeId);
+	async ownsBadge(badgeId: number, useCache = true): Promise<boolean> {
+		return await this.ownsAsset(ItemTypes.Badge, badgeId, useCache);
 	}
 
-	async ownsGamepass(gamepassId: number): Promise<boolean> {
-		return await this.ownsAsset(ItemTypes.GamePass, gamepassId);
+	async ownsGamepass(gamepassId: number, useCache = true): Promise<boolean> {
+		return await this.ownsAsset(ItemTypes.GamePass, gamepassId, useCache);
 	}
 
-	async ownsBundle(bundleId: number): Promise<boolean> {
-		return await this.ownsAsset(ItemTypes.Bundle, bundleId)
+	async ownsBundle(bundleId: number, useCache = true): Promise<boolean> {
+		return await this.ownsAsset(ItemTypes.Bundle, bundleId, useCache)
 	}
 
 	/*
@@ -124,12 +134,12 @@ class User {
 		Docs: https://avatar.roblox.com/docs/index.html
 	*/
 
-	async fetchAvatarV1(): Promise<UserAvatarV1> {
-		return (await this.client.fetchHandler.fetch("GET", "Avatar", `/users/${this.id}/avatar`))
+	async fetchAvatarV1(useCache = true): Promise<UserAvatarV1> {
+		return (await this.client.fetchHandler.fetch("GET", "Avatar", `/users/${this.id}/avatar`, { useCache: useCache }))
 	}
 
-	async fetchAvatarV2(): Promise<UserAvatarV2> {
-		return (await this.client.fetchHandler.fetch("GET", "AvatarV2", `/avatar/users/${this.id}/avatar`))
+	async fetchAvatarV2(useCache = true): Promise<UserAvatarV2> {
+		return (await this.client.fetchHandler.fetch("GET", "AvatarV2", `/avatar/users/${this.id}/avatar`, { useCache: useCache }))
 	}
 
 	/*
@@ -137,8 +147,9 @@ class User {
 		Docs: https://thumbnails.roblox.com/docs/index.html
 	*/
 
-	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false): Promise<string> {
+	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar", {
+			useCache: useCache,
 			params: {
 				userIds: [this.id],
 				size: size,
@@ -148,8 +159,9 @@ class User {
 		})).data[0].imageUrl;
 	}
 
-	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false): Promise<string> {
+	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-headshot", {
+			useCache: useCache,
 			params: {
 				userIds: [this.id],
 				size: size,
@@ -164,8 +176,9 @@ class User {
 		Docs: https://friends.roblox.com/docs/index.html
 	*/
 
-	async fetchFriendMetadata(): Promise<FriendMetadata> {
+	async fetchFriendMetadata(useCache = true): Promise<FriendMetadata> {
 		return await this.client.fetchHandler.fetch("GET", "Friends", "/metadata", {
+			useCache: useCache,
 			params: {
 				targetUserId: this.id
 			}
@@ -174,12 +187,12 @@ class User {
 
 	//? Friends
 
-	async fetchFriends(maxResults?: number): Promise<Friend[]> {
+	async fetchFriends(maxResults?: number, useCache = true): Promise<Friend[]> {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to view someone's friend list.");
 
 		const returnData = [] as Friend[];
 
-		for (const friend of (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends`)).data) {
+		for (const friend of (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends`, { useCache: useCache })).data) {
 			returnData.push(await factory.createFriend(this.client, friend, this))
 			if (maxResults && returnData.length >= maxResults) break;
 		}
@@ -187,21 +200,19 @@ class User {
 		return returnData;
 	}
 
-
 	async fetchFriendCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends/count`, {
-			usecache: useCache
-		})).count
+		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends/count`, { useCache: useCache })).count
 	}
 
 	//? Followers
 
-	async fetchFollowers(sortOrder: SortOrder, maxResults?: number): Promise<User[]> {
+	async fetchFollowers(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		let nextPageCursor = "NONE";
 
 		loop: while (nextPageCursor) {
 			const request = await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followers`, {
+				useCache: useCache,
 				params: {
 					limit: 100,
 					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
@@ -225,19 +236,18 @@ class User {
 
 
 	async fetchFollowerCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followers/count`, {
-			usecache: useCache
-		})).count
+		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followers/count`, { useCache: useCache })).count
 	}
 
 	//? Followings
 
-	async fetchFollowings(sortOrder: SortOrder, maxResults?: number): Promise<User[]> {
+	async fetchFollowings(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		let nextPageCursor = "NONE";
 
 		loop: while (nextPageCursor) {
 			const request = await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followings`, {
+				useCache: useCache,
 				params: {
 					limit: 100,
 					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
@@ -260,9 +270,7 @@ class User {
 	}
 
 	async fetchFollowingsCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followings/count`, {
-			usecache: useCache
-		})).count
+		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followings/count`, { useCache: useCache })).count
 	}
 
 	/*
@@ -288,7 +296,7 @@ class User {
 	*/
 
 	async hasPremium(useCache = true): Promise<boolean> {
-		return await this.client.fetchHandler.fetch("GET", "PremiumFeatures", `/users/${this.id}/validate-membership`, { usecache: useCache })
+		return await this.client.fetchHandler.fetch("GET", "PremiumFeatures", `/users/${this.id}/validate-membership`, { useCache: useCache })
 	}
 
 	// Miscellaneous
