@@ -19,6 +19,11 @@ test("login", async () => {
 	expect(user).toBeDefined();
 })
 
+/*
+		Methods related to the Users API
+		Docs: https://users.roblox.com/docs/index.html
+*/
+
 test("fetchUser", async () => {
 	const user = await client.fetchUser(userId);
 
@@ -35,7 +40,17 @@ test("fetchUsernameHistory", async () => {
 	expect(usernameHistory).toBeDefined();
 })
 
+/*
+	Methods related to the Groups API
+	Docs: https://groups.roblox.com/docs/index.html
+*/
+
 //! Groups to be completed
+
+/*
+	Methods related to the Inventory API
+	Docs: https://inventory.roblox.com/docs/index.html
+*/
 
 test("canViewInventory", async () => {
 	const user = await client.fetchUser(userId);
@@ -91,6 +106,11 @@ test("getOwnedAsset", async () => {
 	expect(asset).toBeDefined();
 })
 
+/*
+	Methods related to the Avatar API
+	Docs: https://avatar.roblox.com/docs/index.html
+*/
+
 test("fetchAvatarV1", async () => {
 	const user = await client.fetchUser(userId);
 	const avatar = await user.fetchAvatarV1();
@@ -109,6 +129,10 @@ test("fetchAvatarV2", async () => {
 	expect(avatar).toBeDefined();
 })
 
+/*
+	Methods related to the Thumbnails API
+	Docs: https://thumbnails.roblox.com/docs/index.html
+*/
 
 test("fetchUserAvatarThumbnailUrl", async () => {
 	const user = await client.fetchUser(userId);
@@ -127,6 +151,11 @@ test("fetchUserHeadshotUrl", async () => {
 
 	expect(imageUrl).toBeDefined();
 })
+
+/*
+	Methods related to the Friends API
+	Docs: https://friends.roblox.com/docs/index.html
+*/
 
 test("fetchUserFriendMetadata", async () => {
 	const user = await client.fetchUser(userId);
@@ -203,6 +232,11 @@ test("fetchUserFollowingsCount", async () => {
 	expect(count).toBeDefined();
 })
 
+/*
+	Methods related to the AccountSettings API
+	Docs: https://accountsettings.roblox.com/docs/index.html
+*/
+
 test("block", async () => {
 	if (!client.isLoggedIn()) {
 		console.log("Not logged in, skipping...")
@@ -236,6 +270,11 @@ test("unblock", async () => {
 		console.log(`Failed to unblock [${error.message}]:\n${body.errors[0]?.code}: ${body.errors[0]?.message}`)
 	}
 })
+
+/*
+	Methods related to the PremiumFeatures API
+	Docs: https://premiumfeatures.roblox.com/docs/index.html
+*/
 
 test("hasPremium", async () => {
 	if (!client.isLoggedIn()) {
