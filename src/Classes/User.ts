@@ -187,6 +187,7 @@ class User {
 
 	//? Friends
 
+	//! Rewrite to use fetchAll
 	async fetchFriends(maxResults?: number, useCache = true): Promise<Friend[]> {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to view someone's friend list.");
 
@@ -206,6 +207,7 @@ class User {
 
 	//? Followers
 
+	//! Rewrite to use fetchAll
 	async fetchFollowers(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		let nextPageCursor = "NONE";
@@ -241,6 +243,7 @@ class User {
 
 	//? Followings
 
+	//! Rewrite to use fetchAll
 	async fetchFollowings(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		let nextPageCursor = "NONE";
