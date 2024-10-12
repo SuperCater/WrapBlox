@@ -101,7 +101,7 @@ class FetchHandler {
 		return json;
 	};
 
-	//! Rewrite to support all "page" requests (for example page requests in apis.roblox.com use diffrent param names).
+	//TODO: Rewrite to support all "page" requests (for example page requests in apis.roblox.com use diffrent param names).
 	fetchAll = async (method: HttpMethods, url: keyof typeof this.urls, route: string, params?: { [key: string | number]: unknown }) => {
 		const data = [];
 		let cursor = "";
