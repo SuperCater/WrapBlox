@@ -1,5 +1,5 @@
 import { IntRange } from "./BaseTypes.js";
-import type { APIRoles, RawGroupData, Role } from "./GroupTypes.js";
+import type { Role } from "./GroupTypes.js";
 
 export type RawUserData = {
 	name : string,
@@ -57,7 +57,7 @@ export type BirthData = {
 	birthYear : number,
 }
 
-export type AvatarImageTypes = "Png" | "Jpeg" | "WebP";
+export type AvatarImageType = "Png" | "Jpeg" | "WebP";
 export type AvatarType = "R6" | "R15"
 export type AvatarAssetType =
  | "Gear"

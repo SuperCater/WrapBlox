@@ -1,4 +1,4 @@
-import type { AvatarImageTypes, FriendMetadata, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2 } from "../Types/UserTypes.js";
+import type { AvatarImageType, FriendMetadata, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2 } from "../Types/UserTypes.js";
 import type WrapBlox from "../index.js";
 import type { OwnedItem, Role, SortOrder } from "../index.js";
 
@@ -147,7 +147,7 @@ class User {
 		Docs: https://thumbnails.roblox.com/docs/index.html
 	*/
 
-	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false, useCache = true): Promise<string> {
+	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageType = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar", {
 			useCache: useCache,
 			params: {
@@ -159,7 +159,7 @@ class User {
 		})).data[0].imageUrl;
 	}
 
-	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageTypes = "Png", isCircular = false, useCache = true): Promise<string> {
+	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageType = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-headshot", {
 			useCache: useCache,
 			params: {
