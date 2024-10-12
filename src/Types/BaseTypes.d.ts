@@ -1,33 +1,3 @@
-export type ValidUrls = 
- | "Users"
- | "Thumbnails"
- | "Friends"
-
- | "Groups"
- | "GroupsV2"
-
- | "Games"
- | "GamesV2"
-
- | "Badges"
- | "BadgesV2"
-
- | "Inventory"
- | "InventoryV2"
-
- | "AccountSettings"
- | "PremiumFeatures"
-
- | "Auth"
- | "AuthV2"
- | "AuthV3"
-
- | "Avatar"
- | "AvatarV2"
- | "AvatarV3"
-
- | "APIs"
-
 export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
 
 export type SortOrder = "Asc" | "Desc"
