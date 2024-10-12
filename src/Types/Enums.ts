@@ -21,8 +21,3 @@ export enum ItemTypes {
 	Badge = 2,
 	Bundle = 3,
 }
-
-export enum AvatarTypes {
-	R6 = 1,
-	R15 = 3,
-}

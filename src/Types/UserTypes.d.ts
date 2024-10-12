@@ -1,5 +1,4 @@
 import { IntRange } from "./BaseTypes.js";
-import { AvatarTypes } from "./Enums.ts";
 import type { APIRoles, RawGroupData, Role } from "./GroupTypes.js";
 
 export type RawUserData = {
@@ -139,7 +138,7 @@ export type AvatarAssetType =
 		proportion: number,
 		bodyType: number,
 	},
-	playerAvatarType: AvatarTypes,
+	playerAvatarType: AvatarType,
 	bodyColors: {
 		headColorId: number,
 		torsoColorId: number,
@@ -163,7 +162,7 @@ export type AvatarAssetType =
 		proportion: number,
 		bodyType: number,
 	},
-	playerAvatarType: AvatarTypes,
+	playerAvatarType: AvatarType,
 	bodyColor3s: {
 		headColor3: string,
     	torsoColor3: string,
