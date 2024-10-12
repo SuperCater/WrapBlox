@@ -45,15 +45,6 @@ test("fetchUsernameHistory", async () => {
 	Docs: https://groups.roblox.com/docs/index.html
 */
 
-test("fetchRawGroupRoles", async () => {
-	const user = await client.fetchUser(userId);
-	const rawGroupRoles = await user.fetchRawGroupRoles();
-
-	console.log("Raw group roles:\n", rawGroupRoles);
-
-	expect(rawGroupRoles).toBeDefined();
-})
-
 test("inGroup", async () => {
 	const user = await client.fetchUser(userId);
 	const boolean = await user.inGroup(33991282);

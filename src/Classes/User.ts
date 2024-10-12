@@ -7,19 +7,19 @@ import { AvatarSize, ItemTypes } from "../Types/Enums.js";
 import factory from "./Internal/factory.js";
 
 class User {
-	client: WrapBlox;
-	rawData: RawUserData;
+	readonly client: WrapBlox;
+	readonly rawData: RawUserData;
 
-	id: number;
-	name: string;
-	displayName: string;
-	description: string;
-	hasVerifiedBadge: boolean;
-	externalAppDisplayName?: string;
-	isBanned : boolean;
-	joinDate: Date;
+	readonly id: number;
+	readonly name: string;
+	readonly displayName: string;
+	readonly description: string;
+	readonly hasVerifiedBadge: boolean;
+	readonly externalAppDisplayName?: string;
+	readonly isBanned : boolean;
+	readonly joinDate: Date;
 
-	accountAge: number;
+	readonly accountAge: number;
 
 	constructor(client: WrapBlox, rawData: RawUserData) {
 		this.client = client;
@@ -74,7 +74,7 @@ class User {
 		Docs: https://groups.roblox.com/docs/index.html
 	*/
 
-	async fetchRawGroupRoles(includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<RawUserGroupRoles[]> {
+	private async fetchRawGroupRoles(includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<RawUserGroupRoles[]> {
 		return (await this.client.fetchHandler.fetch("GET", "GroupsV2", `/users/${this.id}/groups/roles`, {
 			useCache: useCache,
 			params: {
