@@ -6,6 +6,7 @@ import Friend from "./Friend.js";
 import { AvatarImageSize, ItemTypes } from "../Types/Enums.js";
 import factory from "./Internal/factory.js";
 import AwardedBadge from "./AwardedBadge.js";
+import Group from "./Group.js";
 
 class User {
 	readonly client: WrapBlox;
@@ -93,36 +94,23 @@ class User {
 		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).find((entry) => entry.group.id === groupId)?.role)
 	};
 
+	async fetchPrimaryGroup(useCache = true): Promise<Group | undefined> {
+		const groupId = (await this.client.fetchHandler.fetch("GET", "Groups", `/users/${this.id}/groups/primary/role`))?.group.id;
+		if (!groupId) return undefined;
+
+		return await this.client.fetchGroup(groupId, useCache);
+	}
+
 	/*
 		Methods related to the Badges API
 		Docs: https://badges.roblox.com/docs/index.html
 	*/
 
-	//TODO: Rewrite to use fetchAll
 	async fetchBadges(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<AwardedBadge[]> {
 		const returnData = [] as AwardedBadge[];
-		let nextPageCursor = "NONE";
+		const rawData = await this.client.fetchHandler.fetchList("GET", "Badges", `/users/${this.id}/badges`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
-		loop: while (nextPageCursor) {
-			const request = await this.client.fetchHandler.fetch("GET", "Badges", `/users/${this.id}/badges`, {
-				useCache: useCache,
-				params: {
-					limit: 100,
-					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
-					sortOrder: sortOrder
-				}
-			})
-
-			for (const data of request.data) {
-				returnData.push(await factory.createAwardedBadge(this.client, data, this));
-
-				if (maxResults &&  returnData.length >= maxResults) {
-					break loop;
-				}
-			}
-
-			nextPageCursor = request.nextPageCursor
-		}
+		for (const data of rawData) returnData.push(await factory.createAwardedBadge(this.client, data, this));
 
 		return returnData;
 	};
@@ -254,12 +242,10 @@ class User {
 
 	//? Friends
 
-	//TODO: Rewrite to use fetchAll
 	async fetchFriends(maxResults?: number, useCache = true): Promise<Friend[]> {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to view someone's friend list.");
 
 		const returnData = [] as Friend[];
-
 		for (const friend of (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends`, { useCache: useCache })).data) {
 			returnData.push(await factory.createFriend(this.client, friend, this))
 			if (maxResults && returnData.length >= maxResults) break;
@@ -274,31 +260,11 @@ class User {
 
 	//? Followers
 
-	//TODO: Rewrite to use fetchAll
 	async fetchFollowers(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
-		let nextPageCursor = "NONE";
+		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followers`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
-		loop: while (nextPageCursor) {
-			const request = await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followers`, {
-				useCache: useCache,
-				params: {
-					limit: 100,
-					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
-					sortOrder: sortOrder
-				}
-			})
-
-			for (const user of request.data) {
-				returnData.push(await factory.createUser(this.client, user));
-
-				if (maxResults &&  returnData.length >= maxResults) {
-					break loop;
-				}
-			}
-
-			nextPageCursor = request.nextPageCursor
-		}
+		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
 
 		return returnData;
 	};
@@ -310,31 +276,11 @@ class User {
 
 	//? Followings
 
-	//TODO: Rewrite to use fetchAll
 	async fetchFollowings(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
-		let nextPageCursor = "NONE";
+		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followings`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
-		loop: while (nextPageCursor) {
-			const request = await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followings`, {
-				useCache: useCache,
-				params: {
-					limit: 100,
-					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
-					sortOrder: sortOrder
-				}
-			})
-
-			for (const user of request.data) {
-				returnData.push(await factory.createUser(this.client, user));
-
-				if (maxResults && returnData.length >= maxResults) {
-					break loop;
-				}
-			}
-
-			nextPageCursor = request.nextPageCursor
-		}
+		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
 
 		return returnData;
 	};

@@ -49,7 +49,6 @@ class FetchHandler {
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	fetch = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
-
 		let RealUrl = this.urls[url] + route;
 
 		if (opts.params) {
@@ -101,18 +100,20 @@ class FetchHandler {
 		return json;
 	};
 
-	//TODO: Rewrite to support all "page" requests (for example page requests in apis.roblox.com use diffrent param names).
-	fetchAll = async (method: HttpMethods, url: keyof typeof this.urls, route: string, params?: { [key: string | number]: unknown }) => {
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	fetchList = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
 			try {
-				const response = await this.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, params);
-				data.push(...response.data);
-				if (!response.nextPageCursor) {
+				const response = await this.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}&pageToken=${cursor}` : ""}`, opts);
+				if (response.data) data.push(...response.data);
+				if (response.userRestrictions) data.push(...response.userRestrictions);
+
+				if (!(response.nextPageCursor || response.nextPageToken) || data.length >= maxResults) {
 					break;
 				}
-				cursor = response.nextPageCursor;
+				cursor = response.nextPageCursor || response.nextPageToken;
 			} catch (e) {
 				if (e instanceof FetchError) {
 					if (e.code === 429) {
