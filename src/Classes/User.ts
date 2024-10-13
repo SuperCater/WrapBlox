@@ -35,7 +35,7 @@ class User {
 		this.isBanned = rawData.isBanned;
 		this.joinDate = new Date(rawData.created);
 
-		this.accountAge = Math.ceil(Math.abs(new Date().getTime() - new Date(rawData.created).getTime()) / (1000 * 60 * 60 * 24));
+		this.accountAge = Math.ceil(Math.abs(new Date().getTime() - this.joinDate.getTime()) / (1000 * 60 * 60 * 24));
 	}
 
 	/*
