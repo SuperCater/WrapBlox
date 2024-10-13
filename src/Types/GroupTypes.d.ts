@@ -1,20 +1,93 @@
 import { IntRange } from "./BaseTypes.js"
+import { GroupOwnerType } from "./Enums.ts"
 
-export type RawShout = {
-	body : string,
-	poster : {
-		buildersClubMembershipType : number,
-		hasVerifiedBadge : boolean,
-		userId : number,
-		username : string,
-		displayName : string,
+export type RawGroupData = {
+	id: number,
+	name: string,
+	description: string,
+	owner: {
+		id: number,
+		type: GroupOwnerType,
+		name: string
 	},
-	created : string,
-	updated : string,
-}
+	memberCount: number,
+	created: string,
+	hasVerifiedBadge: boolean
+};
 
 export type Role = {
 	id: number,
 	name: string,
 	rank: IntRange<1, 256>
-}
+};
+
+export type GroupAuditLog = {
+  actor: {
+    user: {
+      buildersClubMembershipType: number;
+      hasVerifiedBadge: boolean;
+      userId: number;
+      username: string;
+      displayName: string;
+    },
+    role: {
+      id: number;
+      name: string;
+      description: string;
+      rank: number;
+      memberCount: number;
+    },
+  },
+  actionType: GroupActionType,
+  description: object,
+  created: Date
+};
+
+export type GroupActionType =
+  | "DeletePost"
+  | "RemoveMember"
+  | "AcceptJoinRequest"
+  | "DeclineJoinRequest"
+  | "PostStatus"
+  | "ChangeRank"
+  | "BuyAd"
+  | "SendAllyRequest"
+  | "CreateEnemy"
+  | "AcceptAllyRequest"
+  | "DeclineAllyRequest"
+  | "DeleteAlly"
+  | "DeleteEnemy"
+  | "AddGroupPlace"
+  | "RemoveGroupPlace"
+  | "CreateItems"
+  | "ConfigureItems"
+  | "SpendGroupFunds"
+  | "ChangeOwner"
+  | "Delete"
+  | "AdjustCurrencyAmounts"
+  | "Abandon"
+  | "Claim"
+  | "Rename"
+  | "ChangeDescription"
+  | "InviteToClan"
+  | "KickFromClan"
+  | "CancelClanInvite"
+  | "BuyClan"
+  | "CreateGroupAsset"
+  | "UpdateGroupAsset"
+  | "ConfigureGroupAsset"
+  | "RevertGroupAsset"
+  | "CreateGroupDeveloperProduct"
+  | "ConfigureGroupGame"
+  | "CreateGroupDeveloperSubscriptionProduct"
+  | "Lock"
+  | "Unlock"
+  | "CreateGamePass"
+  | "CreateBadge"
+  | "ConfigureBadge"
+  | "SavePlace"
+  | "PublishPlace"
+  | "UpdateRolesetRank"
+  | "UpdateRolesetData"
+  | "BanMember"
+  | "UnbanMember";
