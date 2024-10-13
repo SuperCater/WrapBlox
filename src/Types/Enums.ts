@@ -1,4 +1,4 @@
-export enum AvatarSize {
+export enum AvatarImageSize {
 	"30x30" = "30x30",
 	"48x48" = "48x48",
 	"60x60" = "60x60",
@@ -13,6 +13,10 @@ export enum AvatarSize {
 	"352x352" = "352x352",
 	"420x420" = "420x420",
 	"720x720" = "720x720",
+}
+
+export enum BadgeImageSize {
+	"150x150" = "150x150",
 }
 
 export enum ItemTypes {

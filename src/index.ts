@@ -3,6 +3,7 @@ import FetchHandler from "./Classes/Internal/fetchHandler.js";
 import type { RawUserData } from "./Types/UserTypes.js";
 import AuthedUser from "./Classes/AuthedUser.js";
 import type { APIGameData } from "./Types/GameTypes.js";
+import Badge from "./Classes/Badge.js";
 
 export { User }
 
@@ -50,6 +51,16 @@ class WrapBlox {
 		const rawData = await this.fetchRawUser(userId, usecache);
 		return new User(this, rawData);
 	}
+
+	fetchRawBadge = async (badgeId: number, useCache = true) => {
+		return await this.fetchHandler.fetch("GET", "Badges", `/badges/${badgeId}`)
+	}
+
+	fetchBadge = async (badgeId: number, useCache = true) => {
+		const rawData = await this.fetchRawBadge(badgeId, useCache);
+		return new Badge(this, rawData);
+	}
+
 	/**
 	 * Get the user object of a user by their username
 	 * @param username The username of the user to fetch
