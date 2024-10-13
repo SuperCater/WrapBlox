@@ -94,7 +94,7 @@ class User {
 		Docs: https://badges.roblox.com/docs/index.html
 	*/
 
-	async fetchBadges(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<AwardedBadge[]> {
+	async fetchBadges(sortOrder: SortOrder = "Asc", maxResults?: number, useCache = true): Promise<AwardedBadge[]> {
 		const returnData = [] as AwardedBadge[];
 		const rawData = await this.client.fetchHandler.fetchList("GET", "Badges", `/users/${this.id}/badges`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
@@ -248,7 +248,7 @@ class User {
 
 	//? Followers
 
-	async fetchFollowers(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
+	async fetchFollowers(sortOrder: SortOrder = "Asc", maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followers`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
@@ -264,7 +264,7 @@ class User {
 
 	//? Followings
 
-	async fetchFollowings(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<User[]> {
+	async fetchFollowings(sortOrder: SortOrder = "Asc", maxResults?: number, useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followings`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
