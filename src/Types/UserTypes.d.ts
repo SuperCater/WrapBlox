@@ -57,7 +57,8 @@ export type BirthData = {
 	birthYear : number,
 }
 
-export type AvatarImageType = "Png" | "Jpeg" | "WebP";
+export type AvatarImageFormat = "Png" | "Jpeg" | "Webp";
+export type AvatarBustImageFormat = "Png" | "Webp"
 export type AvatarType = "R6" | "R15"
 export type AvatarAssetType =
  | "Gear"
@@ -92,6 +93,37 @@ export type AvatarAssetType =
  | "IdleAnimation"
  | "SwimAnimation"
  | "ClimbAnimation"
+
+ export type Avatar3D = {
+	camera: {
+		position: {
+		  x: number;
+		  y: number;
+		  z: number;
+		};
+		direction: {
+		  x: number;
+		  y: number;
+		  z: number;
+		};
+		fov: number;
+	  };
+	  aabb: {
+		min: {
+		  x: number;
+		  y: number;
+		  z: number;
+		};
+		max: {
+		  x: number;
+		  y: number;
+		  z: number;
+		};
+	  };
+	  mtl: string;
+	  obj: string;
+	  textures: string[];
+ }
 
  export type AvatarAsset = {
 	id: number,

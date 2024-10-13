@@ -1,10 +1,11 @@
-import type { AvatarImageType, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2, FriendServiceMetadata } from "../Types/UserTypes.js";
+import type { AvatarImageFormat, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2, FriendServiceMetadata, AvatarBustImageFormat, Avatar3D } from "../Types/UserTypes.js";
 import type WrapBlox from "../index.js";
-import type { OwnedItem, Role, SortOrder } from "../index.js";
+import { AvatarBustImageSize, OwnedItem, Role, SortOrder } from "../index.js";
 
 import Friend from "./Friend.js";
-import { AvatarSize, ItemTypes } from "../Types/Enums.js";
+import { AvatarImageSize, ItemTypes } from "../Types/Enums.js";
 import factory from "./Internal/factory.js";
+import AwardedBadge from "./AwardedBadge.js";
 
 class User {
 	readonly client: WrapBlox;
@@ -91,6 +92,47 @@ class User {
 	async getRoleInGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<Role | undefined> {
 		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).find((entry) => entry.group.id === groupId)?.role)
 	}
+
+	/*
+		Methods related to the Badges API
+		Docs: https://badges.roblox.com/docs/index.html
+	*/
+
+	//TODO: Rewrite to use fetchAll
+	async fetchBadges(sortOrder: SortOrder, maxResults?: number, useCache = true): Promise<AwardedBadge[]> {
+		const returnData = [] as AwardedBadge[];
+		let nextPageCursor = "NONE";
+
+		loop: while (nextPageCursor) {
+			const request = await this.client.fetchHandler.fetch("GET", "Badges", `/users/${this.id}/badges`, {
+				useCache: useCache,
+				params: {
+					limit: 100,
+					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
+					sortOrder: sortOrder
+				}
+			})
+
+			for (const data of request.data) {
+				returnData.push(await factory.createAwardedBadge(this.client, data, this));
+
+				if (maxResults &&  returnData.length >= maxResults) {
+					break loop;
+				}
+			}
+
+			nextPageCursor = request.nextPageCursor
+		}
+
+		return returnData;
+	}
+
+	async fetchBadgeAwardDate(badgeId: number, useCache = true): Promise<Date | undefined> {
+		const rawDate = (await this.client.fetchHandler.fetch("GET", "Badges", `/users/${this.id}/badges/${badgeId}/awarded-date`, { useCache: useCache }))?.awardedDate
+		if (!rawDate) return undefined;
+
+		return new Date(rawDate)
+	}
 	
 	/*
 		Methods related to the Inventory API
@@ -147,7 +189,7 @@ class User {
 		Docs: https://thumbnails.roblox.com/docs/index.html
 	*/
 
-	async fetchUserAvatarThumbnailUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageType = "Png", isCircular = false, useCache = true): Promise<string> {
+	async fetchAvatarThumbnailUrl(size: AvatarImageSize = AvatarImageSize["150x150"], format: AvatarImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar", {
 			useCache: useCache,
 			params: {
@@ -159,7 +201,32 @@ class User {
 		})).data[0].imageUrl;
 	}
 
-	async fetchUserHeadshotUrl(size: AvatarSize = AvatarSize["150x150"], format: AvatarImageType = "Png", isCircular = false, useCache = true): Promise<string> {
+	async fetchAvatar3D(useCache = true): Promise<Avatar3D> {
+		const jsonUrl = (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-3d", {
+			useCache: useCache,
+			params: {
+				userId: this.id
+			}
+		})).imageUrl;
+
+		return (await fetch(jsonUrl, {
+			method: "GET"
+		})).json()
+	}
+
+	async fetchAvatarBustUrl(size: AvatarBustImageSize = AvatarBustImageSize["150x150"], format: AvatarBustImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
+		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-bust", {
+			useCache: useCache,
+			params: {
+				userIds: [this.id],
+				size: size,
+				format: format,
+				isCircular: isCircular,
+			}
+		})).data[0].imageUrl;
+	}
+
+	async fetchAvatarHeadshotUrl(size: AvatarImageSize = AvatarImageSize["150x150"], format: AvatarImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-headshot", {
 			useCache: useCache,
 			params: {
@@ -176,7 +243,7 @@ class User {
 		Docs: https://friends.roblox.com/docs/index.html
 	*/
 
-	async fetchFriendServiceMetadata(useCache = true): Promise<FriendServiceMetadata> {
+	async fetchFriendsMetadata(useCache = true): Promise<FriendServiceMetadata> {
 		return await this.client.fetchHandler.fetch("GET", "Friends", "/metadata", {
 			useCache: useCache,
 			params: {

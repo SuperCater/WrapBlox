@@ -1,3 +1,4 @@
+import AwardedBadge from "../src/Classes/AwardedBadge.js";
 import Friend from "../src/Classes/Friend.js";
 import FetchError from "../src/Classes/Internal/FetchError.js";
 import WrapBlox, { ItemTypes, User } from "../src/index.js";
@@ -59,6 +60,27 @@ test("getRoleInGroup", async () => {
 	const role = await user.getRoleInGroup(33991282);
 
 	console.log("Role in group [Purple Robotics, LLC]:\n", role);
+})
+
+/*
+	Methods related to the Badges API
+	Docs: https://badges.roblox.com/docs/index.html
+*/
+
+test("fetchBadges", async () => {
+	const user = await client.fetchUser(userId);
+	const badges = await user.fetchBadges("Asc", 1);
+
+	console.log(`Fetched [${badges.length}] awarded badges\n:`, badges.map((data: AwardedBadge) => data.toString()).join("\n"))
+
+	expect(badges).toBeDefined();
+})
+
+test("fetchBadgeAwardDate", async () => {
+	const user = await client.fetchUser(userId);
+	const date = await user.fetchBadgeAwardDate(2124445684);
+
+	console.log(`Badge awarded at: ${date?.toDateString()}`)
 })
 
 /*
@@ -146,18 +168,36 @@ test("fetchAvatarV2", async () => {
 	Docs: https://thumbnails.roblox.com/docs/index.html
 */
 
-test("fetchUserAvatarThumbnailUrl", async () => {
+test("fetchAvatarThumbnailUrl", async () => {
 	const user = await client.fetchUser(userId);
-	const imageUrl = await user.fetchUserAvatarThumbnailUrl();
+	const imageUrl = await user.fetchAvatarThumbnailUrl();
 
 	console.log(`Fetched imageUrl for Avatar Thumbnail:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
 })
 
-test("fetchUserHeadshotUrl", async () => {
+test("fetchAvatar3D", async () => {
 	const user = await client.fetchUser(userId);
-	const imageUrl = await user.fetchUserHeadshotUrl();
+	const data = await user.fetchAvatar3D();
+
+	console.log("Fetched imageUrl for Avatar 3D:\n", data);
+
+	expect(data).toBeDefined();
+})
+
+test("fetchAvatarBustUrl", async () => {
+	const user = await client.fetchUser(userId);
+	const imageUrl = await user.fetchAvatarBustUrl();
+
+	console.log(`Fetched imageUrl for Avatar Bust:\n${imageUrl}`);
+
+	expect(imageUrl).toBeDefined();
+})
+
+test("fetchAvatarHeadshotUrl", async () => {
+	const user = await client.fetchUser(userId);
+	const imageUrl = await user.fetchAvatarHeadshotUrl();
 
 	console.log(`Fetched imageUrl for Avatar Headshot:\n${imageUrl}`);
 
@@ -169,11 +209,11 @@ test("fetchUserHeadshotUrl", async () => {
 	Docs: https://friends.roblox.com/docs/index.html
 */
 
-test("fetchFriendServiceMetadata", async () => {
+test("fetchFriendsMetadata", async () => {
 	const user = await client.fetchUser(userId);
-	const metadata = await user.fetchFriendServiceMetadata();
+	const metadata = await user.fetchFriendsMetadata();
 
-	console.log("Fetched friend metadata:\n",metadata);
+	console.log("Fetched friends metadata:\n",metadata);
 
 	expect(metadata).toBeDefined();
 })
