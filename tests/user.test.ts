@@ -87,7 +87,7 @@ test("fetchGroups", async () => {
 */
 
 test("fetchBadges", async () => {
-	const badges = await preFetchedUser.fetchBadges("Asc", 1);
+	const badges = await preFetchedUser.fetchBadges(1);
 
 	console.log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: AwardedBadge) => data.toString()).join("\n"));
 
@@ -258,7 +258,7 @@ test("fetchUserFriendCount", async () => {
 
 test("fetchUserFollowers", async () => {
 	const user = await client.fetchUser(userId);
-	const users = await preFetchedUser.fetchFollowers("Asc", 10)
+	const users = await preFetchedUser.fetchFollowers(10)
 
 	console.log(`Fetched [${users.length}] followers:\n`,users.map((data: User) => data.toString()).join("\n"))
 
@@ -278,7 +278,7 @@ test("fetchUserFollowerCount", async () => {
 
 test("fetchUserFollowings", async () => {
 	const user = await client.fetchUser(userId);
-	const users = await preFetchedUser.fetchFollowings("Asc", 10)
+	const users = await preFetchedUser.fetchFollowings(10)
 
 	console.log(`Fetched [${users.length}] followings:\n`,users.map((data: User) => data.toString()).join("\n"))
 

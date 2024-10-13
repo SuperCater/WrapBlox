@@ -18,7 +18,7 @@ test("login", async () => {
 
 test("fetchAwardedDate", async () => {
     const user = await client.fetchUser(2897964600)
-    const badges = await user.fetchBadges("Asc", 1);
+    const badges = await user.fetchBadges(1);
     const badge = badges[0];
     const date = await badge.fetchAwardedDate();
 

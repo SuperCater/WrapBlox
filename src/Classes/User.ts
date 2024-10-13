@@ -94,7 +94,7 @@ class User {
 		Docs: https://badges.roblox.com/docs/index.html
 	*/
 
-	async fetchBadges(sortOrder: SortOrder = "Asc", maxResults?: number, useCache = true): Promise<AwardedBadge[]> {
+	async fetchBadges(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<AwardedBadge[]> {
 		const returnData = [] as AwardedBadge[];
 		const rawData = await this.client.fetchHandler.fetchList("GET", "Badges", `/users/${this.id}/badges`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
@@ -230,7 +230,7 @@ class User {
 
 	//? Friends
 
-	async fetchFriends(maxResults?: number, useCache = true): Promise<Friend[]> {
+	async fetchFriends(maxResults = 100, useCache = true): Promise<Friend[]> {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to view someone's friend list.");
 
 		const returnData = [] as Friend[];
@@ -248,7 +248,7 @@ class User {
 
 	//? Followers
 
-	async fetchFollowers(sortOrder: SortOrder = "Asc", maxResults?: number, useCache = true): Promise<User[]> {
+	async fetchFollowers(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followers`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
@@ -264,7 +264,7 @@ class User {
 
 	//? Followings
 
-	async fetchFollowings(sortOrder: SortOrder = "Asc", maxResults?: number, useCache = true): Promise<User[]> {
+	async fetchFollowings(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
 		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followings`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
