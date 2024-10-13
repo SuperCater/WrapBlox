@@ -44,31 +44,8 @@ class User {
 		Docs: https://users.roblox.com/docs/index.html
 	*/
 
-	async fetchUsernameHistory(maxResults?: number, useCache = true): Promise<string[]> {
-		const returnData = [] as string[];
-		let nextPageCursor = "NONE";
-
-		loop: while (nextPageCursor) {
-			const request = await this.client.fetchHandler.fetch("GET", "Users", `/users/${this.id}/username-history`, {
-				useCache: useCache,
-				params: {
-					limit: 100,
-					cursor: nextPageCursor !== "NONE" && nextPageCursor || undefined,
-				}
-			})
-
-			for (const entry of request.data) {
-				returnData.push(entry.name);
-
-				if (maxResults && returnData.length >= maxResults) {
-					break loop;
-				}
-			}
-
-			nextPageCursor = request.nextPageCursor
-		}
-
-		return returnData;
+	async fetchUsernameHistory(maxResults = 100, useCache = true): Promise<string[]> {
+		return (await this.client.fetchHandler.fetchList("GET", "Users", `/users/${this.id}/username-history`, { useCache: useCache }, maxResults)).map((name: {name: string}) => name.name);
 	};
 
 	/*
