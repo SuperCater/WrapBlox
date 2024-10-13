@@ -26,10 +26,13 @@ test("login", async () => {
 */
 
 test("fetchUser", async () => {
-	const user = await client.fetchUser(userId);
+	const userbyId = await client.fetchUser(userId);
+	const userbyName = await client.fetchUser("Purple_Creativity");
 
-	console.log(`Fetched user:\n${user}`)
-	expect(user).toBeDefined();
+	console.log(`Fetched users: ${userbyId.toString()}, ${userbyName.toString()}`);
+
+	expect(userbyId).toBeDefined();
+	expect(userbyName).toBeDefined();
 });
 
 test("fetchUsernameHistory", async () => {

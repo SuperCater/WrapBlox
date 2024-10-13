@@ -65,15 +65,8 @@ class WrapBlox {
 		return await this.fetchRawUser(userId, useCache);
 	}
 	
-	fetchUser = async (userId : number, useCache = true): Promise<User> => {
-		const rawData = await this.fetchRawUser(userId, useCache);
-		if (!rawData) throw new Error("User not found");
-
-		return new User(this, rawData);
-	}
-
-	searchUser = async (username: string, useCache = true): Promise<User> => {
-		const rawData = await this.fetchRawUser(username, useCache);
+	fetchUser = async (query : string | number, useCache = true): Promise<User> => {
+		const rawData = await this.fetchRawUser(query, useCache);
 		if (!rawData) throw new Error("User not found");
 
 		return new User(this, rawData);
@@ -114,15 +107,8 @@ class WrapBlox {
 		return await this.fetchRawGroup(groupId, useCache);
 	};
 
-	fetchGroup = async (groupId: number, useCache = true): Promise<Group> => {
-		const rawData = await this.fetchRawGroup(groupId, useCache);
-		if (!rawData) throw new Error("Group not found");
-
-		return new Group(this, rawData);
-	};
-
-	searchGroup = async (groupName: string, useCache = true): Promise<Group> => {
-		const rawData = await this.fetchRawGroup(groupName, useCache);
+	fetchGroup = async (query: string | number, useCache = true): Promise<Group> => {
+		const rawData = await this.fetchRawGroup(query, useCache);
 		if (!rawData) throw new Error("Group not found");
 
 		return new Group(this, rawData);
