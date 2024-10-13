@@ -4,6 +4,9 @@ import type { RawUserData } from "./Types/UserTypes.js";
 import AuthedUser from "./Classes/AuthedUser.js";
 import type { APIGameData } from "./Types/GameTypes.js";
 import Badge from "./Classes/Badge.js";
+import { RawGroupData } from "./Types/GroupTypes.js";
+import Group from "./Classes/Group.js";
+import { RawBadgeData } from "./Types/BadgeTypes.js";
 
 export { User }
 
@@ -25,82 +28,6 @@ class WrapBlox {
 		this.fetchHandler = new FetchHandler();
 	}
 	
-	/**
-	 * 
-	 */
-	
-	isLoggedIn = () : this is {self : AuthedUser} => {
-		return this.self !== null;
-	}
-	
-	/**
-	 * Get the raw data of a user
-	 * @param userId The ID of the user to fetch
-	 * @returns The raw data of the user
-	 */
-	fetchRawUser = async (userId : number, usecache = true) : Promise<RawUserData> => {
-		return await this.fetchHandler.fetch('GET', 'Users', `/users/${userId}`, { useCache: usecache });
-	}
-	
-	/**
-	 * Gets the user object of a user
-	 * @param userId The ID of the user to fetch
-	 * @returns The user object
-	 */
-	fetchUser = async (userId : number, usecache = true) => {
-		const rawData = await this.fetchRawUser(userId, usecache);
-		return new User(this, rawData);
-	}
-
-	fetchRawBadge = async (badgeId: number, useCache = true) => {
-		return await this.fetchHandler.fetch("GET", "Badges", `/badges/${badgeId}`)
-	}
-
-	fetchBadge = async (badgeId: number, useCache = true) => {
-		const rawData = await this.fetchRawBadge(badgeId, useCache);
-		return new Badge(this, rawData);
-	}
-
-	/**
-	 * Get the user object of a user by their username
-	 * @param username The username of the user to fetch
-	 * @returns The user object
-	 */
-	fetchUserByName = async (username : string, usecache = true) => {
-		// const rawData = (await this.fetchHandler.fetch('POST', 'Users', "/usernames/users", undefined, {usernames: [username]})).data[0];
-		const rawData = (await this.fetchHandler.fetch("POST", "Users", "/usernames/users", {
-			body: {
-				usernames: [username]
-			}
-		})).data[0];
-		if (!rawData) throw new Error("User not found");
-		return await this.fetchUser(rawData.id, usecache);
-	}
-	/**
-	 * Get the raw data of a group
-	 * @param groupId The ID of the group to fetch
-	 * @returns The raw data of the group
-	 */
-	//fetchRawGroup = async (groupId : number, usecache = true) : Promise<RawGroupData> => {
-	//	return await this.fetchHandler.fetch('GET', 'Groups', `/groups/${groupId}`, {usecache});
-	//}
-	
-	/**
-	 * Get the group object of a group
-	 * @param groupId The ID of the group to fetch
-	 * @returns The group object
-	 */
-	//fetchGroup = async (groupId : number, usecache = true) => {
-	//	const rawData = await this.fetchRawGroup(groupId, usecache);
-	//	return new Group(this, rawData);
-	//}
-	
-	/**
-	 * Logs in with a cookie, and sets the client's self to the logged in user
-	 * @param cookie The cookie to log in with
-	 * @returns The user object of the logged in user
-	 */
-	
 	login = async (cookie : string) => {
 		this.fetchHandler.cookie = cookie;
 		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/users/authenticated');
@@ -108,40 +35,113 @@ class WrapBlox {
 		this.self = new AuthedUser(this, realUserData, cookie);
 		return this.self;
 	}
-	
-	/**
-	 * Similar to login, but does not set the client's self to the logged in user
-	 * @param cookie The cookie to log in with
-	 * @returns The user object of the logged in user
-	 */
+
 	fetchAuthedUser = async (cookie : string) => {
 		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/users/authenticated', {cookie});
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		return new AuthedUser(this, realUserData, cookie);
 	}
+
+	isLoggedIn = () : this is {self : AuthedUser} => {
+		return this.self !== null;
+	}
 	
-	fetchRawGame = async (universeID : number) : Promise<APIGameData> => {
-		return (await this.fetchHandler.fetch('GET', 'Games', "/games", {
+	//? Users
+
+	private fetchRawUser = async (query : string | number, useCache = true) : Promise<RawUserData> => {
+		if (typeof(query) === "number") {
+			return await this.fetchHandler.fetch('GET', 'Users', `/users/${query}`, { useCache: useCache });
+		}
+
+		const userId = (await this.fetchHandler.fetch("POST", "Users", "/usernames/users", {
+			useCache: useCache,
+			body: {
+				usernames: [query],
+				excludeBannedUsers: false
+			}
+		})).data[0]?.id;
+		if (!userId) throw new Error("User not found");
+
+		return await this.fetchRawUser(userId, useCache);
+	}
+	
+	fetchUser = async (userId : number, useCache = true): Promise<User> => {
+		const rawData = await this.fetchRawUser(userId, useCache);
+		if (!rawData) throw new Error("User not found");
+
+		return new User(this, rawData);
+	}
+
+	searchUser = async (username: string, useCache = true): Promise<User> => {
+		const rawData = await this.fetchRawUser(username, useCache);
+		if (!rawData) throw new Error("User not found");
+
+		return new User(this, rawData);
+	}
+
+	//? Badges
+
+	private fetchRawBadge = async (badgeId: number, useCache = true): Promise<RawBadgeData> => {
+		return await this.fetchHandler.fetch("GET", "Badges", `/badges/${badgeId}`, { useCache: useCache });
+	};
+
+	fetchBadge = async (badgeId: number, useCache = true): Promise<Badge> => {
+		const rawData = await this.fetchRawBadge(badgeId, useCache);
+		return new Badge(this, rawData);
+	};
+
+	//? Groups
+
+	private fetchRawGroup = async (query: string | number, useCache = true): Promise<RawGroupData> => {
+		if (typeof(query) === "number") {
+			return (await this.fetchHandler.fetch("GET", "GroupsV2", "/groups", {
+				useCache: useCache,
+				params: {
+					groupIds: [query]
+				}
+			})).data[0];
+		}
+
+		const groupId = (await this.fetchHandler.fetch("GET", "Groups", "/groups/search/lookup", {
+			useCache: useCache,
 			params: {
-				universeIds: [universeID]
+				groupName: query
+			}
+		}))?.data[0]?.id;
+
+		if (!groupId) throw new Error("No results found");
+
+		return await this.fetchRawGroup(groupId, useCache);
+	};
+
+	fetchGroup = async (groupId: number, useCache = true): Promise<Group> => {
+		const rawData = await this.fetchRawGroup(groupId, useCache);
+		if (!rawData) throw new Error("Group not found");
+
+		return new Group(this, rawData);
+	};
+
+	searchGroup = async (groupName: string, useCache = true): Promise<Group> => {
+		const rawData = await this.fetchRawGroup(groupName, useCache);
+		if (!rawData) throw new Error("Group not found");
+
+		return new Group(this, rawData);
+	};
+
+	//? Games
+	
+	private fetchRawGame = async (universeId : number, useCache = true) : Promise<APIGameData> => {
+		return (await this.fetchHandler.fetch('GET', 'Games', "/games", {
+			useCache: useCache,
+			params: {
+				universeIds: [universeId]
 			}
 		})).data[0];
-	}
+	};
 	
 	//fetchGame = async (universeID : number) => {
 	//	const rawData = await this.fetchRawGame(universeID);
 	//	return new Game(this, rawData);
-	//}
-	
-	
-	//searchGroups =  async (query : string) : Promise<APIGroupLookup[]> => {
-	//	const rawData = (await this.fetchHandler.fetch('GET', 'Groups', "/groups/search/lookup", {params: {groupName : query}})).data;
-	//	return rawData
-	//}
-	
-	//searchUsers = async(query : string, limit = 10): Promise<APIUserLookup[]> => {
-	//	const rawData = (await this.fetchHandler.fetch('GET', 'Users', "/users/search", {params: {keyword : query, limit}})).data;
-	//	return rawData;
 	//}
 }
 
