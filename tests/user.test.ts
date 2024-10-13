@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const client = new WrapBlox();
+let preFetchedUser: User;
 const userId = 2897964600;
 
 test("login", async () => {
@@ -30,6 +31,7 @@ test("fetchUser", async () => {
 	const userbyId = await client.fetchUser(userId);
 	const userbyName = await client.fetchUser("Purple_Creativity");
 
+	preFetchedUser = userbyId;
 	console.log(`Fetched users: ${userbyId.toString()}, ${userbyName.toString()}`);
 
 	expect(userbyId).toBeDefined();
@@ -37,8 +39,7 @@ test("fetchUser", async () => {
 });
 
 test("fetchUsernameHistory", async () => {
-	const user = await client.fetchUser(userId);
-	const usernameHistory = await user.fetchUsernameHistory();
+	const usernameHistory = await preFetchedUser.fetchUsernameHistory();
 
 	console.log(`Fetched username history:\n${usernameHistory}`)
 
@@ -51,8 +52,7 @@ test("fetchUsernameHistory", async () => {
 */
 
 test("inGroup", async () => {
-	const user = await client.fetchUser(userId);
-	const boolean = await user.inGroup(33991282);
+	const boolean = await preFetchedUser.inGroup(33991282);
 
 	console.log(`In group [Purple Robotics, LLC]: ${boolean}`);
 
@@ -60,15 +60,13 @@ test("inGroup", async () => {
 });
 
 test("getRoleInGroup", async () => {
-	const user = await client.fetchUser(userId);
-	const role = await user.getRoleInGroup(33991282);
+	const role = await preFetchedUser.getRoleInGroup(33991282);
 
 	console.log("Role in group [Purple Robotics, LLC]:\n", role);
 });
 
 test("fetchPrimaryGroup", async () => {
-	const user = await client.fetchUser(userId);
-	const primaryGroup = await user.fetchPrimaryGroup();
+	const primaryGroup = await preFetchedUser.fetchPrimaryGroup();
 
 	console.log(`Primary group: ${primaryGroup?.toString()}`);
 
@@ -76,8 +74,7 @@ test("fetchPrimaryGroup", async () => {
 });
 
 test("fetchGroups", async () => {
-	const user = await client.fetchUser(userId);
-	const groups = await user.fetchGroups();
+	const groups = await preFetchedUser.fetchGroups();
 
 	console.log(`Fetched [${groups.length}] groups:\n`, groups.map((data: Group) => data.toString()).join("\n"));
 
@@ -90,8 +87,7 @@ test("fetchGroups", async () => {
 */
 
 test("fetchBadges", async () => {
-	const user = await client.fetchUser(userId);
-	const badges = await user.fetchBadges("Asc", 1);
+	const badges = await preFetchedUser.fetchBadges("Asc", 1);
 
 	console.log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: AwardedBadge) => data.toString()).join("\n"));
 
@@ -99,8 +95,7 @@ test("fetchBadges", async () => {
 });
 
 test("fetchBadgeAwardDate", async () => {
-	const user = await client.fetchUser(userId);
-	const date = await user.fetchBadgeAwardDate(2124445684);
+	const date = await preFetchedUser.fetchBadgeAwardDate(2124445684);
 
 	console.log(`Badge awarded at: ${date?.toDateString()}`)
 });
@@ -111,8 +106,7 @@ test("fetchBadgeAwardDate", async () => {
 */
 
 test("canViewInventory", async () => {
-	const user = await client.fetchUser(userId);
-	const canView = await user.canViewInventory();
+	const canView = await preFetchedUser.canViewInventory();
 
 	console.log(`Can view inventory: ${canView}`);
 
@@ -120,8 +114,7 @@ test("canViewInventory", async () => {
 });
 
 test("ownsAsset", async () => {
-	const user = await client.fetchUser(userId);
-	const bool = await user.ownsAsset(ItemTypes.GamePass, 776368);
+	const bool = await preFetchedUser.ownsAsset(ItemTypes.GamePass, 776368);
 
 	console.log(`Owns asset: ${bool}`);
 
@@ -129,8 +122,7 @@ test("ownsAsset", async () => {
 });
 
 test("ownsBadge", async () => {
-	const user = await client.fetchUser(userId);
-	const bool = await user.ownsBadge(150538398);
+	const bool = await preFetchedUser.ownsBadge(150538398);
 
 	console.log(`Owns Badge: ${bool}`);
 
@@ -138,8 +130,7 @@ test("ownsBadge", async () => {
 });
 
 test("ownsGamepass", async () => {
-	const user = await client.fetchUser(userId);
-	const bool = await user.ownsGamepass(776368);
+	const bool = await preFetchedUser.ownsGamepass(776368);
 
 	console.log(`Owns Gamepass: ${bool}`);
 
@@ -147,8 +138,7 @@ test("ownsGamepass", async () => {
 });
 
 test("ownsBundle", async () => {
-	const user = await client.fetchUser(userId);
-	const bool = await user.ownsBundle(201);
+	const bool = await preFetchedUser.ownsBundle(201);
 
 	console.log(`Owns Bundle: ${bool}`);
 
@@ -157,7 +147,7 @@ test("ownsBundle", async () => {
 
 test("getOwnedAsset", async () => {
 	const user = await client.fetchUser(userId);
-	const asset = await user.getOwnedAsset(ItemTypes.GamePass, 776368)
+	const asset = await preFetchedUser.getOwnedAsset(ItemTypes.GamePass, 776368)
 
 	console.log("Owned asset:\n",asset)
 });
@@ -169,7 +159,7 @@ test("getOwnedAsset", async () => {
 
 test("fetchAvatarV1", async () => {
 	const user = await client.fetchUser(userId);
-	const avatar = await user.fetchAvatarV1();
+	const avatar = await preFetchedUser.fetchAvatarV1();
 
 	console.log("User AvatarV1:\n",avatar)
 
@@ -178,7 +168,7 @@ test("fetchAvatarV1", async () => {
 
 test("fetchAvatarV2", async () => {
 	const user = await client.fetchUser(userId);
-	const avatar = await user.fetchAvatarV2();
+	const avatar = await preFetchedUser.fetchAvatarV2();
 
 	console.log("User AvatarV2:\n",avatar)
 
@@ -192,7 +182,7 @@ test("fetchAvatarV2", async () => {
 
 test("fetchAvatarThumbnailUrl", async () => {
 	const user = await client.fetchUser(userId);
-	const imageUrl = await user.fetchAvatarThumbnailUrl();
+	const imageUrl = await preFetchedUser.fetchAvatarThumbnailUrl();
 
 	console.log(`Fetched imageUrl for Avatar Thumbnail:\n${imageUrl}`);
 
@@ -201,7 +191,7 @@ test("fetchAvatarThumbnailUrl", async () => {
 
 test("fetchAvatar3D", async () => {
 	const user = await client.fetchUser(userId);
-	const data = await user.fetchAvatar3D();
+	const data = await preFetchedUser.fetchAvatar3D();
 
 	console.log("Fetched imageUrl for Avatar 3D:\n", data);
 
@@ -210,7 +200,7 @@ test("fetchAvatar3D", async () => {
 
 test("fetchAvatarBustUrl", async () => {
 	const user = await client.fetchUser(userId);
-	const imageUrl = await user.fetchAvatarBustUrl();
+	const imageUrl = await preFetchedUser.fetchAvatarBustUrl();
 
 	console.log(`Fetched imageUrl for Avatar Bust:\n${imageUrl}`);
 
@@ -219,7 +209,7 @@ test("fetchAvatarBustUrl", async () => {
 
 test("fetchAvatarHeadshotUrl", async () => {
 	const user = await client.fetchUser(userId);
-	const imageUrl = await user.fetchAvatarHeadshotUrl();
+	const imageUrl = await preFetchedUser.fetchAvatarHeadshotUrl();
 
 	console.log(`Fetched imageUrl for Avatar Headshot:\n${imageUrl}`);
 
@@ -233,7 +223,7 @@ test("fetchAvatarHeadshotUrl", async () => {
 
 test("fetchFriendsMetadata", async () => {
 	const user = await client.fetchUser(userId);
-	const metadata = await user.fetchFriendsMetadata();
+	const metadata = await preFetchedUser.fetchFriendsMetadata();
 
 	console.log("Fetched friends metadata:\n",metadata);
 
@@ -248,7 +238,7 @@ test("fetchUserFriends", async () => {
 	}
 
 	const user = await client.fetchUser(userId);
-	const users = await user.fetchFriends();
+	const users = await preFetchedUser.fetchFriends();
 
 	console.log(`Fetched [${users.length}] friends:\n`,users.map((data: Friend) => data.toString()).join("\n"))
 
@@ -258,7 +248,7 @@ test("fetchUserFriends", async () => {
 
 test("fetchUserFriendCount", async () => {
 	const user = await client.fetchUser(userId);
-	const count = await user.fetchFriendCount();
+	const count = await preFetchedUser.fetchFriendCount();
 
 	console.log(`Fetched friend count: [${count}]`);
 
@@ -268,7 +258,7 @@ test("fetchUserFriendCount", async () => {
 
 test("fetchUserFollowers", async () => {
 	const user = await client.fetchUser(userId);
-	const users = await user.fetchFollowers("Asc", 10)
+	const users = await preFetchedUser.fetchFollowers("Asc", 10)
 
 	console.log(`Fetched [${users.length}] followers:\n`,users.map((data: User) => data.toString()).join("\n"))
 
@@ -278,7 +268,7 @@ test("fetchUserFollowers", async () => {
 
 test("fetchUserFollowerCount", async () => {
 	const user = await client.fetchUser(userId);
-	const count = await user.fetchFollowerCount();
+	const count = await preFetchedUser.fetchFollowerCount();
 	
 	console.log(`Fetched follower count: [${count}]`);
 
@@ -288,7 +278,7 @@ test("fetchUserFollowerCount", async () => {
 
 test("fetchUserFollowings", async () => {
 	const user = await client.fetchUser(userId);
-	const users = await user.fetchFollowings("Asc", 10)
+	const users = await preFetchedUser.fetchFollowings("Asc", 10)
 
 	console.log(`Fetched [${users.length}] followings:\n`,users.map((data: User) => data.toString()).join("\n"))
 
@@ -298,7 +288,7 @@ test("fetchUserFollowings", async () => {
 
 test("fetchUserFollowingsCount", async () => {
 	const user = await client.fetchUser(userId);
-	const count = await user.fetchFollowingsCount();
+	const count = await preFetchedUser.fetchFollowingsCount();
 	
 	console.log(`Fetched following count: [${count}]`);
 	console.log(user.accountAge)
@@ -319,7 +309,7 @@ test("block", async () => {
 
 	const user = await client.fetchUser(userId);
 	try {
-		await user.block();
+		await preFetchedUser.block();
 	} catch (error) {
 		if (!(error instanceof FetchError)) return;
 		const body = await error.response.json();
@@ -336,7 +326,7 @@ test("unblock", async () => {
 
 	const user = await client.fetchUser(userId);
 	try {
-		await user.unblock();
+		await preFetchedUser.unblock();
 	} catch (error) {
 		if (!(error instanceof FetchError)) return;
 		const body = await error.response.json();
@@ -357,7 +347,7 @@ test("hasPremium", async () => {
 	}
 
 	const user = await client.fetchUser(userId);
-	const hasPremium = await user.hasPremium();
+	const hasPremium = await preFetchedUser.hasPremium();
 
 	console.log(`hasPremium: ${hasPremium}`);
 
