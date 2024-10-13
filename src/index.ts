@@ -80,6 +80,8 @@ class WrapBlox {
 
 	fetchBadge = async (badgeId: number, useCache = true): Promise<Badge> => {
 		const rawData = await this.fetchRawBadge(badgeId, useCache);
+		if (!rawData) throw new Error("Badge not found");
+
 		return new Badge(this, rawData);
 	};
 
