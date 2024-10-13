@@ -79,7 +79,7 @@ test("fetchGroups", async () => {
 	const user = await client.fetchUser(userId);
 	const groups = await user.fetchGroups();
 
-	console.log(`Fetched [${groups.length}] groups\n:`, groups.map((data: Group) => data.toString()).join("\n"));
+	console.log(`Fetched [${groups.length}] groups:\n`, groups.map((data: Group) => data.toString()).join("\n"));
 
 	expect(groups).toBeDefined();
 }, 60000)
@@ -93,7 +93,7 @@ test("fetchBadges", async () => {
 	const user = await client.fetchUser(userId);
 	const badges = await user.fetchBadges("Asc", 1);
 
-	console.log(`Fetched [${badges.length}] awarded badges\n:`, badges.map((data: AwardedBadge) => data.toString()).join("\n"));
+	console.log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: AwardedBadge) => data.toString()).join("\n"));
 
 	expect(badges).toBeDefined();
 });
@@ -250,7 +250,7 @@ test("fetchUserFriends", async () => {
 	const user = await client.fetchUser(userId);
 	const users = await user.fetchFriends();
 
-	console.log(`Fetched friends [${users.length}]\n`,users.map((data: Friend) => data.toString()).join("\n"))
+	console.log(`Fetched [${users.length}] friends:\n`,users.map((data: Friend) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
 });
@@ -270,7 +270,7 @@ test("fetchUserFollowers", async () => {
 	const user = await client.fetchUser(userId);
 	const users = await user.fetchFollowers("Asc", 10)
 
-	console.log(`Fetched followers [${users.length}]\n`,users.map((data: User) => data.toString()).join("\n"))
+	console.log(`Fetched [${users.length}] followers:\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
 });
@@ -290,7 +290,7 @@ test("fetchUserFollowings", async () => {
 	const user = await client.fetchUser(userId);
 	const users = await user.fetchFollowings("Asc", 10)
 
-	console.log(`Fetched followings [${users.length}]\n`,users.map((data: User) => data.toString()).join("\n"))
+	console.log(`Fetched [${users.length}] followings:\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
 });
