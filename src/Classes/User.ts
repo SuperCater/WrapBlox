@@ -1,4 +1,4 @@
-import type { AvatarImageType, FriendMetadata, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2 } from "../Types/UserTypes.js";
+import type { AvatarImageType, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2, FriendServiceMetadata } from "../Types/UserTypes.js";
 import type WrapBlox from "../index.js";
 import type { OwnedItem, Role, SortOrder } from "../index.js";
 
@@ -176,7 +176,7 @@ class User {
 		Docs: https://friends.roblox.com/docs/index.html
 	*/
 
-	async fetchFriendMetadata(useCache = true): Promise<FriendMetadata> {
+	async fetchFriendServiceMetadata(useCache = true): Promise<FriendServiceMetadata> {
 		return await this.client.fetchHandler.fetch("GET", "Friends", "/metadata", {
 			useCache: useCache,
 			params: {

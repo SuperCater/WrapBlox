@@ -23,7 +23,7 @@ export type RawUserGroupRoles = {
 	isNotificationsEnabled: boolean
 }
 
-export type FriendMetadata = {
+export type FriendServiceMetadata = {
 	isFriendsFilterBarEnabled: boolean,
 	isFriendsPageSortExperimentEnabled: boolean,
 	isFriendsUserDataStoreCacheEnabled: boolean,

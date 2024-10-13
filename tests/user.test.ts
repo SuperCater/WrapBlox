@@ -169,11 +169,11 @@ test("fetchUserHeadshotUrl", async () => {
 	Docs: https://friends.roblox.com/docs/index.html
 */
 
-test("fetchUserFriendMetadata", async () => {
+test("fetchFriendServiceMetadata", async () => {
 	const user = await client.fetchUser(userId);
-	const metadata = await user.fetchFriendMetadata();
+	const metadata = await user.fetchFriendServiceMetadata();
 
-	console.log("Fetched metadata:\n",metadata);
+	console.log("Fetched friend metadata:\n",metadata);
 
 	expect(metadata).toBeDefined();
 })
