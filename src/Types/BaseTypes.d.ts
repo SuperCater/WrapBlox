@@ -1,6 +1,6 @@
-export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
+export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-export type SortOrder = "Asc" | "Desc"
+export type SortOrder = "Asc" | "Desc";
 
 export type FetchOptions = {
 	useCache?: boolean,
@@ -8,10 +8,10 @@ export type FetchOptions = {
 	CsrfToken?: string,
 	params?: { [key: string | number]: unknown },
 	body?: { [key: string]: unknown },
-}
+};
 
 export type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
   ? Acc[number]
-  : Enumerate<N, [...Acc, Acc['length']]>
+  : Enumerate<N, [...Acc, Acc['length']]>;
 
-export type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>
+export type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>;

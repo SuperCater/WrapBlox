@@ -52,7 +52,7 @@ class Badge {
         this.awardingUniverse = rawData.awardingUniverse;
 
         this.enabled = rawData.enabled
-    }
+    };
 
     /*
 		Methods related to the Badges API
@@ -61,7 +61,7 @@ class Badge {
 
     async fetchServiceMetadata(useCache = true): Promise<BadgeServiceMetadata> {
         return await this.client.fetchHandler.fetch("GET", "Badges", "/metadata", { useCache: useCache })
-    }
+    };
 
     /*
 		Methods related to the Thumbnails API
@@ -78,13 +78,13 @@ class Badge {
 				isCircular: isCircular,
 			}
 		})).data[0].imageUrl;
-    }
+    };
 
     // Miscellaneous
 
     toString(): string {
         return `${this.name}:${this.id}`
-    }
-}
+    };
+};
 
 export default Badge;

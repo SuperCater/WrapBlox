@@ -36,7 +36,7 @@ class User {
 		this.joinDate = new Date(rawData.created);
 
 		this.accountAge = Math.ceil(Math.abs(new Date().getTime() - this.joinDate.getTime()) / (1000 * 60 * 60 * 24));
-	}
+	};
 
 	/*
 		Methods related to the Users API
@@ -68,7 +68,7 @@ class User {
 		}
 
 		return returnData;
-	}
+	};
 
 	/*
 		Methods related to the Groups API
@@ -83,15 +83,15 @@ class User {
 				includeNotificationPreferences: includeNotificationPreferences,
 			}
 		})).data
-	}
+	};
 
 	async inGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<boolean> {
 		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).some((entry) => entry.group.id === groupId));
-	}
+	};
 
 	async getRoleInGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<Role | undefined> {
 		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).find((entry) => entry.group.id === groupId)?.role)
-	}
+	};
 
 	/*
 		Methods related to the Badges API
@@ -125,14 +125,14 @@ class User {
 		}
 
 		return returnData;
-	}
+	};
 
 	async fetchBadgeAwardDate(badgeId: number, useCache = true): Promise<Date | undefined> {
 		const rawDate = (await this.client.fetchHandler.fetch("GET", "Badges", `/users/${this.id}/badges/${badgeId}/awarded-date`, { useCache: useCache }))?.awardedDate
 		if (!rawDate) return undefined;
 
 		return new Date(rawDate)
-	}
+	};
 	
 	/*
 		Methods related to the Inventory API
@@ -141,7 +141,7 @@ class User {
 
 	async canViewInventory(useCache = true): Promise<boolean> {
 		return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/can-view-inventory`, { useCache: useCache })).canView;
-	}
+	};
 
 	async getOwnedAsset(type: ItemTypes, id: number, useCache = true): Promise<OwnedItem | undefined> {
 		try {
@@ -149,7 +149,7 @@ class User {
 		} catch {
 			return undefined;
 		}
-	}
+	};
 
 	async ownsAsset(type: ItemTypes, assetId: number, useCache = true): Promise<boolean> {
 		try {
@@ -157,19 +157,19 @@ class User {
 		} catch {
 			return false;
 		}
-	}
+	};
 
 	async ownsBadge(badgeId: number, useCache = true): Promise<boolean> {
 		return await this.ownsAsset(ItemTypes.Badge, badgeId, useCache);
-	}
+	};
 
 	async ownsGamepass(gamepassId: number, useCache = true): Promise<boolean> {
 		return await this.ownsAsset(ItemTypes.GamePass, gamepassId, useCache);
-	}
+	};
 
 	async ownsBundle(bundleId: number, useCache = true): Promise<boolean> {
 		return await this.ownsAsset(ItemTypes.Bundle, bundleId, useCache)
-	}
+	};
 
 	/*
 		Methods related to the Avatar API
@@ -178,11 +178,11 @@ class User {
 
 	async fetchAvatarV1(useCache = true): Promise<UserAvatarV1> {
 		return (await this.client.fetchHandler.fetch("GET", "Avatar", `/users/${this.id}/avatar`, { useCache: useCache }))
-	}
+	};
 
 	async fetchAvatarV2(useCache = true): Promise<UserAvatarV2> {
 		return (await this.client.fetchHandler.fetch("GET", "AvatarV2", `/avatar/users/${this.id}/avatar`, { useCache: useCache }))
-	}
+	};
 
 	/*
 		Methods related to the Thumbnails API
@@ -199,7 +199,7 @@ class User {
 				isCircular: isCircular,
 			}
 		})).data[0].imageUrl;
-	}
+	};
 
 	async fetchAvatar3D(useCache = true): Promise<Avatar3D> {
 		const jsonUrl = (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-3d", {
@@ -212,7 +212,7 @@ class User {
 		return (await fetch(jsonUrl, {
 			method: "GET"
 		})).json()
-	}
+	};
 
 	async fetchAvatarBustUrl(size: AvatarBustImageSize = AvatarBustImageSize["150x150"], format: AvatarBustImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-bust", {
@@ -224,7 +224,7 @@ class User {
 				isCircular: isCircular,
 			}
 		})).data[0].imageUrl;
-	}
+	};
 
 	async fetchAvatarHeadshotUrl(size: AvatarImageSize = AvatarImageSize["150x150"], format: AvatarImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
 		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-headshot", {
@@ -236,7 +236,7 @@ class User {
 				isCircular: isCircular,
 			}
 		})).data[0].imageUrl;
-	}
+	};
 
 	/*
 		Methods related to the Friends API
@@ -250,7 +250,7 @@ class User {
 				targetUserId: this.id
 			}
 		})
-	}
+	};
 
 	//? Friends
 
@@ -266,11 +266,11 @@ class User {
 		}
 
 		return returnData;
-	}
+	};
 
 	async fetchFriendCount(useCache = true): Promise<number> {
 		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends/count`, { useCache: useCache })).count
-	}
+	};
 
 	//? Followers
 
@@ -301,12 +301,12 @@ class User {
 		}
 
 		return returnData;
-	}
+	};
 
 
 	async fetchFollowerCount(useCache = true): Promise<number> {
 		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followers/count`, { useCache: useCache })).count
-	}
+	};
 
 	//? Followings
 
@@ -337,11 +337,11 @@ class User {
 		}
 
 		return returnData;
-	}
+	};
 
 	async fetchFollowingsCount(useCache = true): Promise<number> {
 		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followings/count`, { useCache: useCache })).count
-	}
+	};
 
 	/*
 		Methods related to the AccountSettings API
@@ -352,13 +352,13 @@ class User {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to block users.");
 
 		await this.client.fetchHandler.fetch("POST", "AccountSettings", `/users/${this.id}/block`)
-	}
+	};
 
 	async unblock(): Promise<void> {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to unblock users.");
 
 		await this.client.fetchHandler.fetch("POST", "AccountSettings", `/users/${this.id}/unblock`)
-	}
+	};
 
 	/*
 		Methods related to the PremiumFeatures API
@@ -367,14 +367,13 @@ class User {
 
 	async hasPremium(useCache = true): Promise<boolean> {
 		return await this.client.fetchHandler.fetch("GET", "PremiumFeatures", `/users/${this.id}/validate-membership`, { useCache: useCache })
-	}
+	};
 
 	// Miscellaneous
 
 	toString(): string {
 		return `${this.name}:${this.id}`
-	}
-}
-
+	};
+};
 
 export default User;

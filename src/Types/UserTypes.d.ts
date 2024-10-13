@@ -10,7 +10,7 @@ export type RawUserData = {
 	isBanned : boolean,
 	created : string,
 	description : string,
-}
+};
 
 export type RawUserGroupRoles = {
 	group: {
@@ -21,7 +21,7 @@ export type RawUserGroupRoles = {
 	},
 	role: Role,
 	isNotificationsEnabled: boolean
-}
+};
 
 export type FriendServiceMetadata = {
 	isFriendsFilterBarEnabled: boolean,
@@ -30,17 +30,16 @@ export type FriendServiceMetadata = {
 	frequentFriendSortRollout: number,
 	userName: string,
 	displayName: string,
-}
+};
 
-export type RawFriendData = {
+export type RawFriendData = RawUserData & {
 	isOnline : boolean,
 	isDeleted : boolean,
 	friendFrequentScore : number,
 	friendFrequentRank : number,
-} & RawUserData;
+};
 
-
-export type RawFriendRequest = {
+export type RawFriendRequest = RawUserData & {
 	friendRequest : {
 		sentAt : string,
 		senderId : number,
@@ -49,17 +48,17 @@ export type RawFriendRequest = {
 		contactName : string,
 	},
 	mutualFriendsList : string[],
-} & RawUserData;
+};
 
 export type BirthData = {
 	birthMonth : number,
 	birthDay : number,
 	birthYear : number,
-}
+};
 
 export type AvatarImageFormat = "Png" | "Jpeg" | "Webp";
-export type AvatarBustImageFormat = "Png" | "Webp"
-export type AvatarType = "R6" | "R15"
+export type AvatarBustImageFormat = "Png" | "Webp";
+export type AvatarType = "R6" | "R15";
 export type AvatarAssetType =
  | "Gear"
 
@@ -92,9 +91,9 @@ export type AvatarAssetType =
  | "JumpAnimation"
  | "IdleAnimation"
  | "SwimAnimation"
- | "ClimbAnimation"
+ | "ClimbAnimation";
 
- export type Avatar3D = {
+export type Avatar3D = {
 	camera: {
 		position: {
 		  x: number;
@@ -123,9 +122,9 @@ export type AvatarAssetType =
 	  mtl: string;
 	  obj: string;
 	  textures: string[];
- }
+};
 
- export type AvatarAsset = {
+export type AvatarAsset = {
 	id: number,
 	name: string,
 	assetType: {
@@ -153,15 +152,15 @@ export type AvatarAssetType =
 		},
 		version?: number,
 	}
- }
+};
 
- export type AvatarEmote = {
+export type AvatarEmote = {
 	assetId: number,
 	assetName: string,
 	position: number
- }
+};
 
- export type UserAvatarV1 = {
+export type UserAvatarV1 = {
 	scales: {
 		height: number,
 		width: number,
@@ -183,9 +182,9 @@ export type AvatarAssetType =
 	defaultShirtApplied: boolean,
 	defaultPantsApplied: boolean,
 	emotes: AvatarEmote[],
- }
+};
 
- export type UserAvatarV2 = {
+export type UserAvatarV2 = {
 	scales: {
 		height: number,
 		width: number,
@@ -207,4 +206,4 @@ export type AvatarAssetType =
 	defaultShirtApplied: boolean,
 	defaultPantsApplied: boolean,
 	emotes: AvatarEmote[],
- }
+};

@@ -16,7 +16,7 @@ test("login", async () => {
 	console.log(`Logged in as ${user.name}:${user.id}`)
 
 	expect(user).toBeDefined();
-})
+});
 
 test("fetchBadge", async () => {
     const badge = await client.fetchBadge(badgeId);
@@ -25,11 +25,11 @@ test("fetchBadge", async () => {
 
     expect(badge).toBeDefined();
     expect(badge).toBeInstanceOf(Badge);
-})
+});
 
 test("fetchIcon", async () => {
 	const badge = await client.fetchBadge(badgeId);
 	const icon = await badge.fetchIcon();
 
 	console.log("Fetched icon:\n", icon)
-})
+});

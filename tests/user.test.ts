@@ -18,7 +18,7 @@ test("login", async () => {
 	console.log(`Logged in as ${user.name}:${user.id}`)
 
 	expect(user).toBeDefined();
-})
+});
 
 /*
 	Methods related to the Users API
@@ -30,7 +30,7 @@ test("fetchUser", async () => {
 
 	console.log(`Fetched user:\n${user}`)
 	expect(user).toBeDefined();
-})
+});
 
 test("fetchUsernameHistory", async () => {
 	const user = await client.fetchUser(userId);
@@ -39,7 +39,7 @@ test("fetchUsernameHistory", async () => {
 	console.log(`Fetched username history:\n${usernameHistory}`)
 
 	expect(usernameHistory).toBeDefined();
-})
+});
 
 /*
 	Methods related to the Groups API
@@ -53,14 +53,14 @@ test("inGroup", async () => {
 	console.log(`In group [Purple Robotics, LLC]: ${boolean}`);
 
 	expect(boolean).toBeDefined();
-})
+});
 
 test("getRoleInGroup", async () => {
 	const user = await client.fetchUser(userId);
 	const role = await user.getRoleInGroup(33991282);
 
 	console.log("Role in group [Purple Robotics, LLC]:\n", role);
-})
+});
 
 /*
 	Methods related to the Badges API
@@ -74,14 +74,14 @@ test("fetchBadges", async () => {
 	console.log(`Fetched [${badges.length}] awarded badges\n:`, badges.map((data: AwardedBadge) => data.toString()).join("\n"))
 
 	expect(badges).toBeDefined();
-})
+});
 
 test("fetchBadgeAwardDate", async () => {
 	const user = await client.fetchUser(userId);
 	const date = await user.fetchBadgeAwardDate(2124445684);
 
 	console.log(`Badge awarded at: ${date?.toDateString()}`)
-})
+});
 
 /*
 	Methods related to the Inventory API
@@ -95,7 +95,7 @@ test("canViewInventory", async () => {
 	console.log(`Can view inventory: ${canView}`);
 
 	expect(canView).toBeDefined();
-})
+});
 
 test("ownsAsset", async () => {
 	const user = await client.fetchUser(userId);
@@ -104,7 +104,7 @@ test("ownsAsset", async () => {
 	console.log(`Owns asset: ${bool}`);
 
 	expect(bool).toBeDefined();
-})
+});
 
 test("ownsBadge", async () => {
 	const user = await client.fetchUser(userId);
@@ -113,7 +113,7 @@ test("ownsBadge", async () => {
 	console.log(`Owns Badge: ${bool}`);
 
 	expect(bool).toBeDefined();
-})
+});
 
 test("ownsGamepass", async () => {
 	const user = await client.fetchUser(userId);
@@ -122,7 +122,7 @@ test("ownsGamepass", async () => {
 	console.log(`Owns Gamepass: ${bool}`);
 
 	expect(bool).toBeDefined();
-})
+});
 
 test("ownsBundle", async () => {
 	const user = await client.fetchUser(userId);
@@ -131,14 +131,14 @@ test("ownsBundle", async () => {
 	console.log(`Owns Bundle: ${bool}`);
 
 	expect(bool).toBeDefined();
-})
+});
 
 test("getOwnedAsset", async () => {
 	const user = await client.fetchUser(userId);
 	const asset = await user.getOwnedAsset(ItemTypes.GamePass, 776368)
 
 	console.log("Owned asset:\n",asset)
-})
+});
 
 /*
 	Methods related to the Avatar API
@@ -152,7 +152,7 @@ test("fetchAvatarV1", async () => {
 	console.log("User AvatarV1:\n",avatar)
 
 	expect(avatar).toBeDefined();
-})
+});
 
 test("fetchAvatarV2", async () => {
 	const user = await client.fetchUser(userId);
@@ -161,7 +161,7 @@ test("fetchAvatarV2", async () => {
 	console.log("User AvatarV2:\n",avatar)
 
 	expect(avatar).toBeDefined();
-})
+});
 
 /*
 	Methods related to the Thumbnails API
@@ -175,7 +175,7 @@ test("fetchAvatarThumbnailUrl", async () => {
 	console.log(`Fetched imageUrl for Avatar Thumbnail:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
-})
+});
 
 test("fetchAvatar3D", async () => {
 	const user = await client.fetchUser(userId);
@@ -184,7 +184,7 @@ test("fetchAvatar3D", async () => {
 	console.log("Fetched imageUrl for Avatar 3D:\n", data);
 
 	expect(data).toBeDefined();
-})
+});
 
 test("fetchAvatarBustUrl", async () => {
 	const user = await client.fetchUser(userId);
@@ -193,7 +193,7 @@ test("fetchAvatarBustUrl", async () => {
 	console.log(`Fetched imageUrl for Avatar Bust:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
-})
+});
 
 test("fetchAvatarHeadshotUrl", async () => {
 	const user = await client.fetchUser(userId);
@@ -202,7 +202,7 @@ test("fetchAvatarHeadshotUrl", async () => {
 	console.log(`Fetched imageUrl for Avatar Headshot:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
-})
+});
 
 /*
 	Methods related to the Friends API
@@ -216,7 +216,7 @@ test("fetchFriendsMetadata", async () => {
 	console.log("Fetched friends metadata:\n",metadata);
 
 	expect(metadata).toBeDefined();
-})
+});
 
 
 test("fetchUserFriends", async () => {
@@ -231,7 +231,7 @@ test("fetchUserFriends", async () => {
 	console.log(`Fetched friends [${users.length}]\n`,users.map((data: Friend) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
-})
+});
 
 
 test("fetchUserFriendCount", async () => {
@@ -241,7 +241,7 @@ test("fetchUserFriendCount", async () => {
 	console.log(`Fetched friend count: [${count}]`);
 
 	expect(count).toBeDefined();
-})
+});
 
 
 test("fetchUserFollowers", async () => {
@@ -251,7 +251,7 @@ test("fetchUserFollowers", async () => {
 	console.log(`Fetched followers [${users.length}]\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
-})
+});
 
 
 test("fetchUserFollowerCount", async () => {
@@ -261,7 +261,7 @@ test("fetchUserFollowerCount", async () => {
 	console.log(`Fetched follower count: [${count}]`);
 
 	expect(count).toBeDefined();
-})
+});
 
 
 test("fetchUserFollowings", async () => {
@@ -271,7 +271,7 @@ test("fetchUserFollowings", async () => {
 	console.log(`Fetched followings [${users.length}]\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
-})
+});
 
 
 test("fetchUserFollowingsCount", async () => {
@@ -282,7 +282,7 @@ test("fetchUserFollowingsCount", async () => {
 	console.log(user.accountAge)
 
 	expect(count).toBeDefined();
-})
+});
 
 /*
 	Methods related to the AccountSettings API
@@ -304,7 +304,7 @@ test("block", async () => {
 
 		console.log(`Failed to block [${error.message}]:\n${body.errors[0]?.code}: ${body.errors[0]?.message}`)
 	}
-})
+});
 
 test("unblock", async () => {
 	if (!client.isLoggedIn()) {
@@ -321,7 +321,7 @@ test("unblock", async () => {
 
 		console.log(`Failed to unblock [${error.message}]:\n${body.errors[0]?.code}: ${body.errors[0]?.message}`)
 	}
-})
+});
 
 /*
 	Methods related to the PremiumFeatures API
@@ -340,4 +340,4 @@ test("hasPremium", async () => {
 	console.log(`hasPremium: ${hasPremium}`);
 
 	expect(hasPremium).toBeDefined();
-})
+});

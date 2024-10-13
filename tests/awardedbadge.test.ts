@@ -14,7 +14,7 @@ test("login", async () => {
 	console.log(`Logged in as ${user.name}:${user.id}`)
 
 	expect(user).toBeDefined();
-})
+});
 
 test("fetchAwardedDate", async () => {
     const user = await client.fetchUser(2897964600)
@@ -23,4 +23,4 @@ test("fetchAwardedDate", async () => {
     const date = await badge.fetchAwardedDate();
 
     console.log(`Badge awarded on: ${date?.toDateString()}`);
-})
+});

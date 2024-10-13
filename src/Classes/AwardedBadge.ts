@@ -20,14 +20,14 @@ class AwardedBadge extends Badge {
         this.user = user;
         this.creator = rawData.creator;
         this.awarder = rawData.awarder;
-    }
+    };
 
     async fetchAwardedDate(useCache = true): Promise<Date | undefined> {
         const rawDate = (await this.client.fetchHandler.fetch("GET", "Badges", `/users/${this.user.id}/badges/${this.id}/awarded-date`, { useCache: useCache }))?.awardedDate
         if (!rawDate) return undefined;
 
         return new Date(rawDate);
-    }
-}
+    };
+};
 
 export default AwardedBadge;

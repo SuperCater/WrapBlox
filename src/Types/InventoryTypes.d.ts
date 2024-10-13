@@ -3,4 +3,4 @@ export type OwnedItem = {
 	id : number,
 	name : string,
 	instanceId : null,
-}
+};
