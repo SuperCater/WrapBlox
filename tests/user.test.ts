@@ -65,6 +65,15 @@ test("getRoleInGroup", async () => {
 	console.log("Role in group [Purple Robotics, LLC]:\n", role);
 });
 
+test("fetchPrimaryGroup", async () => {
+	const user = await client.fetchUser(userId);
+	const primaryGroup = await user.fetchPrimaryGroup();
+
+	console.log(`Primary group: ${primaryGroup?.toString()}`);
+
+	expect(primaryGroup).toBeDefined();
+})
+
 /*
 	Methods related to the Badges API
 	Docs: https://badges.roblox.com/docs/index.html
