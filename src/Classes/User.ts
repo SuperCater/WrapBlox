@@ -78,6 +78,17 @@ class User {
 		return await this.client.fetchGroup(groupId, useCache);
 	}
 
+	async fetchGroups(includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<Group[]> {
+		const returnData = [] as Group[];
+		const rawData = await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache);
+
+		for (const data of rawData) {
+			returnData.push(await this.client.fetchGroup(data.group.id, useCache));
+		}
+
+		return returnData;
+	}
+
 	/*
 		Methods related to the Badges API
 		Docs: https://badges.roblox.com/docs/index.html

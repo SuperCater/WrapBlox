@@ -1,5 +1,6 @@
 import AwardedBadge from "../src/Classes/AwardedBadge.js";
 import Friend from "../src/Classes/Friend.js";
+import Group from "../src/Classes/Group.js";
 import FetchError from "../src/Classes/Internal/FetchError.js";
 import WrapBlox, { ItemTypes, User } from "../src/index.js";
 import dotenv from "dotenv";
@@ -72,7 +73,16 @@ test("fetchPrimaryGroup", async () => {
 	console.log(`Primary group: ${primaryGroup?.toString()}`);
 
 	expect(primaryGroup).toBeDefined();
-})
+});
+
+test("fetchGroups", async () => {
+	const user = await client.fetchUser(userId);
+	const groups = await user.fetchGroups();
+
+	console.log(`Fetched [${groups.length}] groups\n:`, groups.map((data: Group) => data.toString()).join("\n"));
+
+	expect(groups).toBeDefined();
+}, 60000)
 
 /*
 	Methods related to the Badges API
@@ -83,7 +93,7 @@ test("fetchBadges", async () => {
 	const user = await client.fetchUser(userId);
 	const badges = await user.fetchBadges("Asc", 1);
 
-	console.log(`Fetched [${badges.length}] awarded badges\n:`, badges.map((data: AwardedBadge) => data.toString()).join("\n"))
+	console.log(`Fetched [${badges.length}] awarded badges\n:`, badges.map((data: AwardedBadge) => data.toString()).join("\n"));
 
 	expect(badges).toBeDefined();
 });
