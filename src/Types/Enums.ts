@@ -41,3 +41,9 @@ export enum ItemTypes {
 export enum GroupOwnerType {
 	User = 0
 };
+
+export enum universeAvatarType {
+	MorphToR6 = 1,
+	PlayerChoice = 2,
+	MorphToR15 = 3
+}
