@@ -32,8 +32,6 @@ class FetchHandler {
 		Avatar: "https://avatar.roblox.com/v1",
 		AvatarV2: "https://avatar.roblox.com/v2",
 		AvatarV3: "https://avatar.roblox.com/v3",
-
-		APIs: "https://apis.roblox.com",
 	}
 
 	cacheManager = new CacheManager<string, unknown>()
@@ -106,14 +104,13 @@ class FetchHandler {
 		let cursor = "";
 		while (true) {
 			try {
-				const response = await this.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}&pageToken=${cursor}` : ""}`, opts);
+				const response = await this.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, opts);
 				if (response.data) data.push(...response.data);
-				if (response.userRestrictions) data.push(...response.userRestrictions);
 
-				if (!(response.nextPageCursor || response.nextPageToken) || data.length >= maxResults) {
+				if (!(response.nextPageCursor) || data.length >= maxResults) {
 					break;
 				}
-				cursor = response.nextPageCursor || response.nextPageToken;
+				cursor = response.nextPageCursor;
 			} catch (e) {
 				if (e instanceof FetchError) {
 					if (e.code === 429) {
