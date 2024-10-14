@@ -39,7 +39,7 @@ export type GroupAuditLog = {
     },
   },
   actionType: GroupActionType,
-  description: object,
+  description: unknown,
   created: Date
 };
 
