@@ -18,7 +18,7 @@ class User {
 	readonly description: string;
 	readonly hasVerifiedBadge: boolean;
 	readonly externalAppDisplayName?: string;
-	readonly isBanned : boolean;
+	readonly isBanned: boolean;
 	readonly joinDate: Date;
 
 	readonly accountAge: number;
