@@ -45,6 +45,7 @@ class FetchHandler {
 		this.cacheManager.clearCache();
 	}
 
+	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
 	fetch = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
 		let RealUrl = this.urls[url] + route;
@@ -98,6 +99,7 @@ class FetchHandler {
 		return json;
 	};
 
+	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
 	fetchList = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
 		const data = [];
