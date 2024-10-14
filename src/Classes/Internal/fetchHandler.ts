@@ -88,7 +88,7 @@ class FetchHandler {
 		}
 
 		if (!response.ok) {
-			throw new FetchError(`Failed to fetch data: ${response.status} ${response.statusText}`, response.status, response);
+			throw new FetchError(`Failed to fetch data: ${response.status} ${response.statusText}`, response);
 		}
 
 		if (!response.body) return;
@@ -115,7 +115,7 @@ class FetchHandler {
 				cursor = response.nextPageCursor;
 			} catch (e) {
 				if (e instanceof FetchError) {
-					if (e.code === 429) {
+					if (e.response.status === 429) {
 						await new Promise((resolve) => setTimeout(resolve, 1000));
 						continue;
 					}
