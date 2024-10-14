@@ -68,7 +68,7 @@ class Badge {
 		Docs: https://thumbnails.roblox.com/docs/index.html
 	*/
 
-    async fetchIcon(size: BadgeImageSize = BadgeImageSize["150x150"], format: BadgeImageFormat = "Png", isCircular = true, useCache = true): Promise<string> {
+    async fetchIcon(size: BadgeImageSize = BadgeImageSize["150x150"], format: BadgeImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
         return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/badges/icons", {
 			useCache: useCache,
 			params: {
