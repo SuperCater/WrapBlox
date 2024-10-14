@@ -312,9 +312,8 @@ test("block", async () => {
 		await preFetchedUser.block();
 	} catch (error) {
 		if (!(error instanceof FetchError)) return;
-		const body = await error.response.json();
-
-		console.log(`Failed to block [${error.message}]:\n${body.errors[0]?.code}: ${body.errors[0]?.message}`)
+		
+		console.log(`Failed to block\n${await error.format()}`);
 	}
 });
 
@@ -329,9 +328,8 @@ test("unblock", async () => {
 		await preFetchedUser.unblock();
 	} catch (error) {
 		if (!(error instanceof FetchError)) return;
-		const body = await error.response.json();
 
-		console.log(`Failed to unblock [${error.message}]:\n${body.errors[0]?.code}: ${body.errors[0]?.message}`)
+		console.log(`Failed to unblock\n${await error.format()}`);
 	}
 });
 
