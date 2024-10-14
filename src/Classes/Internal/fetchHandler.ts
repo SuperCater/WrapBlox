@@ -109,7 +109,7 @@ class FetchHandler {
 				const response = await this.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, opts);
 				if (response.data) data.push(...response.data);
 
-				if (!(response.nextPageCursor) || data.length >= maxResults) {
+				if (!response.nextPageCursor || data.length >= maxResults) {
 					break;
 				}
 				cursor = response.nextPageCursor;
