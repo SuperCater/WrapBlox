@@ -1,4 +1,4 @@
-export enum AvatarImageSize {
+export enum avatarImageSize {
 	"30x30" = "30x30",
 	"48x48" = "48x48",
 	"60x60" = "60x60",
@@ -15,7 +15,7 @@ export enum AvatarImageSize {
 	"720x720" = "720x720",
 };
 
-export enum AvatarBustImageSize {
+export enum avatarBustImageSize {
 	"48x48" = "48x48",
 	"50x50" = "50x50",
 	"60x60" = "60x60",
@@ -27,18 +27,18 @@ export enum AvatarBustImageSize {
 	"420x420" = "420x420",
 };
 
-export enum BadgeImageSize {
+export enum badgeImageSize {
 	"150x150" = "150x150",
 };
 
-export enum ItemTypes {
+export enum itemTypes {
 	Asset = 0,
 	GamePass = 1,
 	Badge = 2,
 	Bundle = 3,
 };
 
-export enum GroupOwnerType {
+export enum groupOwnerType {
 	User = 0
 };
 
@@ -46,4 +46,8 @@ export enum universeAvatarType {
 	MorphToR6 = 1,
 	PlayerChoice = 2,
 	MorphToR15 = 3
+}
+
+export enum userPresenceType {
+
 }

@@ -2,7 +2,7 @@ import AwardedBadge from "../../src/Classes/AwardedBadge.js";
 import Friend from "../../src/Classes/Friend.js";
 import Group from "../../src/Classes/Group.js";
 import FetchError from "../../src/Classes/Internal/FetchError.js";
-import WrapBlox, { ItemTypes, User } from "../../src/index.js";
+import WrapBlox, { itemTypes, User } from "../../src/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -114,7 +114,7 @@ test("canViewInventory", async () => {
 });
 
 test("ownsAsset", async () => {
-	const bool = await preFetchedUser.ownsAsset(ItemTypes.GamePass, 776368);
+	const bool = await preFetchedUser.ownsAsset(itemTypes.GamePass, 776368);
 
 	console.log(`Owns asset: ${bool}`);
 
@@ -147,7 +147,7 @@ test("ownsBundle", async () => {
 
 test("getOwnedAsset", async () => {
 	
-	const asset = await preFetchedUser.getOwnedAsset(ItemTypes.GamePass, 776368)
+	const asset = await preFetchedUser.getOwnedAsset(itemTypes.GamePass, 776368)
 
 	console.log("Owned asset:\n",asset)
 });
