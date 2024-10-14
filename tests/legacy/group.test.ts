@@ -1,5 +1,5 @@
-import Group from "../src/Classes/Group.js";
-import WrapBlox from "../src/index.js";
+import Group from "../../src/Classes/Group.js";
+import WrapBlox from "../../src/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 

@@ -1,8 +1,8 @@
-import AwardedBadge from "../src/Classes/AwardedBadge.js";
-import Friend from "../src/Classes/Friend.js";
-import Group from "../src/Classes/Group.js";
-import FetchError from "../src/Classes/Internal/FetchError.js";
-import WrapBlox, { ItemTypes, User } from "../src/index.js";
+import AwardedBadge from "../../src/Classes/AwardedBadge.js";
+import Friend from "../../src/Classes/Friend.js";
+import Group from "../../src/Classes/Group.js";
+import FetchError from "../../src/Classes/Internal/FetchError.js";
+import WrapBlox, { ItemTypes, User } from "../../src/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 

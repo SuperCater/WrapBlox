@@ -1,4 +1,4 @@
-import WrapBlox from "../src/index.js";
+import WrapBlox from "../../src/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 
