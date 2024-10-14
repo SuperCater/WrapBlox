@@ -5,7 +5,7 @@ import FetchError from "./FetchError.js";
 class FetchHandler {
 	cookie?: string;
 	CsrfToken?: string;
-	urls = {
+	LegacyURLs = {
 		Users: 'https://users.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
 		Friends: "https://friends.roblox.com/v1",
@@ -47,8 +47,8 @@ class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetch = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
-		let RealUrl = this.urls[url] + route;
+	fetch = async (method: HttpMethods, url: keyof typeof this.LegacyURLs, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+		let RealUrl = this.LegacyURLs[url] + route;
 
 		if (opts.params) {
 			const query = new URLSearchParams();
@@ -101,7 +101,7 @@ class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchList = async (method: HttpMethods, url: keyof typeof this.urls, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
+	fetchList = async (method: HttpMethods, url: keyof typeof this.LegacyURLs, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
