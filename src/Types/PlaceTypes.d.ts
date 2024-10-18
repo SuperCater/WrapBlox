@@ -1,0 +1,17 @@
+export type RawPlaceData = {
+    placeId: number,
+    name: string,
+    description: string,
+    sourceName: string,
+    sourceDescription: string,
+    url: string,
+    builder: string,
+    builderId: number,
+    hasVerifiedBadge: boolean,
+    isPlayable: boolean,
+    reasonProhibited: string,
+    universeId: number,
+    universeRootPlaceId: number,
+    price: number,
+    imageToken: string,
+};
