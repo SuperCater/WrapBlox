@@ -1,4 +1,11 @@
-import WrapBlox, { BadgeImageFormat, BadgeImageSize, BadgeServiceMetadata, RawBadgeData } from "../index.js";
+import type WrapBlox from "../index.js";
+import {
+    type BadgeServiceMetadata,
+    type RawBadgeData,
+
+    BadgeImageFormat,
+    BadgeImageSize,
+} from "../index.js";
 
 class Badge {
     readonly client: WrapBlox;

@@ -1,4 +1,14 @@
-import WrapBlox, { GroupActionType, GroupAuditLog, GroupOwnerType, RawGroupData, SortOrder, User } from "../index.js";
+import type WrapBlox from "../index.js";
+import {
+    type GroupActionType,
+    type GroupAuditLog,
+    type RawGroupData,
+
+    GroupOwnerType,
+    SortOrder,
+
+    User
+} from "../index.js";
 
 class Group {
     readonly client: WrapBlox;

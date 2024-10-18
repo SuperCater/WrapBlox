@@ -1,12 +1,29 @@
-import type { AvatarImageFormat, RawUserGroupRoles, RawUserData, AvatarV1, AvatarV2, FriendServiceMetadata, AvatarBustImageFormat, Avatar3D, UserPresence } from "../Types/UserTypes.js";
-import type WrapBlox from "../index.js";
-import { AvatarBustImageSize, OwnedItem, Role, SortOrder } from "../index.js";
-
 import Friend from "./Friend.js";
-import { AvatarImageSize, ItemTypes } from "../Types/Enums.js";
 import factory from "./Internal/factory.js";
-import AwardedBadge from "./AwardedBadge.js";
-import Group from "./Group.js";
+
+import type WrapBlox from "../index.js";
+import {
+	type AvatarImageFormat,
+	type RawUserGroupRoles,
+	type RawUserData,
+	type AvatarV1,
+	type AvatarV2,
+	type Avatar3D,
+	type FriendServiceMetadata,
+	type AvatarBustImageFormat,
+	type UserPresence,
+	type OwnedItem,
+	type GroupRole,
+	type SortOrder,
+
+	AvatarBustImageSize,
+	AvatarImageSize,
+	ItemTypes,
+
+	Group,
+	AwardedBadge,
+	Badge,
+} from "../index.js";
 
 class User {
 	readonly client: WrapBlox;
@@ -90,7 +107,7 @@ class User {
 		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).some((entry) => entry.group.id === groupId));
 	};
 
-	async getRoleInGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<Role | undefined> {
+	async getRoleInGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<GroupRole | undefined> {
 		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).find((entry) => entry.group.id === groupId)?.role)
 	};
 
@@ -117,11 +134,11 @@ class User {
 		Docs: https://badges.roblox.com/docs/index.html
 	*/
 
-	async fetchBadges(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<AwardedBadge[]> {
-		const returnData = [] as AwardedBadge[];
+	async fetchBadges(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<Badge[]> {
+		const returnData = [] as Badge[];
 		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Badges", `/users/${this.id}/badges`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
-		for (const data of rawData) returnData.push(await factory.createAwardedBadge(this.client, data, this));
+		for (const data of rawData) returnData.push(await factory.createBadge(this.client, data));
 
 		return returnData;
 	};

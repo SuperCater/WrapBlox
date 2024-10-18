@@ -1,5 +1,9 @@
-import WrapBlox, { UniverseAvatarType } from "../index.js";
-import { RawUniverseData, UniverseCreatorType } from "../Types/UniverseTypes.js";
+import type WrapBlox from "../index.js";
+import { 
+    type UniverseAvatarType,
+    type RawUniverseData,
+    type UniverseCreatorType
+} from "../index.js";
 
 class Universe {
     readonly client: WrapBlox;
