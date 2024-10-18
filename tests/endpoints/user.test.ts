@@ -1,8 +1,7 @@
-import AwardedBadge from "../../src/Classes/AwardedBadge.js";
 import Friend from "../../src/Classes/Friend.js";
 import Group from "../../src/Classes/Group.js";
 import FetchError from "../../src/Classes/Internal/FetchError.js";
-import WrapBlox, { ItemTypes, User, UserPresence } from "../../src/index.js";
+import WrapBlox, { Badge, ItemTypes, User, UserPresence } from "../../src/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -110,7 +109,7 @@ test("fetchGroups", async () => {
 test("fetchBadges", async () => {
 	const badges = await preFetchedUser.fetchBadges(1);
 
-	console.log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: AwardedBadge) => data.toString()).join("\n"));
+	console.log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: Badge) => data.toString()).join("\n"));
 
 	expect(badges).toBeDefined();
 });
