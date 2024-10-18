@@ -2,7 +2,7 @@ import AwardedBadge from "../../src/Classes/AwardedBadge.js";
 import Friend from "../../src/Classes/Friend.js";
 import Group from "../../src/Classes/Group.js";
 import FetchError from "../../src/Classes/Internal/FetchError.js";
-import WrapBlox, { itemTypes, User } from "../../src/index.js";
+import WrapBlox, { ItemTypes, User, UserPresence } from "../../src/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -45,6 +45,29 @@ test("fetchUsernameHistory", async () => {
 
 	expect(usernameHistory).toBeDefined();
 });
+
+/*
+	Methods related to the Presence API
+	Docs: https://presence.roblox.com/docs/index.html
+*/
+
+test("fetchLastOnlineDate", async () => {
+	const date = await preFetchedUser.fetchLastOnlineDate();
+
+	console.log(`Fetched user last online date: ${date.toDateString()}`);
+
+	expect(date).toBeDefined();
+	expect(date).toBeInstanceOf(Date);
+});
+
+test("fetchPresence", async () => {
+	const presence = await preFetchedUser.fetchPresence();
+
+	console.log("Fetched user presence:\n", presence);
+
+	expect(presence).toBeDefined();
+	expect(presence).toMatchObject<UserPresence>(presence);
+})
 
 /*
 	Methods related to the Groups API
@@ -114,7 +137,7 @@ test("canViewInventory", async () => {
 });
 
 test("ownsAsset", async () => {
-	const bool = await preFetchedUser.ownsAsset(itemTypes.GamePass, 776368);
+	const bool = await preFetchedUser.ownsAsset(ItemTypes.GamePass, 776368);
 
 	console.log(`Owns asset: ${bool}`);
 
@@ -146,8 +169,8 @@ test("ownsBundle", async () => {
 });
 
 test("getOwnedAsset", async () => {
-	
-	const asset = await preFetchedUser.getOwnedAsset(itemTypes.GamePass, 776368)
+
+	const asset = await preFetchedUser.getOwnedAsset(ItemTypes.GamePass, 776368)
 
 	console.log("Owned asset:\n",asset)
 });

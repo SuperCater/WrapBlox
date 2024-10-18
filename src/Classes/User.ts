@@ -1,4 +1,4 @@
-import type { AvatarImageFormat, RawUserGroupRoles, RawUserData, AvatarV1, AvatarV2, FriendServiceMetadata, AvatarBustImageFormat, Avatar3D } from "../Types/UserTypes.js";
+import type { AvatarImageFormat, RawUserGroupRoles, RawUserData, AvatarV1, AvatarV2, FriendServiceMetadata, AvatarBustImageFormat, Avatar3D, UserPresence } from "../Types/UserTypes.js";
 import type WrapBlox from "../index.js";
 import { AvatarBustImageSize, OwnedItem, Role, SortOrder } from "../index.js";
 
@@ -54,7 +54,7 @@ class User {
 	*/
 
 	async fetchLastOnlineDate(useCache = true): Promise<Date> {
-		return new Date((await this.client.fetchHandler.fetch("POST", "Presence", "presence/last-online", {
+		return new Date((await this.client.fetchHandler.fetch("POST", "Presence", "/presence/last-online", {
 			useCache: useCache,
 			body: {
 				userIds: [this.id]
@@ -62,7 +62,14 @@ class User {
 		})).lastOnlineTimestamps[0].lastOnline);
 	};
 
-
+	async fetchPresence(useCache = true): Promise<UserPresence> {
+		return (await this.client.fetchHandler.fetch("POST", "Presence", "/presence/users", {
+			useCache: useCache,
+			body: {
+				userIds: [this.id]
+			}
+		})).userPresences[0];
+	}
 
 	/*
 		Methods related to the Groups API
