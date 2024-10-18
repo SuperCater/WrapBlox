@@ -5,10 +5,12 @@ import FetchError from "./FetchError.js";
 class FetchHandler {
 	cookie?: string;
 	CsrfToken?: string;
-	LegacyURLs = {
+	
+	Endpoints = {
 		Users: 'https://users.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
 		Friends: "https://friends.roblox.com/v1",
+		Presence: "https://presence.roblox.com",
 
 		Groups: 'https://groups.roblox.com/v1',
 		GroupsV2: 'https://groups.roblox.com/v2',
@@ -47,8 +49,8 @@ class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetch = async (method: HttpMethods, url: keyof typeof this.LegacyURLs, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
-		let RealUrl = this.LegacyURLs[url] + route;
+	fetch = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+		let RealUrl = this.Endpoints[endpoint] + route;
 
 		if (opts.params) {
 			const query = new URLSearchParams();
@@ -83,7 +85,7 @@ class FetchHandler {
 		if (!this.CsrfToken && response.headers.get("x-csrf-token")) {
 			this.CsrfToken = response.headers.get("x-csrf-token") as string;
 			if (response.status === 403) {
-				return await this.fetch(method, url, route, opts);
+				return await this.fetch(method, endpoint, route, opts);
 			}
 		}
 
@@ -101,12 +103,12 @@ class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchList = async (method: HttpMethods, url: keyof typeof this.LegacyURLs, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
+	fetchList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
 			try {
-				const response = await this.fetch(method, url, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, opts);
+				const response = await this.fetch(method, endpoint, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, opts);
 				if (response.data) data.push(...response.data);
 
 				if (!response.nextPageCursor || data.length >= maxResults) {
