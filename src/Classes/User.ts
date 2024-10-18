@@ -69,7 +69,7 @@ class User {
 				userIds: [this.id]
 			}
 		})).userPresences[0];
-	}
+	};
 
 	/*
 		Methods related to the Groups API
