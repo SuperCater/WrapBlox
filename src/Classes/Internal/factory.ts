@@ -28,10 +28,4 @@ export default {
 
 		return new Badge(client, data);
 	},
-
-	async createAwardedBadge(client: WrapBlox, data: RawAwardedBadgeData, user: User) {
-		const AwardedBadge = (await import("../AwardedBadge.js")).default;
-
-		return new AwardedBadge(client, data, user)
-	}
 }
