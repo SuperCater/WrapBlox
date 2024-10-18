@@ -32,18 +32,6 @@ export type BadgeImageFormat = "Png" | "Webp";
 export type BadgeCreatorType = "Place" | "Group";
 export type BadgeAwarderType = "Place";
 
-export type RawAwardedBadgeData = RawBadgeData & {
-	creator: {
-        id: 0,
-        name: string,
-        type: BadgeCreatorType
-    },
-	awarder: {
-        id: number,
-        type: BadgeAwarderType
-    },
-};
-
 export type BadgeServiceMetadata = {
 	badgeCreationPrice: number,
 	maxBadgeNameLength: number,

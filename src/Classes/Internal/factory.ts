@@ -6,7 +6,7 @@
 */
 
 import type WrapBlox from "../../index.js";
-import type { RawAwardedBadgeData, RawBadgeData, RawFriendData, RawUserData, User } from "../../index.js";
+import type { RawBadgeData, RawFriendData, RawUserData, User } from "../../index.js";
 import type AuthedUser from "../AuthedUser.js";
 
 
