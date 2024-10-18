@@ -1,25 +1,27 @@
-import User from "./Classes/User.js";
-import FetchHandler from "./Classes/Internal/fetchHandler.js";
-import type { RawUserData } from "./Types/UserTypes.js";
 import AuthedUser from "./Classes/AuthedUser.js";
-import type { APIGameData } from "./Types/GameTypes.js";
+
+import FetchHandler from "./Classes/Internal/fetchHandler.js";
 import Badge from "./Classes/Badge.js";
-import { RawGroupData } from "./Types/GroupTypes.js";
 import Group from "./Classes/Group.js";
+import Place from "./Classes/Place.js";
+import Universe from "./Classes/Universe.js";
+import User from "./Classes/User.js";
+
+import { RawGroupData } from "./Types/GroupTypes.js";
 import { RawBadgeData } from "./Types/BadgeTypes.js";
 import { RawUniverseData } from "./Types/UniverseTypes.js";
-import Universe from "./Classes/Universe.js";
+import { RawUserData } from "./Types/UserTypes.js";
 
-export { User }
+export { Badge, Group, Place, Universe, User };
 
 export type * from "./Types/BaseTypes.js";
+export type * from "./Types/BadgeTypes.js";
 export type * from "./Types/GroupTypes.js";
-export type * from "./Types/UserTypes.js";
-export type * from "./Types/GameTypes.js";
-export type * from "./Types/BadgeTypes.js"
 export type * from "./Types/InventoryTypes.js";
+export type * from "./Types/PlaceTypes.js";
+export type * from "./Types/UniverseTypes.js";
+export type * from "./Types/UserTypes.js";
 export * from "./Types/Enums.js";
-
 
 class WrapBlox {
 	fetchHandler : FetchHandler;
