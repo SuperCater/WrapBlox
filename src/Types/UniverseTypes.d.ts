@@ -19,8 +19,8 @@ export type RawUniverseData = {
     },
 
     price: number | null,
-    allowedGearGenres: string[];
-    allowedGearCategories: string[];
+    allowedGearGenres: string[]; //TODO: properly type this
+    allowedGearCategories: string[]; //TODO: properly type this
 
     isGenreEnforced: boolean,
     copyingAllowed: boolean,

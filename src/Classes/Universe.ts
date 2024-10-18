@@ -91,6 +91,10 @@ class Universe {
         this.favoritedCount = rawData.favoritedCount;
         this.licenseDescription = rawData.licenseDescription;
     };
+
+    toString(): string {
+        return `${this.name}:${this.id}`;
+    };
 };
 
 export default Universe;
