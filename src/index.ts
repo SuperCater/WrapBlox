@@ -30,14 +30,14 @@ class WrapBlox {
 	
 	login = async (cookie : string) => {
 		this.fetchHandler.cookie = cookie;
-		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/users/authenticated');
+		const userInfo = await this.fetchHandler.fetchEndpoint('GET', 'Users', '/users/authenticated');
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		this.self = new AuthedUser(this, realUserData, cookie);
 		return this.self;
 	}
 
 	fetchAuthedUser = async (cookie : string) => {
-		const userInfo = await this.fetchHandler.fetch('GET', 'Users', '/users/authenticated', {cookie});
+		const userInfo = await this.fetchHandler.fetchEndpoint('GET', 'Users', '/users/authenticated', {cookie});
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		return new AuthedUser(this, realUserData, cookie);
 	}
@@ -50,10 +50,10 @@ class WrapBlox {
 
 	private fetchRawUser = async (query : string | number, useCache = true) : Promise<RawUserData> => {
 		if (typeof(query) === "number") {
-			return await this.fetchHandler.fetch('GET', 'Users', `/users/${query}`, { useCache: useCache });
+			return await this.fetchHandler.fetchEndpoint('GET', 'Users', `/users/${query}`, { useCache: useCache });
 		}
 
-		const userId = (await this.fetchHandler.fetch("POST", "Users", "/usernames/users", {
+		const userId = (await this.fetchHandler.fetchEndpoint("POST", "Users", "/usernames/users", {
 			useCache: useCache,
 			body: {
 				usernames: [query],
@@ -75,7 +75,7 @@ class WrapBlox {
 	//? Badges
 
 	private fetchRawBadge = async (badgeId: number, useCache = true): Promise<RawBadgeData> => {
-		return await this.fetchHandler.fetch("GET", "Badges", `/badges/${badgeId}`, { useCache: useCache });
+		return await this.fetchHandler.fetchEndpoint("GET", "Badges", `/badges/${badgeId}`, { useCache: useCache });
 	};
 
 	fetchBadge = async (badgeId: number, useCache = true): Promise<Badge> => {
@@ -89,7 +89,7 @@ class WrapBlox {
 
 	private fetchRawGroup = async (query: string | number, useCache = true): Promise<RawGroupData> => {
 		if (typeof(query) === "number") {
-			return (await this.fetchHandler.fetch("GET", "GroupsV2", "/groups", {
+			return (await this.fetchHandler.fetchEndpoint("GET", "GroupsV2", "/groups", {
 				useCache: useCache,
 				params: {
 					groupIds: [query]
@@ -97,7 +97,7 @@ class WrapBlox {
 			})).data[0];
 		}
 
-		const groupId = (await this.fetchHandler.fetch("GET", "Groups", "/groups/search/lookup", {
+		const groupId = (await this.fetchHandler.fetchEndpoint("GET", "Groups", "/groups/search/lookup", {
 			useCache: useCache,
 			params: {
 				groupName: query
@@ -119,7 +119,7 @@ class WrapBlox {
 	//? Games
 	
 	private fetchRawGame = async (universeId : number, useCache = true) : Promise<APIGameData> => {
-		return (await this.fetchHandler.fetch('GET', 'Games', "/games", {
+		return (await this.fetchHandler.fetchEndpoint('GET', 'Games', "/games", {
 			useCache: useCache,
 			params: {
 				universeIds: [universeId]

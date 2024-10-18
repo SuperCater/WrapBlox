@@ -60,7 +60,7 @@ class Badge {
 	*/
 
     async fetchServiceMetadata(useCache = true): Promise<BadgeServiceMetadata> {
-        return await this.client.fetchHandler.fetch("GET", "Badges", "/metadata", { useCache: useCache })
+        return await this.client.fetchHandler.fetchEndpoint("GET", "Badges", "/metadata", { useCache: useCache })
     };
 
     /*
@@ -69,7 +69,7 @@ class Badge {
 	*/
 
     async fetchIcon(size: BadgeImageSize = BadgeImageSize["150x150"], format: BadgeImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-        return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/badges/icons", {
+        return (await this.client.fetchHandler.fetchEndpoint("GET", "Thumbnails", "/badges/icons", {
 			useCache: useCache,
 			params: {
 				badgeIds: [this.id],

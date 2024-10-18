@@ -45,7 +45,7 @@ class User {
 	*/
 
 	async fetchUsernameHistory(maxResults = 100, useCache = true): Promise<string[]> {
-		return (await this.client.fetchHandler.fetchList("GET", "Users", `/users/${this.id}/username-history`, { useCache: useCache }, maxResults)).map((name: {name: string}) => name.name);
+		return (await this.client.fetchHandler.fetchEndpointList("GET", "Users", `/users/${this.id}/username-history`, { useCache: useCache }, maxResults)).map((name: {name: string}) => name.name);
 	};
 
 	/*
@@ -54,7 +54,7 @@ class User {
 	*/
 
 	async fetchLastOnlineDate(useCache = true): Promise<Date> {
-		return new Date((await this.client.fetchHandler.fetch("POST", "Presence", "/presence/last-online", {
+		return new Date((await this.client.fetchHandler.fetchEndpoint("POST", "Presence", "/presence/last-online", {
 			useCache: useCache,
 			body: {
 				userIds: [this.id]
@@ -63,7 +63,7 @@ class User {
 	};
 
 	async fetchPresence(useCache = true): Promise<UserPresence> {
-		return (await this.client.fetchHandler.fetch("POST", "Presence", "/presence/users", {
+		return (await this.client.fetchHandler.fetchEndpoint("POST", "Presence", "/presence/users", {
 			useCache: useCache,
 			body: {
 				userIds: [this.id]
@@ -77,7 +77,7 @@ class User {
 	*/
 
 	private async fetchRawGroupRoles(includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<RawUserGroupRoles[]> {
-		return (await this.client.fetchHandler.fetch("GET", "GroupsV2", `/users/${this.id}/groups/roles`, {
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "GroupsV2", `/users/${this.id}/groups/roles`, {
 			useCache: useCache,
 			params: {
 				includeLocked: includelocked,
@@ -95,7 +95,7 @@ class User {
 	};
 
 	async fetchPrimaryGroup(useCache = true): Promise<Group | undefined> {
-		const groupId = (await this.client.fetchHandler.fetch("GET", "Groups", `/users/${this.id}/groups/primary/role`))?.group.id;
+		const groupId = (await this.client.fetchHandler.fetchEndpoint("GET", "Groups", `/users/${this.id}/groups/primary/role`))?.group.id;
 		if (!groupId) return undefined;
 
 		return await this.client.fetchGroup(groupId, useCache);
@@ -119,7 +119,7 @@ class User {
 
 	async fetchBadges(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<AwardedBadge[]> {
 		const returnData = [] as AwardedBadge[];
-		const rawData = await this.client.fetchHandler.fetchList("GET", "Badges", `/users/${this.id}/badges`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
+		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Badges", `/users/${this.id}/badges`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
 		for (const data of rawData) returnData.push(await factory.createAwardedBadge(this.client, data, this));
 
@@ -127,7 +127,7 @@ class User {
 	};
 
 	async fetchBadgeAwardDate(badgeId: number, useCache = true): Promise<Date | undefined> {
-		const rawDate = (await this.client.fetchHandler.fetch("GET", "Badges", `/users/${this.id}/badges/${badgeId}/awarded-date`, { useCache: useCache }))?.awardedDate
+		const rawDate = (await this.client.fetchHandler.fetchEndpoint("GET", "Badges", `/users/${this.id}/badges/${badgeId}/awarded-date`, { useCache: useCache }))?.awardedDate
 		if (!rawDate) return undefined;
 
 		return new Date(rawDate)
@@ -139,12 +139,12 @@ class User {
 	*/
 
 	async canViewInventory(useCache = true): Promise<boolean> {
-		return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/can-view-inventory`, { useCache: useCache })).canView;
+		return (await this.client.fetchHandler.fetchEndpoint('GET', 'Inventory', `/users/${this.id}/can-view-inventory`, { useCache: useCache })).canView;
 	};
 
 	async getOwnedAsset(type: ItemTypes, id: number, useCache = true): Promise<OwnedItem | undefined> {
 		try {
-			return (await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`, { useCache: useCache })).data[0];
+			return (await this.client.fetchHandler.fetchEndpoint('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`, { useCache: useCache })).data[0];
 		} catch {
 			return undefined;
 		}
@@ -152,7 +152,7 @@ class User {
 
 	async ownsAsset(type: ItemTypes, assetId: number, useCache = true): Promise<boolean> {
 		try {
-			return await this.client.fetchHandler.fetch('GET', 'Inventory', `/users/${this.id}/items/${type}/${assetId}/is-owned`, { useCache: useCache });
+			return await this.client.fetchHandler.fetchEndpoint('GET', 'Inventory', `/users/${this.id}/items/${type}/${assetId}/is-owned`, { useCache: useCache });
 		} catch {
 			return false;
 		}
@@ -176,11 +176,11 @@ class User {
 	*/
 
 	async fetchAvatarV1(useCache = true): Promise<AvatarV1> {
-		return (await this.client.fetchHandler.fetch("GET", "Avatar", `/users/${this.id}/avatar`, { useCache: useCache }))
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "Avatar", `/users/${this.id}/avatar`, { useCache: useCache }))
 	};
 
 	async fetchAvatarV2(useCache = true): Promise<AvatarV2> {
-		return (await this.client.fetchHandler.fetch("GET", "AvatarV2", `/avatar/users/${this.id}/avatar`, { useCache: useCache }))
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "AvatarV2", `/avatar/users/${this.id}/avatar`, { useCache: useCache }))
 	};
 
 	/*
@@ -189,7 +189,7 @@ class User {
 	*/
 
 	async fetchAvatarThumbnailUrl(size: AvatarImageSize = AvatarImageSize["150x150"], format: AvatarImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar", {
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "Thumbnails", "/users/avatar", {
 			useCache: useCache,
 			params: {
 				userIds: [this.id],
@@ -201,7 +201,7 @@ class User {
 	};
 
 	async fetchAvatar3D(useCache = true): Promise<Avatar3D> {
-		const jsonUrl = (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-3d", {
+		const jsonUrl = (await this.client.fetchHandler.fetchEndpoint("GET", "Thumbnails", "/users/avatar-3d", {
 			useCache: useCache,
 			params: {
 				userId: this.id
@@ -214,7 +214,7 @@ class User {
 	};
 
 	async fetchAvatarBustUrl(size: AvatarBustImageSize = AvatarBustImageSize["150x150"], format: AvatarBustImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-bust", {
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "Thumbnails", "/users/avatar-bust", {
 			useCache: useCache,
 			params: {
 				userIds: [this.id],
@@ -226,7 +226,7 @@ class User {
 	};
 
 	async fetchAvatarHeadshotUrl(size: AvatarImageSize = AvatarImageSize["150x150"], format: AvatarImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-		return (await this.client.fetchHandler.fetch("GET", "Thumbnails", "/users/avatar-headshot", {
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "Thumbnails", "/users/avatar-headshot", {
 			useCache: useCache,
 			params: {
 				userIds: [this.id],
@@ -243,7 +243,7 @@ class User {
 	*/
 
 	async fetchFriendsMetadata(useCache = true): Promise<FriendServiceMetadata> {
-		return await this.client.fetchHandler.fetch("GET", "Friends", "/metadata", {
+		return await this.client.fetchHandler.fetchEndpoint("GET", "Friends", "/metadata", {
 			useCache: useCache,
 			params: {
 				targetUserId: this.id
@@ -257,7 +257,7 @@ class User {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to view someone's friend list.");
 
 		const returnData = [] as Friend[];
-		for (const friend of (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends`, { useCache: useCache })).data) {
+		for (const friend of (await this.client.fetchHandler.fetchEndpoint("GET", "Friends", `/users/${this.id}/friends`, { useCache: useCache })).data) {
 			returnData.push(await factory.createFriend(this.client, friend, this))
 			if (maxResults && returnData.length >= maxResults) break;
 		}
@@ -266,14 +266,14 @@ class User {
 	};
 
 	async fetchFriendCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/friends/count`, { useCache: useCache })).count
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "Friends", `/users/${this.id}/friends/count`, { useCache: useCache })).count
 	};
 
 	//? Followers
 
 	async fetchFollowers(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
-		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followers`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
+		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Friends", `/users/${this.id}/followers`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
 		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
 
@@ -282,14 +282,14 @@ class User {
 
 
 	async fetchFollowerCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followers/count`, { useCache: useCache })).count
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "Friends", `/users/${this.id}/followers/count`, { useCache: useCache })).count
 	};
 
 	//? Followings
 
 	async fetchFollowings(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
-		const rawData = await this.client.fetchHandler.fetchList("GET", "Friends", `/users/${this.id}/followings`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
+		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Friends", `/users/${this.id}/followings`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
 
 		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
 
@@ -297,7 +297,7 @@ class User {
 	};
 
 	async fetchFollowingsCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetch("GET", "Friends", `/users/${this.id}/followings/count`, { useCache: useCache })).count
+		return (await this.client.fetchHandler.fetchEndpoint("GET", "Friends", `/users/${this.id}/followings/count`, { useCache: useCache })).count
 	};
 
 	/*
@@ -308,13 +308,13 @@ class User {
 	async block(): Promise<void> {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to block users.");
 
-		await this.client.fetchHandler.fetch("POST", "AccountSettings", `/users/${this.id}/block`)
+		await this.client.fetchHandler.fetchEndpoint("POST", "AccountSettings", `/users/${this.id}/block`)
 	};
 
 	async unblock(): Promise<void> {
 		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to unblock users.");
 
-		await this.client.fetchHandler.fetch("POST", "AccountSettings", `/users/${this.id}/unblock`)
+		await this.client.fetchHandler.fetchEndpoint("POST", "AccountSettings", `/users/${this.id}/unblock`)
 	};
 
 	/*
@@ -323,7 +323,7 @@ class User {
 	*/
 
 	async hasPremium(useCache = true): Promise<boolean> {
-		return await this.client.fetchHandler.fetch("GET", "PremiumFeatures", `/users/${this.id}/validate-membership`, { useCache: useCache })
+		return await this.client.fetchHandler.fetchEndpoint("GET", "PremiumFeatures", `/users/${this.id}/validate-membership`, { useCache: useCache })
 	};
 
 	// Miscellaneous

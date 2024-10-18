@@ -49,7 +49,7 @@ class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetch = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+	fetchEndpoint = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
 		let RealUrl = this.Endpoints[endpoint] + route;
 
 		if (opts.params) {
@@ -65,7 +65,7 @@ class FetchHandler {
 		}
 
 		const cached = this.cacheManager.getValues(RealUrl);
-		if (cached && opts.useCache) return cached;
+		if (cached && (opts.useCache || opts.useCache === undefined)) return cached;
 
 		const headers = new Headers();
 
@@ -85,7 +85,7 @@ class FetchHandler {
 		if (!this.CsrfToken && response.headers.get("x-csrf-token")) {
 			this.CsrfToken = response.headers.get("x-csrf-token") as string;
 			if (response.status === 403) {
-				return await this.fetch(method, endpoint, route, opts);
+				return await this.fetchEndpoint(method, endpoint, route, opts);
 			}
 		}
 
@@ -103,12 +103,12 @@ class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
+	fetchEndpointList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
 			try {
-				const response = await this.fetch(method, endpoint, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, opts);
+				const response = await this.fetchEndpoint(method, endpoint, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, opts);
 				if (response.data) data.push(...response.data);
 
 				if (!response.nextPageCursor || data.length >= maxResults) {

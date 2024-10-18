@@ -38,7 +38,7 @@ class Group {
 
     async fetchAuditLog(maxResults = 100, sortOrder: SortOrder = "Asc", actionType?: GroupActionType, useCache = true): Promise<GroupAuditLog[]> {
         const returnData = [] as GroupAuditLog[];
-        const rawData = await this.client.fetchHandler.fetchList("GET", "Groups", `/groups/${this.id}/audit-log`, { useCache: useCache, params: { sortOrder: sortOrder, actionType: actionType } }, maxResults);
+        const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Groups", `/groups/${this.id}/audit-log`, { useCache: useCache, params: { sortOrder: sortOrder, actionType: actionType } }, maxResults);
 
         for (const data of rawData) {
             returnData.push({

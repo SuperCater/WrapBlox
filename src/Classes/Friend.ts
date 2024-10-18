@@ -31,7 +31,7 @@ class Friend extends User {
 	 */
 	async unfriend(): Promise<void> {
 		if (!(this.friend instanceof AuthedUser)) throw new Error("You can only unfriend a user if you are authenticated");
-		await this.client.fetchHandler.fetch("POST", "Friends", `/users/${this.id}/unfriend`, {cookie: this.friend.cookie});
+		await this.client.fetchHandler.fetchEndpoint("POST", "Friends", `/users/${this.id}/unfriend`, {cookie: this.friend.cookie});
 	}
 }
 
