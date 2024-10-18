@@ -10,7 +10,7 @@ class FetchHandler {
 		Users: 'https://users.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
 		Friends: "https://friends.roblox.com/v1",
-		Presence: "https://presence.roblox.com",
+		Presence: "https://presence.roblox.com/v1",
 
 		Groups: 'https://groups.roblox.com/v1',
 		GroupsV2: 'https://groups.roblox.com/v2',
