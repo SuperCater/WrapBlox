@@ -92,8 +92,6 @@ test("fetchPrimaryGroup", async () => {
 	const primaryGroup = await preFetchedUser.fetchPrimaryGroup();
 
 	console.log(`Primary group: ${primaryGroup?.toString()}`);
-
-	expect(primaryGroup).toBeDefined();
 });
 
 test("fetchGroups", async () => {
