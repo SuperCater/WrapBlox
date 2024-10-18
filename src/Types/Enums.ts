@@ -48,6 +48,10 @@ export enum universeAvatarType {
 	MorphToR15 = 3
 }
 
-export enum userPresenceType {
-
+export enum userPresenceState {
+	Offline = 0,
+	Online = 1,
+	InGame = 2,
+	InStudio = 3,
+	Invisible = 4
 }
