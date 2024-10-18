@@ -15,7 +15,7 @@ export type RawGroupData = {
 	hasVerifiedBadge: boolean
 };
 
-export type Role = {
+export type GroupRole = {
 	id: number,
 	name: string,
 	rank: IntRange<1, 256>
