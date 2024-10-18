@@ -57,7 +57,7 @@ export type BirthData = {
 	birthYear : number,
 };
 
-export type UserLastLocation = "Website";
+export type UserLastLocation = "Website" | "";
 
 export type UserPresence = {
 	userPresenceType: userPresenceState,
