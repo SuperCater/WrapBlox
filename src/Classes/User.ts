@@ -1,4 +1,4 @@
-import type { AvatarImageFormat, RawUserGroupRoles, RawUserData, UserAvatarV1, UserAvatarV2, FriendServiceMetadata, AvatarBustImageFormat, Avatar3D } from "../Types/UserTypes.js";
+import type { AvatarImageFormat, RawUserGroupRoles, RawUserData, AvatarV1, AvatarV2, FriendServiceMetadata, AvatarBustImageFormat, Avatar3D } from "../Types/UserTypes.js";
 import type WrapBlox from "../index.js";
 import { AvatarBustImageSize, OwnedItem, Role, SortOrder } from "../index.js";
 
@@ -47,6 +47,22 @@ class User {
 	async fetchUsernameHistory(maxResults = 100, useCache = true): Promise<string[]> {
 		return (await this.client.fetchHandler.fetchList("GET", "Users", `/users/${this.id}/username-history`, { useCache: useCache }, maxResults)).map((name: {name: string}) => name.name);
 	};
+
+	/*
+		Methods related to the Presence API
+		Docs: https://presence.roblox.com/docs/index.html
+	*/
+
+	async fetchLastOnlineDate(useCache = true): Promise<Date> {
+		return new Date((await this.client.fetchHandler.fetch("POST", "Presence", "presence/last-online", {
+			useCache: useCache,
+			body: {
+				userIds: [this.id]
+			}
+		})).lastOnlineTimestamps[0].lastOnline);
+	};
+
+
 
 	/*
 		Methods related to the Groups API
@@ -152,11 +168,11 @@ class User {
 		Docs: https://avatar.roblox.com/docs/index.html
 	*/
 
-	async fetchAvatarV1(useCache = true): Promise<UserAvatarV1> {
+	async fetchAvatarV1(useCache = true): Promise<AvatarV1> {
 		return (await this.client.fetchHandler.fetch("GET", "Avatar", `/users/${this.id}/avatar`, { useCache: useCache }))
 	};
 
-	async fetchAvatarV2(useCache = true): Promise<UserAvatarV2> {
+	async fetchAvatarV2(useCache = true): Promise<AvatarV2> {
 		return (await this.client.fetchHandler.fetch("GET", "AvatarV2", `/avatar/users/${this.id}/avatar`, { useCache: useCache }))
 	};
 

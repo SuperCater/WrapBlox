@@ -1,4 +1,5 @@
 import { IntRange } from "./BaseTypes.js";
+import { userPresenceState } from "./Enums.ts";
 import type { Role } from "./GroupTypes.js";
 
 export type RawUserData = {
@@ -55,6 +56,18 @@ export type BirthData = {
 	birthDay : number,
 	birthYear : number,
 };
+
+export type UserLastLocation = "Website";
+
+export type UserPresence = {
+	userPresenceType: userPresenceState,
+	lastLocation: lastLocation,
+	placeId: number | null,
+	rootPlaceId: number | null,
+	gameId: number | null,
+	universeId: number | null,
+	lastOnline: Date
+}
 
 export type AvatarImageFormat = "Png" | "Jpeg" | "Webp";
 export type AvatarBustImageFormat = "Png" | "Webp";
@@ -160,7 +173,7 @@ export type AvatarEmote = {
 	position: number
 };
 
-export type UserAvatarV1 = {
+export type AvatarV1 = {
 	scales: {
 		height: number,
 		width: number,
@@ -184,7 +197,7 @@ export type UserAvatarV1 = {
 	emotes: AvatarEmote[],
 };
 
-export type UserAvatarV2 = {
+export type AvatarV2 = {
 	scales: {
 		height: number,
 		width: number,

@@ -1,4 +1,4 @@
-import WrapBlox, { GroupActionType, GroupAuditLog, groupOwnerType, RawGroupData, SortOrder, User } from "../index.js";
+import WrapBlox, { GroupActionType, GroupAuditLog, GroupOwnerType, RawGroupData, SortOrder, User } from "../index.js";
 
 class Group {
     readonly client: WrapBlox;
@@ -9,7 +9,7 @@ class Group {
     readonly description: string;
     readonly owner: {
 		readonly id: number,
-		readonly type: groupOwnerType,
+		readonly type: GroupOwnerType,
 		readonly name: string
 	};
 
