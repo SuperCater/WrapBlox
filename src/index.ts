@@ -7,6 +7,8 @@ import Badge from "./Classes/Badge.js";
 import { RawGroupData } from "./Types/GroupTypes.js";
 import Group from "./Classes/Group.js";
 import { RawBadgeData } from "./Types/BadgeTypes.js";
+import { RawUniverseData } from "./Types/UniverseTypes.js";
+import Universe from "./Classes/Universe.js";
 
 export { User }
 
@@ -118,7 +120,7 @@ class WrapBlox {
 
 	//? Games
 	
-	private fetchRawGame = async (universeId : number, useCache = true) : Promise<APIGameData> => {
+	private fetchRawUniverse = async (universeId: number, useCache = true) : Promise<RawUniverseData> => {
 		return (await this.fetchHandler.fetchEndpoint('GET', 'Games', "/games", {
 			useCache: useCache,
 			params: {
@@ -126,11 +128,13 @@ class WrapBlox {
 			}
 		})).data[0];
 	};
-	
-	//fetchGame = async (universeID : number) => {
-	//	const rawData = await this.fetchRawGame(universeID);
-	//	return new Game(this, rawData);
-	//}
+
+	fetchUniverse = async (universeId: number, useCache = true): Promise<Universe> => {
+		const rawData = await this.fetchRawUniverse(universeId, useCache);
+		if (!rawData) throw new Error("Universe not found");
+
+		return new Universe(this, rawData);
+	};
 }
 
 
