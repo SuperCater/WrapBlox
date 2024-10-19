@@ -6,7 +6,7 @@
 */
 
 import type WrapBlox from "../../index.js";
-import type { RawBadgeData, RawFriendData, RawUserData, User } from "../../index.js";
+import type { RawBadgeData, RawFriendData, RawUniverseData, RawUserData, User } from "../../index.js";
 import type AuthedUser from "../AuthedUser.js";
 
 
@@ -28,4 +28,10 @@ export default {
 
 		return new Badge(client, data);
 	},
+
+	async createUniverse(client: WrapBlox, data: RawUniverseData) {
+		const Universe = (await import("../Universe.js")).default;
+
+		return new Universe(client, data);
+	}
 };
