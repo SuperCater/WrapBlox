@@ -1,6 +1,6 @@
 import { IntRange } from "./BaseTypes.js";
 import { userPresenceState } from "./Enums.ts";
-import type { Role } from "./GroupTypes.js";
+import type { GroupRole } from "./GroupTypes.js";
 
 export type RawUserData = {
 	name : string,
@@ -20,7 +20,7 @@ export type RawUserGroupRoles = {
 		memberCount: number,
 		hasVerifiedBadge: boolean
 	},
-	role: Role,
+	role: GroupRole,
 	isNotificationsEnabled: boolean
 };
 
