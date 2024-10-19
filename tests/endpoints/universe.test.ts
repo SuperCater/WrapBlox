@@ -6,7 +6,7 @@ dotenv.config();
 const client = new WrapBlox();
 const universeId = 7065948;
 let preFetchedUniverse: Universe;
-const silent = false;
+const silent = true;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {

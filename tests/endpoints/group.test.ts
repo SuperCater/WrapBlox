@@ -6,7 +6,7 @@ dotenv.config();
 const client = new WrapBlox();
 const groupId = 33991282;
 let preFetchedGroup: Group;
-const silent = false;
+const silent = true;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {

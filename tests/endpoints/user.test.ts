@@ -8,7 +8,7 @@ dotenv.config();
 const client = new WrapBlox();
 let preFetchedUser: User;
 const userId = 2897964600;
-const silent = false;
+const silent = true;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
