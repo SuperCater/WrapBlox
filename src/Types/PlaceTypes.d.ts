@@ -39,5 +39,5 @@ export type PlaceServer = {
         id: number,
         name: string,
         displayName: string,
-    }
-}
+    },
+};
