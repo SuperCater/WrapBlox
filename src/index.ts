@@ -23,15 +23,22 @@ export type * from "./Types/UniverseTypes.js";
 export type * from "./Types/UserTypes.js";
 export * from "./Types/Enums.js";
 
-class WrapBlox {
+export default class WrapBlox {
 	fetchHandler : FetchHandler;
 	self : AuthedUser | null = null;
-	
 	
 	constructor() {
 		this.fetchHandler = new FetchHandler();
 	}
 	
+	/**
+	 * Authenticates a user using the provided cookie.
+	 * Note that the cookie should be unmodified,
+	 * it should contain the `_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_` at the start.
+	 *
+	 * @param cookie - The authentication cookie.
+	 * @returns A promise that resolves to an instance of `AuthedUser` representing the authenticated user.
+	 */
 	login = async (cookie : string) => {
 		this.fetchHandler.cookie = cookie;
 		const userInfo = await this.fetchHandler.fetchEndpoint('GET', 'Users', '/users/authenticated');
@@ -46,12 +53,26 @@ class WrapBlox {
 		return new AuthedUser(this, realUserData, cookie);
 	}
 
+	
+	/**
+	 * Checks if the user is logged in.
+	 *
+	 * @returns {this is {self: AuthedUser}} Returns true if `self` is not null, indicating the user is authenticated.
+	 */
 	isLoggedIn = () : this is {self : AuthedUser} => {
 		return this.self !== null;
 	}
 	
 	//? Users
 
+	/**
+	 * Fetches raw user data based on the provided query.
+	 * 
+	 * @param query - The query to search for the user, which can be a string (username) or a number (Id).
+	 * @param useCache - Optional parameter to determine whether to use cached data. Defaults to true.
+	 * @returns A promise that resolves to a User object.
+	 * @throws Will throw an error if no results are found when searching by user name.
+	 */
 	private fetchRawUser = async (query : string | number, useCache = true) : Promise<RawUserData> => {
 		if (typeof(query) === "number") {
 			return await this.fetchHandler.fetchEndpoint('GET', 'Users', `/users/${query}`, { useCache: useCache });
@@ -69,6 +90,15 @@ class WrapBlox {
 		return await this.fetchRawUser(userId, useCache);
 	}
 	
+
+	/**
+	 * Fetches a user based on the provided query.
+	 * 
+	 * @param query - The query to search for the user, which can be a string (username) or a number (Id).
+	 * @param useCache - Optional parameter to determine whether to use cached data. Defaults to true.
+	 * @returns A promise that resolves to a User object.
+	 * @throws Will throw an error if the user is not found.
+	 */
 	fetchUser = async (query : string | number, useCache = true): Promise<User> => {
 		const rawData = await this.fetchRawUser(query, useCache);
 		if (!rawData) throw new Error("User not found");
@@ -78,10 +108,26 @@ class WrapBlox {
 
 	//? Badges
 
+	/**
+	 * Fetches a raw data of a badge by its Id.
+	 *
+	 * @param badgeId - The ID of the badge to fetch.
+	 * @param useCache - A boolean indicating whether to use the cache. Defaults to true.
+	 * @returns A promise that resolves to a `Badge` object.
+	 * @throws Will throw an error if the badge is not found.
+	 */
 	private fetchRawBadge = async (badgeId: number, useCache = true): Promise<RawBadgeData> => {
 		return await this.fetchHandler.fetchEndpoint("GET", "Badges", `/badges/${badgeId}`, { useCache: useCache });
 	};
 
+	/**
+	 * Fetches a badge by its Id.
+	 *
+	 * @param badgeId - The ID of the badge to fetch.
+	 * @param useCache - A boolean indicating whether to use the cache. Defaults to true.
+	 * @returns A promise that resolves to a `Badge` object.
+	 * @throws Will throw an error if the badge is not found.
+	 */
 	fetchBadge = async (badgeId: number, useCache = true): Promise<Badge> => {
 		const rawData = await this.fetchRawBadge(badgeId, useCache);
 		if (!rawData) throw new Error("Badge not found");
@@ -91,6 +137,16 @@ class WrapBlox {
 
 	//? Groups
 
+	/**
+	 * Fetches raw group data based on a query which can be either a group name or a group ID.
+	 * If a group name is provided, it will first look up the group Id and then fetch the group data.
+	 * It is recommended to use the group Id over the name.
+	 * 
+	 * @param query - The group name (string) or group Id (number) to search for.
+	 * @param useCache - Optional boolean to indicate whether to use cached data. Defaults to true.
+	 * @returns A promise that resolves to the raw group data.
+	 * @throws Will throw an error if no results are found when searching by group name.
+	 */
 	private fetchRawGroup = async (query: string | number, useCache = true): Promise<RawGroupData> => {
 		if (typeof(query) === "number") {
 			return (await this.fetchHandler.fetchEndpoint("GET", "GroupsV2", "/groups", {
@@ -113,6 +169,16 @@ class WrapBlox {
 		return await this.fetchRawGroup(groupId, useCache);
 	};
 
+	/**
+	 * Fetches a group based on the provided query.
+	 * If a group name is provided, it will first look up the group Id and then fetch the group data.
+	 * It is recommended to use the group Id over the name.
+	 * 
+	 * @param query - The group name (string) or group Id (number) to search for.
+	 * @param useCache - Optional boolean to indicate whether to use cached data. Defaults to true.
+	 * @returns A promise that resolves to a `Group` object.
+	 * @throws Will throw an error if the group is not found.
+	 */
 	fetchGroup = async (query: string | number, useCache = true): Promise<Group> => {
 		const rawData = await this.fetchRawGroup(query, useCache);
 		if (!rawData) throw new Error("Group not found");
@@ -120,8 +186,15 @@ class WrapBlox {
 		return new Group(this, rawData);
 	};
 
-	//? Games
+	//? Universes
 	
+	/**
+	 * Fetches raw universe data for a given universe Id.
+	 *
+	 * @param universeId - The Id of the universe to fetch data for.
+	 * @param useCache - Optional. Whether to use cached data. Defaults to true.
+	 * @returns A promise that resolves to the raw universe data.
+	 */
 	private fetchRawUniverse = async (universeId: number, useCache = true) : Promise<RawUniverseData> => {
 		return (await this.fetchHandler.fetchEndpoint('GET', 'Games', "/games", {
 			useCache: useCache,
@@ -131,13 +204,18 @@ class WrapBlox {
 		})).data[0];
 	};
 
+	/**
+	 * Fetches the universe data for a given universe Id.
+	 *
+	 * @param universeId - The Id of the universe to fetch.
+	 * @param useCache - Optional. Whether to use cached data if available. Defaults to true.
+	 * @returns A promise that resolves to a `Universe` object.
+	 * @throws Will throw an error if the universe is not found.
+	 */
 	fetchUniverse = async (universeId: number, useCache = true): Promise<Universe> => {
 		const rawData = await this.fetchRawUniverse(universeId, useCache);
 		if (!rawData) throw new Error("Universe not found");
 
 		return new Universe(this, rawData);
 	};
-}
-
-
-export default WrapBlox;
+};
