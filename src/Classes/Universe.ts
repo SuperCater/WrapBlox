@@ -98,10 +98,21 @@ export default class Universe {
         this.licenseDescription = rawData.licenseDescription;
     };
 
+    /**
+     * Fetches the root place associated with the universe.
+     *
+     * @returns {Promise<Place>} A promise that resolves to the root place.
+     */
     async fetchRootPlace(): Promise<Place> {
         return await this.client.fetchPlace(this.rootPlaceId);
     };
 
+    /**
+     * Returns a string representation of the Universe instance.
+     * The format of the returned string is `${this.name}:${this.id}`.
+     *
+     * @returns {string} The formatted string
+     */
     toString(): string {
         return `${this.name}:${this.id}`;
     };

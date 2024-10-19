@@ -1,5 +1,6 @@
 import type WrapBlox from "../index.js";
 import {
+    Universe,
     type RawPlaceData,
 } from "../index.js";
 
@@ -54,10 +55,21 @@ export default class Place {
         this.imageToken = rawdata.imageToken;
     };
 
-    async fetchUniverse() {
+    /**
+     * Fetches the universe data associated with the current instance.
+     *
+     * @returns {Promise<Universe>} A promise that resolves to the universe data.
+     */
+    async fetchUniverse(): Promise<Universe> {
         return this.client.fetchUniverse(this.universeId);
     }
 
+    /**
+     * Returns a string representation of the Place object.
+     * The format of the returned string is `${this.name}:${this.id}`.
+     *
+     * @returns {string} The formatted string
+     */
     toString(): string {
         return `${this.name}:${this.id}`;
     }

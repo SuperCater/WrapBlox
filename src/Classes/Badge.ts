@@ -66,6 +66,12 @@ export default class Badge {
 		Docs: https://badges.roblox.com/docs/index.html
 	*/
 
+    /**
+     * Fetches the service metadata for badges.
+     *
+     * @param useCache - A boolean indicating whether to use cached data. Defaults to true.
+     * @returns A promise that resolves to the badge service metadata.
+     */
     async fetchServiceMetadata(useCache = true): Promise<BadgeServiceMetadata> {
         return await this.client.fetchHandler.fetchEndpoint("GET", "Badges", "/metadata", { useCache: useCache })
     };
@@ -75,6 +81,15 @@ export default class Badge {
 		Docs: https://thumbnails.roblox.com/docs/index.html
 	*/
 
+    /**
+     * Fetches the icon for the badge.
+     *
+     * @param {BadgeImageSize} [size=BadgeImageSize["150x150"]] - The size of the badge image.
+     * @param {BadgeImageFormat} [format="Png"] - The format of the badge image.
+     * @param {boolean} [isCircular=false] - Whether the badge image should be circular.
+     * @param {boolean} [useCache=true] - Whether to use the cache for the request.
+     * @returns {Promise<string>} - A promise that resolves to the URL of the badge image.
+     */
     async fetchIcon(size: BadgeImageSize = BadgeImageSize["150x150"], format: BadgeImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
         return (await this.client.fetchHandler.fetchEndpoint("GET", "Thumbnails", "/badges/icons", {
 			useCache: useCache,
@@ -89,6 +104,11 @@ export default class Badge {
 
     // Miscellaneous
 
+    /**
+     * Converts the Badge instance to a string representation.
+     * 
+     * @returns {string} A string in the format `${this.name}:${this.id}`.
+     */
     toString(): string {
         return `${this.name}:${this.id}`
     };

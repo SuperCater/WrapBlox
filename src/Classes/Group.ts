@@ -46,6 +46,15 @@ export default class Group {
 		Docs: https://groups.roblox.com/docs/index.html
 	*/
 
+    /**
+     * Fetches the audit log for the group.
+     *
+     * @param maxResults - The maximum number of results to return. Defaults to 100.
+     * @param sortOrder - The order in which to sort the results. Defaults to "Asc".
+     * @param actionType - The type of action to filter the audit log by. Optional.
+     * @param useCache - Whether to use cached data. Defaults to true.
+     * @returns A promise that resolves to an array of GroupAuditLog objects.
+     */
     async fetchAuditLog(maxResults = 100, sortOrder: SortOrder = "Asc", actionType?: GroupActionType, useCache = true): Promise<GroupAuditLog[]> {
         const returnData = [] as GroupAuditLog[];
         const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Groups", `/groups/${this.id}/audit-log`,
@@ -71,10 +80,21 @@ export default class Group {
 
     // Miscellaneous
 
+    /**
+     * Fetches the owner of the group.
+     *
+     * @returns {Promise<User>} A promise that resolves to the User object representing the owner.
+     */
     async fetchOwner(): Promise<User> {
         return await this.client.fetchUser(this.owner.id);
     };
 
+    /**
+     * Converts the Group object to a string representation.
+     * The string in the format `${this.name}:${this.id}`.
+     *
+     * @returns {string} The formatted string.
+     */
     toString(): string {
         return `${this.name}:${this.id}`;
     };
