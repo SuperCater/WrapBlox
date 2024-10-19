@@ -6,7 +6,7 @@ dotenv.config();
 const client = new WrapBlox();
 const placeId = 24040136;
 let preFetchedPlace: Place;
-const silent = false;
+const silent = true;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
