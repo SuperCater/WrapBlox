@@ -3,15 +3,15 @@ import CacheManager from "./cacheManager.js";
 import FetchError from "./FetchError.js";
 
 export default class FetchHandler {	
-	cacheManager = new CacheManager<string, unknown>();
+	readonly cacheManager = new CacheManager<string, unknown>();
 
-	credentials: {
+	private readonly credentials: {
 		cookie?: string;
 		CSRFToken?: string;
 		APIKey?: string;
 	} = { cookie: undefined, CSRFToken: undefined, APIKey: undefined };
 
-	Endpoints = {
+	readonly Endpoints = {
 		Users: 'https://users.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
 		Friends: "https://friends.roblox.com/v1",
@@ -41,12 +41,15 @@ export default class FetchHandler {
 		AvatarV3: "https://avatar.roblox.com/v3",
 	};
 
-	Services = {};
+	readonly Services = {};
 
 	constructor(cookie?: string) {
 		this.credentials.cookie = cookie;
 	}
 
+	setCredential(key: keyof typeof this.credentials, value: string) {
+		this.credentials[key] = value
+	};
 
 	clearCache = () => {
 		this.cacheManager.clearCache();

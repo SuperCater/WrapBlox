@@ -3,7 +3,7 @@ import type { BirthData, RawFriendRequest, RawUserData } from "../Types/UserType
 import User from "./User.js";
 
 export default class AuthedUser extends User {
-	cookie : string;
+	private cookie: string;
 	
 	constructor(client : WrapBlox, data : RawUserData, cookie : string) {
 		super(client, data);

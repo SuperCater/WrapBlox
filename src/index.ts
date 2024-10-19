@@ -40,7 +40,8 @@ export default class WrapBlox {
 	 * @returns A promise that resolves to an instance of `AuthedUser` representing the authenticated user.
 	 */
 	login = async (cookie : string) => {
-		this.fetchHandler.credentials.cookie = cookie;
+		this.fetchHandler.setCredential("cookie", cookie);
+		
 		const userInfo = await this.fetchHandler.fetchEndpoint('GET', 'Users', '/users/authenticated');
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		this.self = new AuthedUser(this, realUserData, cookie);
