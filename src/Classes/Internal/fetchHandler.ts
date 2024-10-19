@@ -2,7 +2,7 @@ import type { FetchOptions, HttpMethods } from "../../Types/BaseTypes.js"
 import CacheManager from "./cacheManager.js";
 import FetchError from "./FetchError.js";
 
-class FetchHandler {
+export default class FetchHandler {
 	cookie?: string;
 	CsrfToken?: string;
 	
@@ -127,8 +127,4 @@ class FetchHandler {
 		}
 		return data;
 	};
-
-
-}
-
-export default FetchHandler;
+};

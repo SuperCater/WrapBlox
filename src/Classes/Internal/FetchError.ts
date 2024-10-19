@@ -11,5 +11,5 @@ export default class FetchError extends Error {
 		const formattedErrors = body.errors.map((error: {code: number, message: string}) => `[${error.code}]: ${error.message}`).join("\n");
 
 		return `[${this.response.status} ${this.response.statusText}]:\n${formattedErrors}`;
-	}
-}
+	};
+};

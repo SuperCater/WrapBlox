@@ -28,4 +28,4 @@ export default {
 
 		return new Badge(client, data);
 	},
-}
+};
