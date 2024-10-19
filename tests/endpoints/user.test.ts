@@ -75,16 +75,11 @@ test("fetchPresence", async () => {
 */
 
 test("fetchCreatedUniverses", async () => {
-	try {
-		const universes = await preFetchedUser.fetchCreatedUniverses(1);
+	const universes = await preFetchedUser.fetchCreatedUniverses(1);
 
 	if (!silent) console.log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
 
 	expect(universes).toBeDefined();
-	} catch (error) {
-		if (!(error instanceof FetchError)) return;
-		console.log(await error.format());
-	}
 });
 
 /*
