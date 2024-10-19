@@ -54,6 +54,10 @@ export default class Place {
         this.imageToken = rawdata.imageToken;
     };
 
+    async fetchUniverse() {
+        return this.client.fetchUniverse(this.universeId);
+    }
+
     toString(): string {
         return `${this.name}:${this.id}`;
     }
