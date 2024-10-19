@@ -1,7 +1,7 @@
 import Friend from "../../src/Classes/Friend.js";
-import Group from "../../src/Classes/Group.js";
 import FetchError from "../../src/Classes/Internal/FetchError.js";
-import WrapBlox, { Badge, ItemTypes, User, UserPresence } from "../../src/index.js";
+import WrapBlox, { Badge, ItemTypes, User, UserPresence, Group } from "../../src/index.js";
+
 import dotenv from "dotenv";
 dotenv.config();
 
