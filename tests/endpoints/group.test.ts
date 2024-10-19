@@ -48,7 +48,7 @@ test("fetchUniverses", async () => {
     try {
         const universes = await preFetchedGroup.fetchUniverses(1);
 
-    console.log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
+    if (!silent) console.log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
 
     expect(universes).toBeDefined();
     } catch (error) {

@@ -98,6 +98,8 @@ export default class Universe {
         this.licenseDescription = rawData.licenseDescription;
     };
 
+    // Miscellanous
+
     /**
      * Fetches the root place associated with the universe.
      *
