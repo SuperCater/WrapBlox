@@ -24,7 +24,7 @@ import {
 	Badge,
 } from "../index.js";
 
-class User {
+export default class User {
 	readonly client: WrapBlox;
 	readonly rawData: RawUserData;
 
@@ -348,5 +348,3 @@ class User {
 		return `${this.name}:${this.id}`
 	};
 };
-
-export default User;

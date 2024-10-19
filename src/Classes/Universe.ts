@@ -5,7 +5,7 @@ import {
     type UniverseCreatorType
 } from "../index.js";
 
-class Universe {
+export default class Universe {
     readonly client: WrapBlox;
 	readonly rawData: RawUniverseData;
 
@@ -100,5 +100,3 @@ class Universe {
         return `${this.name}:${this.id}`;
     };
 };
-
-export default Universe;

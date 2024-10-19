@@ -2,7 +2,7 @@ import type WrapBlox from "../index.js";
 import type { BirthData, RawFriendRequest, RawUserData } from "../Types/UserTypes.js";
 import User from "./User.js";
 
-class AuthedUser extends User {
+export default class AuthedUser extends User {
 	cookie : string;
 	
 	constructor(client : WrapBlox, data : RawUserData, cookie : string) {
@@ -25,6 +25,4 @@ class AuthedUser extends User {
 	async fetchCountryCode() : Promise<string> {
 		return (await this.client.fetchHandler.fetchEndpoint('GET', 'Users', `/users/${this.id}/country`, {cookie: this.cookie})).countryCode;
 	}
-}
-
-export default AuthedUser;
+};

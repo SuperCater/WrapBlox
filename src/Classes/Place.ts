@@ -1,3 +1,3 @@
-class Place {};
-
-export default Place;
+export default class Place {
+    
+};

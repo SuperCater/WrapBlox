@@ -7,7 +7,7 @@ import {
     BadgeImageSize,
 } from "../index.js";
 
-class Badge {
+export default class Badge {
     readonly client: WrapBlox;
     readonly rawData: RawBadgeData;
 
@@ -93,5 +93,3 @@ class Badge {
         return `${this.name}:${this.id}`
     };
 };
-
-export default Badge;

@@ -4,7 +4,7 @@ import AuthedUser from "./AuthedUser.js";
 import User from "./User.js";
 
 
-class Friend extends User {
+export default class Friend extends User {
 	friendFrequentScore: number;
 	isDeleted: boolean;
 	isOnline: boolean;
@@ -33,6 +33,4 @@ class Friend extends User {
 		if (!(this.friend instanceof AuthedUser)) throw new Error("You can only unfriend a user if you are authenticated");
 		await this.client.fetchHandler.fetchEndpoint("POST", "Friends", `/users/${this.id}/unfriend`, {cookie: this.friend.cookie});
 	}
-}
-
-export default Friend;
+};

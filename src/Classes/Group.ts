@@ -10,7 +10,7 @@ import {
     User
 } from "../index.js";
 
-class Group {
+export default class Group {
     readonly client: WrapBlox;
     readonly rawData: RawGroupData;
 
@@ -76,6 +76,4 @@ class Group {
     toString(): string {
         return `${this.name}:${this.id}`;
     };
-}
-
-export default Group;
+};
