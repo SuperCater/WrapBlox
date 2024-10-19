@@ -7,6 +7,8 @@ import {
     GroupOwnerType,
     SortOrder,
 
+    Universe,
+
     User
 } from "../index.js";
 
@@ -76,7 +78,28 @@ export default class Group {
         return returnData;
     }
 
-    
+    /*
+        Methods related to the Games API
+        Docs: https://games.roblox.com/docs/index.html
+    */
+   
+    async fetchUniverses(maxResults = 100, accessFilter: "All" | "Public" | "Private" = "Public", sortOrder: SortOrder = "Asc", useCache = true): Promise<Universe[]> {
+        const returnData = [] as Universe[];
+        const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "GamesV2", `/groups/${this.id}/games`, {
+            useCache: useCache,
+            params: {
+                accessFilter: accessFilter,
+                sortOrder: sortOrder
+            }
+        }, { maxResults: maxResults, perPage: 50 });
+
+        for (const data of rawData) {
+            const universe = await this.client.fetchUniverse(data.id, useCache);
+            returnData.push(universe);
+        }
+
+        return returnData;
+    };
 
     // Miscellaneous
 

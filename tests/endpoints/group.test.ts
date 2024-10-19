@@ -1,11 +1,12 @@
-import WrapBlox, { Group } from "../../src/index.js";
+import FetchError from "../../src/Classes/Internal/FetchError.js";
+import WrapBlox, { Group, Universe } from "../../src/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 
 const client = new WrapBlox();
 const groupId = 33991282;
 let preFetchedGroup: Group;
-const silent = true;
+const silent = false;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
@@ -42,3 +43,17 @@ test("fetchAuditLog", async () => {
 
     expect(auditLog).toBeDefined();
 })
+
+test("fetchUniverses", async () => {
+    try {
+        const universes = await preFetchedGroup.fetchUniverses(1);
+
+    console.log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
+
+    expect(universes).toBeDefined();
+    } catch (error) {
+        if (!(error instanceof FetchError)) throw error;
+
+        console.log(await error.format());
+    }
+});
