@@ -36,7 +36,7 @@ export type RawUniverseData = {
     createVipServersAllowed: boolean,
     universeAvatarType: UniverseAvatarType,
 
-    genre: string,
+    genre: string, //TODO: properly type this
     genre_l1: string,
     genre_l2: string,
     isAllGenre: boolean,
