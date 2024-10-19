@@ -54,7 +54,7 @@ export default class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchEndpoint = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}): Promise<any> => { // params?: { [key: string | number]: unknown }, body?: { [key: string]: unknown }, usecache = true, cookie? : string) => {
+	fetchEndpoint = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}): Promise<any> => {
 		let RealUrl = this.Endpoints[endpoint] + route;
 
 		if (opts.params) {
