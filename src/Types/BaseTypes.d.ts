@@ -5,7 +5,8 @@ export type SortOrder = "Asc" | "Desc";
 export type FetchOptions = {
 	useCache?: boolean,
 	cookie?: string,
-	CsrfToken?: string,
+	CSRFToken?: string,
+	APIKey?: string,
 	params?: { [key: string | number]: unknown },
 	body?: { [key: string]: unknown },
 };

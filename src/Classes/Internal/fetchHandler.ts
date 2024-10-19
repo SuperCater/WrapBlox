@@ -75,7 +75,7 @@ export default class FetchHandler {
 		const headers = new Headers();
 
 		if (this.credentials.CSRFToken) headers.set("X-Csrf-Token", this.credentials.CSRFToken);
-		if (opts.CsrfToken) headers.set("X-Csrf-Token", opts.CsrfToken);
+		if (opts.CSRFToken) headers.set("X-Csrf-Token", opts.CSRFToken);
 		if (this.credentials.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.credentials.cookie}`);
 		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`);
 		headers.set("Content-Type", "application/json");
