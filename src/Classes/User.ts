@@ -21,7 +21,6 @@ import {
 	ItemTypes,
 
 	Group,
-	AwardedBadge,
 	Badge,
 } from "../index.js";
 
