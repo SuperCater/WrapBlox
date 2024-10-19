@@ -5,11 +5,15 @@ import FetchError from "./FetchError.js";
 export default class FetchHandler {	
 	readonly cacheManager = new CacheManager<string, unknown>();
 
-	private readonly credentials: {
+	private credentials: {
 		cookie?: string;
 		CSRFToken?: string;
 		APIKey?: string;
-	} = { cookie: undefined, CSRFToken: undefined, APIKey: undefined };
+	} = {
+		cookie: undefined,
+		CSRFToken: undefined,
+		APIKey: undefined
+	};
 
 	readonly Endpoints = {
 		Users: 'https://users.roblox.com/v1',
@@ -111,7 +115,7 @@ export default class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchEndpointList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, pageOptions: { maxResults: number, perPage: number } = { maxResults: 100, perPage: 100 }): Promise<any> => {
+	fetchEndpointList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, pageOptions: { maxResults: number, perPage: 10 | 25 | 50 | 100 } = { maxResults: 100, perPage: 100 }): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
