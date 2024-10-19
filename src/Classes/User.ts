@@ -521,6 +521,7 @@ export default class User {
 			{ maxResults: maxResults, perPage: 100 });
 
 		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
+		//? Why not use wrapblox.fetchUser() here? Because it would use an unnecessary API request.
 
 		return returnData;
 	};
@@ -553,6 +554,7 @@ export default class User {
 			{ maxResults: maxResults, perPage: 100 });
 
 		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
+		//? Why not use wrapblox.fetchUser() here? Because it would use an unnecessary API request.
 
 		return returnData;
 	};
