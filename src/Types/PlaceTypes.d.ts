@@ -15,3 +15,29 @@ export type RawPlaceData = {
     price: number,
     imageToken: string,
 };
+
+export type PlaceServer = {
+    id: number,
+    maxPlayers: number,
+    playing: number,
+    playerTokens: string[],
+    players: {
+        playerToken: string,
+        id: number,
+        name: string,
+        displayName: string,
+    }[],
+
+    fps: number,
+    ping: number,
+
+    name: string,
+    vipServerId: number,
+    accessCode: string,
+    owner: {
+        hasVerifiedBadge: boolean,
+        id: number,
+        name: string,
+        displayName: string,
+    }
+}

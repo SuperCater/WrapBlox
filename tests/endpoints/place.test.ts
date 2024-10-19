@@ -6,7 +6,7 @@ dotenv.config();
 const client = new WrapBlox();
 const placeId = 24040136;
 let preFetchedPlace: Place;
-const silent = true;
+const silent = false;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
@@ -28,6 +28,16 @@ test("fetchPlace", async () => {
 
     expect(placeById).toBeDefined();
     expect(placeById).toMatchObject<Place>(placeById);
+});
+
+test("fetchServers", async () => {
+    const servers = await preFetchedPlace.fetchServers();
+
+    if (!silent) console.log(`Fetched [${servers.length}] servers:`, servers);
+
+    expect(servers).toBeDefined();
+    expect(servers).toBeInstanceOf(Array);
+    expect(servers).toHaveLength(servers.length);
 });
 
 test("fetchUniverse", async () => {

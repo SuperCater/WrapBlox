@@ -55,3 +55,8 @@ export enum UserPresenceState {
 	InStudio = 3,
 	Invisible = 4
 }
+
+export enum ServerType {
+	Public = 0,
+	Private = 1
+}

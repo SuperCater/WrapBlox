@@ -1,5 +1,7 @@
 import type WrapBlox from "../index.js";
 import {
+    PlaceServer,
+    ServerType,
     Universe,
     type RawPlaceData,
 } from "../index.js";
@@ -53,6 +55,17 @@ export default class Place {
         this.price = rawdata.price;
 
         this.imageToken = rawdata.imageToken;
+    };
+
+	/*
+		Methods related to the Games API
+		Docs: https://games.roblox.com/docs/index.html
+	*/
+
+    async fetchServers(maxResults = 100, serverType: ServerType = ServerType.Public, useCache = true): Promise<PlaceServer[]> {
+        return (await this.client.fetchHandler.fetchEndpointList("GET", "Games", `/games/${this.id}/servers/${serverType}`,
+            { useCache: useCache, params: {} },
+            { maxResults: maxResults, perPage: 100 }));
     };
 
     /**
