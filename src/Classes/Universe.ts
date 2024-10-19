@@ -2,7 +2,9 @@ import type WrapBlox from "../index.js";
 import { 
     type UniverseAvatarType,
     type RawUniverseData,
-    type UniverseCreatorType
+    type UniverseCreatorType,
+    
+    Place
 } from "../index.js";
 
 export default class Universe {
@@ -94,6 +96,10 @@ export default class Universe {
         this.isFavoritedByUser = rawData.isFavoritedByUser;
         this.favoritedCount = rawData.favoritedCount;
         this.licenseDescription = rawData.licenseDescription;
+    };
+
+    async fetchRootPlace(): Promise<Place> {
+        return await this.client.fetchPlace(this.rootPlaceId);
     };
 
     toString(): string {

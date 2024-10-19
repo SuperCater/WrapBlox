@@ -53,4 +53,8 @@ export default class Place {
 
         this.imageToken = rawdata.imageToken;
     };
+
+    toString(): string {
+        return `${this.name}:${this.id}`;
+    }
 };
