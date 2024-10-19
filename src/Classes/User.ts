@@ -22,6 +22,7 @@ import {
 
 	Group,
 	Badge,
+	Universe,
 } from "../index.js";
 
 export default class User {
@@ -61,7 +62,10 @@ export default class User {
 	*/
 
 	async fetchUsernameHistory(maxResults = 100, useCache = true): Promise<string[]> {
-		return (await this.client.fetchHandler.fetchEndpointList("GET", "Users", `/users/${this.id}/username-history`, { useCache: useCache }, maxResults)).map((name: {name: string}) => name.name);
+		return (await this.client.fetchHandler.fetchEndpointList("GET", "Users", `/users/${this.id}/username-history`,
+			{ useCache: useCache },
+			{ maxResults: maxResults, perPage: 100 }
+		)).map((name: {name: string}) => name.name);
 	};
 
 	/*
@@ -85,6 +89,30 @@ export default class User {
 				userIds: [this.id]
 			}
 		})).userPresences[0];
+	};
+
+	/*
+		Methods related to the Games API
+		Docs: https://games.roblox.com/docs/index.html
+	*/
+
+	async fetchCreatedUniverses(maxResults = 100, accessFilter: "All" | "Public" | "Private" = "All", sortOrder: SortOrder = "Asc", useCache = true): Promise<Universe[]> {
+		const returnData = [] as Universe[];
+		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "GamesV2", `/users/${this.id}/games`, {
+			useCache: useCache,
+			params: {
+				//accessFilter: accessFilter,
+				// Returns a 501 [Not Implemented]
+				sortOrder: sortOrder
+			}
+		}, { maxResults: maxResults, perPage: 50 });
+
+		for (const data of rawData) {
+			const universe = await this.client.fetchUniverse(data.id, useCache);
+			returnData.push(universe);
+		}
+
+		return returnData;
 	};
 
 	/*
@@ -121,9 +149,7 @@ export default class User {
 		const returnData = [] as Group[];
 		const rawData = await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache);
 
-		for (const data of rawData) {
-			returnData.push(await this.client.fetchGroup(data.group.id, useCache));
-		}
+		for (const data of rawData) returnData.push(await this.client.fetchGroup(data.group.id, useCache));
 
 		return returnData;
 	}
@@ -135,7 +161,9 @@ export default class User {
 
 	async fetchBadges(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<Badge[]> {
 		const returnData = [] as Badge[];
-		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Badges", `/users/${this.id}/badges`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
+		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Badges", `/users/${this.id}/badges`,
+			{ useCache: useCache, params: { sortOrder: sortOrder } },
+			{ maxResults: maxResults, perPage: 100 });
 
 		for (const data of rawData) returnData.push(await factory.createBadge(this.client, data));
 
@@ -289,7 +317,9 @@ export default class User {
 
 	async fetchFollowers(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
-		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Friends", `/users/${this.id}/followers`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
+		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Friends", `/users/${this.id}/followers`,
+			{ useCache: useCache, params: { sortOrder: sortOrder } },
+			{ maxResults: maxResults, perPage: 100 });
 
 		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
 
@@ -305,7 +335,9 @@ export default class User {
 
 	async fetchFollowings(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
 		const returnData = [] as User[];
-		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Friends", `/users/${this.id}/followings`, { useCache: useCache, params: { sortOrder: sortOrder } }, maxResults)
+		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Friends", `/users/${this.id}/followings`,
+			{ useCache: useCache, params: { sortOrder: sortOrder } },
+			{ maxResults: maxResults, perPage: 100 });
 
 		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
 

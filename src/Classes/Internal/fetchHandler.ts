@@ -108,15 +108,15 @@ export default class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchEndpointList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, maxResults = 100): Promise<any> => {
+	fetchEndpointList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, pageOptions: { maxResults: number, perPage: number } = { maxResults: 100, perPage: 100 }): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
 			try {
-				const response = await this.fetchEndpoint(method, endpoint, `${route}?limit=100${cursor ? `&cursor=${cursor}` : ""}`, opts);
+				const response = await this.fetchEndpoint(method, endpoint, `${route}?limit=${pageOptions.perPage}${cursor ? `&cursor=${cursor}` : ""}`, opts);
 				if (response.data) data.push(...response.data);
 
-				if (!response.nextPageCursor || data.length >= maxResults) {
+				if (!response.nextPageCursor || data.length >= pageOptions.maxResults) {
 					break;
 				}
 				cursor = response.nextPageCursor;

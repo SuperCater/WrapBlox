@@ -1,6 +1,6 @@
 import Friend from "../../src/Classes/Friend.js";
 import FetchError from "../../src/Classes/Internal/FetchError.js";
-import WrapBlox, { Badge, ItemTypes, User, UserPresence, Group } from "../../src/index.js";
+import WrapBlox, { Badge, ItemTypes, User, UserPresence, Group, Universe } from "../../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -8,7 +8,7 @@ dotenv.config();
 const client = new WrapBlox();
 let preFetchedUser: User;
 const userId = 2897964600;
-const silent = true;
+const silent = false;
 
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
@@ -68,6 +68,24 @@ test("fetchPresence", async () => {
 	expect(presence).toBeDefined();
 	expect(presence).toMatchObject<UserPresence>(presence);
 })
+
+/*
+	Methods related to the Games API
+	Docs: https://games.roblox.com/docs/index.html
+*/
+
+test("fetchCreatedUniverses", async () => {
+	try {
+		const universes = await preFetchedUser.fetchCreatedUniverses(1);
+
+	if (!silent) console.log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
+
+	expect(universes).toBeDefined();
+	} catch (error) {
+		if (!(error instanceof FetchError)) return;
+		console.log(await error.format());
+	}
+});
 
 /*
 	Methods related to the Groups API
