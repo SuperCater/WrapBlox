@@ -218,4 +218,37 @@ export default class WrapBlox {
 
 		return new Universe(this, rawData);
 	};
+
+	//? Places
+
+	/**
+	 * Fetches raw place details for a given place Id.
+	 *
+	 * @param placeId - The Id of the place to fetch details for.
+	 * @param useCache - Optional. Whether to use cached data. Defaults to true.
+	 * @returns A promise that resolves to the raw place details.
+	 */
+	private fetchRawPlace = async (placeId: number, useCache = true) => {
+		return (await this.fetchHandler.fetchEndpoint("GET", "Games", "games/multiget-place-details", {
+			useCache: useCache,
+			params: {
+				placeIds: [placeId]
+			}
+		}))[0];
+	};
+
+	/**
+	 * Fetches a place by its Id and returns a Place object.
+	 * 
+	 * @param placeId - The Id of the place to fetch.
+	 * @param useCache - Optional. Whether to use cached data if available. Defaults to true.
+	 * @returns A Promise that resolves to a Place object.
+	 * @throws Will throw an error if the place is not found.
+	 */
+	fetchPlace = async (placeId: number, useCache = true) => {
+		const rawData = await this.fetchRawPlace(placeId, useCache);
+		if (!rawData) throw new Error("Place not found");
+
+		return new Place(this, rawData);
+	};
 };
