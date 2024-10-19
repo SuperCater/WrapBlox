@@ -2,10 +2,15 @@ import type { FetchOptions, HttpMethods } from "../../Types/BaseTypes.js"
 import CacheManager from "./cacheManager.js";
 import FetchError from "./FetchError.js";
 
-export default class FetchHandler {
-	cookie?: string;
-	CsrfToken?: string;
-	
+export default class FetchHandler {	
+	cacheManager = new CacheManager<string, unknown>();
+
+	credentials: {
+		cookie?: string;
+		CSRFToken?: string;
+		APIKey?: string;
+	} = { cookie: undefined, CSRFToken: undefined, APIKey: undefined };
+
 	Endpoints = {
 		Users: 'https://users.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
@@ -34,12 +39,12 @@ export default class FetchHandler {
 		Avatar: "https://avatar.roblox.com/v1",
 		AvatarV2: "https://avatar.roblox.com/v2",
 		AvatarV3: "https://avatar.roblox.com/v3",
-	}
+	};
 
-	cacheManager = new CacheManager<string, unknown>()
+	Services = {};
 
 	constructor(cookie?: string) {
-		this.cookie = cookie;
+		this.credentials.cookie = cookie;
 	}
 
 
@@ -69,9 +74,9 @@ export default class FetchHandler {
 
 		const headers = new Headers();
 
-		if (this.CsrfToken) headers.set("X-Csrf-Token", this.CsrfToken);
+		if (this.credentials.CSRFToken) headers.set("X-Csrf-Token", this.credentials.CSRFToken);
 		if (opts.CsrfToken) headers.set("X-Csrf-Token", opts.CsrfToken);
-		if (this.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.cookie}`);
+		if (this.credentials.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.credentials.cookie}`);
 		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`);
 		headers.set("Content-Type", "application/json");
 
@@ -82,8 +87,8 @@ export default class FetchHandler {
 			body: opts.body ? JSON.stringify(opts.body) : undefined,
 		})
 
-		if (!this.CsrfToken && response.headers.get("x-csrf-token")) {
-			this.CsrfToken = response.headers.get("x-csrf-token") as string;
+		if (!this.credentials.CSRFToken && response.headers.get("x-csrf-token")) {
+			this.credentials.CSRFToken = response.headers.get("x-csrf-token") as string;
 			if (response.status === 403) {
 				return await this.fetchEndpoint(method, endpoint, route, opts);
 			}
