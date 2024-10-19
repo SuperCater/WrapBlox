@@ -124,7 +124,7 @@ export default class User {
 	 * @param useCache - Whether to use cached data. Defaults to true.
 	 * @returns A promise that resolves to an array of Universe objects.
 	 */
-	async fetchCreatedUniverses(maxResults = 100, accessFilter: "All" | "Public" | "Private" = "All", sortOrder: SortOrder = "Asc", useCache = true): Promise<Universe[]> {
+	async fetchCreatedUniverses(maxResults = 50, accessFilter: "All" | "Public" | "Private" = "All", sortOrder: SortOrder = "Asc", useCache = true): Promise<Universe[]> {
 		const returnData = [] as Universe[];
 		const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "GamesV2", `/users/${this.id}/games`, {
 			useCache: useCache,
