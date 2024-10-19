@@ -23,14 +23,4 @@ export default class Friend extends User {
 	
 		
 	}
-	
-	/**
-	 * Removes friendship
-	 * @throws {Error} You can only unfriend a user if you are authenticated
-	 * @returns {Promise<void>}
-	 */
-	async unfriend(): Promise<void> {
-		if (!(this.friend instanceof AuthedUser)) throw new Error("You can only unfriend a user if you are authenticated");
-		await this.client.fetchHandler.fetchEndpoint("POST", "Friends", `/users/${this.id}/unfriend`, {cookie: this.friend.cookie});
-	}
 };
