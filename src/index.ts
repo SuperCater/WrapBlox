@@ -229,7 +229,7 @@ export default class WrapBlox {
 	 * @returns A promise that resolves to the raw place details.
 	 */
 	private fetchRawPlace = async (placeId: number, useCache = true) => {
-		return (await this.fetchHandler.fetchEndpoint("GET", "Games", "games/multiget-place-details", {
+		return (await this.fetchHandler.fetchEndpoint("GET", "Games", "/games/multiget-place-details", {
 			useCache: useCache,
 			params: {
 				placeIds: [placeId]
