@@ -10,6 +10,11 @@ let preFetchedUser: User;
 const userId = 2897964600;
 const silent = true;
 
+const log = (message: unknown, ...optionalParams: unknown[]) => {
+	if (silent) return;
+	console.log(message, ...optionalParams);
+};
+
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")
@@ -17,7 +22,7 @@ test("login", async () => {
 	}
 
 	const user = await client.login(process.env.TESTCOOKIE)
-	if (!silent) console.log(`Logged in as ${user.name}:${user.id}`)
+	log(`Logged in as ${user.name}:${user.id}`)
 
 	expect(user).toBeDefined();
 });
@@ -32,7 +37,7 @@ test("fetchUser", async () => {
 	const userbyName = await client.fetchUser("Purple_Creativity");
 
 	preFetchedUser = userbyId;
-	if (!silent) console.log(`Fetched users: ${userbyId.toString()}, ${userbyName.toString()}`);
+	log(`Fetched users: ${userbyId.toString()}, ${userbyName.toString()}`);
 
 	expect(userbyId).toBeDefined();
 	expect(userbyName).toBeDefined();
@@ -41,7 +46,7 @@ test("fetchUser", async () => {
 test("fetchUsernameHistory", async () => {
 	const usernameHistory = await preFetchedUser.fetchUsernameHistory();
 
-	if (!silent) console.log(`Fetched username history:\n${usernameHistory}`)
+	log(`Fetched username history:\n${usernameHistory}`)
 
 	expect(usernameHistory).toBeDefined();
 });
@@ -54,7 +59,7 @@ test("fetchUsernameHistory", async () => {
 test("fetchLastOnlineDate", async () => {
 	const date = await preFetchedUser.fetchLastOnlineDate();
 
-	if (!silent) console.log(`Fetched user last online date: ${date.toDateString()}`);
+	log(`Fetched user last online date: ${date.toDateString()}`);
 
 	expect(date).toBeDefined();
 	expect(date).toBeInstanceOf(Date);
@@ -63,7 +68,7 @@ test("fetchLastOnlineDate", async () => {
 test("fetchPresence", async () => {
 	const presence = await preFetchedUser.fetchPresence();
 
-	if (!silent) console.log("Fetched user presence:\n", presence);
+	log("Fetched user presence:\n", presence);
 
 	expect(presence).toBeDefined();
 	expect(presence).toMatchObject<UserPresence>(presence);
@@ -77,7 +82,7 @@ test("fetchPresence", async () => {
 test("fetchCreatedUniverses", async () => {
 	const universes = await preFetchedUser.fetchCreatedUniverses(1);
 
-	if (!silent) console.log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
+	log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
 
 	expect(universes).toBeDefined();
 });
@@ -90,7 +95,7 @@ test("fetchCreatedUniverses", async () => {
 test("inGroup", async () => {
 	const boolean = await preFetchedUser.inGroup(33991282);
 
-	if (!silent) console.log(`In group [Purple Robotics, LLC]: ${boolean}`);
+	log(`In group [Purple Robotics, LLC]: ${boolean}`);
 
 	expect(boolean).toBeDefined();
 });
@@ -98,19 +103,19 @@ test("inGroup", async () => {
 test("getRoleInGroup", async () => {
 	const role = await preFetchedUser.getRoleInGroup(33991282);
 
-	if (!silent) console.log("Role in group [Purple Robotics, LLC]:\n", role);
+	log("Role in group [Purple Robotics, LLC]:\n", role);
 });
 
 test("fetchPrimaryGroup", async () => {
 	const primaryGroup = await preFetchedUser.fetchPrimaryGroup();
 
-	if (!silent) console.log(`Primary group: ${primaryGroup?.toString()}`);
+	log(`Primary group: ${primaryGroup?.toString()}`);
 });
 
 test("fetchGroups", async () => {
 	const groups = await preFetchedUser.fetchGroups();
 
-	if (!silent) console.log(`Fetched [${groups.length}] groups:\n`, groups.map((data: Group) => data.toString()).join("\n"));
+	log(`Fetched [${groups.length}] groups:\n`, groups.map((data: Group) => data.toString()).join("\n"));
 
 	expect(groups).toBeDefined();
 }, 60000)
@@ -123,7 +128,7 @@ test("fetchGroups", async () => {
 test("fetchBadges", async () => {
 	const badges = await preFetchedUser.fetchBadges(1);
 
-	if (!silent) console.log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: Badge) => data.toString()).join("\n"));
+	log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: Badge) => data.toString()).join("\n"));
 
 	expect(badges).toBeDefined();
 });
@@ -131,7 +136,7 @@ test("fetchBadges", async () => {
 test("fetchBadgeAwardDate", async () => {
 	const date = await preFetchedUser.fetchBadgeAwardDate(2124445684);
 
-	if (!silent) console.log(`Badge awarded at: ${date?.toDateString()}`)
+	log(`Badge awarded at: ${date?.toDateString()}`)
 });
 
 /*
@@ -142,7 +147,7 @@ test("fetchBadgeAwardDate", async () => {
 test("canViewInventory", async () => {
 	const canView = await preFetchedUser.canViewInventory();
 
-	if (!silent) console.log(`Can view inventory: ${canView}`);
+	log(`Can view inventory: ${canView}`);
 
 	expect(canView).toBeDefined();
 });
@@ -150,7 +155,7 @@ test("canViewInventory", async () => {
 test("ownsAsset", async () => {
 	const bool = await preFetchedUser.ownsAsset(ItemTypes.GamePass, 776368);
 
-	if (!silent) console.log(`Owns asset: ${bool}`);
+	log(`Owns asset: ${bool}`);
 
 	expect(bool).toBeDefined();
 });
@@ -158,7 +163,7 @@ test("ownsAsset", async () => {
 test("ownsBadge", async () => {
 	const bool = await preFetchedUser.ownsBadge(150538398);
 
-	if (!silent) console.log(`Owns Badge: ${bool}`);
+	log(`Owns Badge: ${bool}`);
 
 	expect(bool).toBeDefined();
 });
@@ -166,7 +171,7 @@ test("ownsBadge", async () => {
 test("ownsGamepass", async () => {
 	const bool = await preFetchedUser.ownsGamepass(776368);
 
-	if (!silent) console.log(`Owns Gamepass: ${bool}`);
+	log(`Owns Gamepass: ${bool}`);
 
 	expect(bool).toBeDefined();
 });
@@ -174,7 +179,7 @@ test("ownsGamepass", async () => {
 test("ownsBundle", async () => {
 	const bool = await preFetchedUser.ownsBundle(201);
 
-	if (!silent) console.log(`Owns Bundle: ${bool}`);
+	log(`Owns Bundle: ${bool}`);
 
 	expect(bool).toBeDefined();
 });
@@ -183,7 +188,7 @@ test("getOwnedAsset", async () => {
 
 	const asset = await preFetchedUser.getOwnedAsset(ItemTypes.GamePass, 776368)
 
-	if (!silent) console.log("Owned asset:\n",asset)
+	log("Owned asset:\n",asset)
 });
 
 /*
@@ -195,7 +200,7 @@ test("fetchAvatarV1", async () => {
 	
 	const avatar = await preFetchedUser.fetchAvatarV1();
 
-	if (!silent) console.log("User AvatarV1:\n",avatar)
+	log("User AvatarV1:\n",avatar)
 
 	expect(avatar).toBeDefined();
 });
@@ -204,7 +209,7 @@ test("fetchAvatarV2", async () => {
 	
 	const avatar = await preFetchedUser.fetchAvatarV2();
 
-	if (!silent) console.log("User AvatarV2:\n",avatar)
+	log("User AvatarV2:\n",avatar)
 
 	expect(avatar).toBeDefined();
 });
@@ -218,7 +223,7 @@ test("fetchAvatarThumbnailUrl", async () => {
 	
 	const imageUrl = await preFetchedUser.fetchAvatarThumbnailUrl();
 
-	if (!silent) console.log(`Fetched imageUrl for Avatar Thumbnail:\n${imageUrl}`);
+	log(`Fetched imageUrl for Avatar Thumbnail:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
 });
@@ -227,7 +232,7 @@ test("fetchAvatar3D", async () => {
 	
 	const data = await preFetchedUser.fetchAvatar3D();
 
-	if (!silent) console.log("Fetched imageUrl for Avatar 3D:\n", data);
+	log("Fetched imageUrl for Avatar 3D:\n", data);
 
 	expect(data).toBeDefined();
 });
@@ -236,7 +241,7 @@ test("fetchAvatarBustUrl", async () => {
 	
 	const imageUrl = await preFetchedUser.fetchAvatarBustUrl();
 
-	if (!silent) console.log(`Fetched imageUrl for Avatar Bust:\n${imageUrl}`);
+	log(`Fetched imageUrl for Avatar Bust:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
 });
@@ -245,7 +250,7 @@ test("fetchAvatarHeadshotUrl", async () => {
 	
 	const imageUrl = await preFetchedUser.fetchAvatarHeadshotUrl();
 
-	if (!silent) console.log(`Fetched imageUrl for Avatar Headshot:\n${imageUrl}`);
+	log(`Fetched imageUrl for Avatar Headshot:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
 });
@@ -259,7 +264,7 @@ test("fetchFriendsMetadata", async () => {
 	
 	const metadata = await preFetchedUser.fetchFriendsMetadata();
 
-	if (!silent) console.log("Fetched friends metadata:\n",metadata);
+	log("Fetched friends metadata:\n",metadata);
 
 	expect(metadata).toBeDefined();
 });
@@ -267,14 +272,14 @@ test("fetchFriendsMetadata", async () => {
 
 test("fetchUserFriends", async () => {
 	if (!client.isLoggedIn()) {
-		if (!silent) console.log("Not logged in, skipping...")
+		log("Not logged in, skipping...")
 		return;
 	}
 
 	
 	const users = await preFetchedUser.fetchFriends();
 
-	if (!silent) console.log(`Fetched [${users.length}] friends:\n`,users.map((data: Friend) => data.toString()).join("\n"))
+	log(`Fetched [${users.length}] friends:\n`,users.map((data: Friend) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
 });
@@ -284,7 +289,7 @@ test("fetchUserFriendCount", async () => {
 	
 	const count = await preFetchedUser.fetchFriendCount();
 
-	if (!silent) console.log(`Fetched friend count: [${count}]`);
+	log(`Fetched friend count: [${count}]`);
 
 	expect(count).toBeDefined();
 });
@@ -294,7 +299,7 @@ test("fetchUserFollowers", async () => {
 	
 	const users = await preFetchedUser.fetchFollowers(10)
 
-	if (!silent) console.log(`Fetched [${users.length}] followers:\n`,users.map((data: User) => data.toString()).join("\n"))
+	log(`Fetched [${users.length}] followers:\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
 });
@@ -304,7 +309,7 @@ test("fetchUserFollowerCount", async () => {
 	
 	const count = await preFetchedUser.fetchFollowerCount();
 	
-	if (!silent) console.log(`Fetched follower count: [${count}]`);
+	log(`Fetched follower count: [${count}]`);
 
 	expect(count).toBeDefined();
 });
@@ -314,7 +319,7 @@ test("fetchUserFollowings", async () => {
 	
 	const users = await preFetchedUser.fetchFollowings(10)
 
-	if (!silent) console.log(`Fetched [${users.length}] followings:\n`,users.map((data: User) => data.toString()).join("\n"))
+	log(`Fetched [${users.length}] followings:\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
 });
@@ -324,8 +329,7 @@ test("fetchUserFollowingsCount", async () => {
 	
 	const count = await preFetchedUser.fetchFollowingsCount();
 	
-	if (!silent) console.log(`Fetched following count: [${count}]`);
-	if (!silent) console.log(preFetchedUser.accountAge)
+	log(`Fetched following count: [${count}]`);
 
 	expect(count).toBeDefined();
 });
@@ -337,7 +341,7 @@ test("fetchUserFollowingsCount", async () => {
 
 test("block", async () => {
 	if (!client.isLoggedIn()) {
-		if (!silent) console.log("Not logged in, skipping...")
+		log("Not logged in, skipping...")
 		return;
 	}
 
@@ -347,13 +351,13 @@ test("block", async () => {
 	} catch (error) {
 		if (!(error instanceof FetchError)) return;
 		
-		if (!silent) console.log(`Failed to block\n${await error.format()}`);
+		log(`Failed to block\n${await error.format()}`);
 	}
 });
 
 test("unblock", async () => {
 	if (!client.isLoggedIn()) {
-		if (!silent) console.log("Not logged in, skipping...")
+		log("Not logged in, skipping...")
 		return;
 	}
 
@@ -363,7 +367,7 @@ test("unblock", async () => {
 	} catch (error) {
 		if (!(error instanceof FetchError)) return;
 
-		if (!silent) console.log(`Failed to unblock\n${await error.format()}`);
+		log(`Failed to unblock\n${await error.format()}`);
 	}
 });
 
@@ -374,14 +378,14 @@ test("unblock", async () => {
 
 test("hasPremium", async () => {
 	if (!client.isLoggedIn()) {
-		if (!silent) console.log("Not logged in, skipping...")
+		log("Not logged in, skipping...")
 		return;
 	}
 
 	
 	const hasPremium = await preFetchedUser.hasPremium();
 
-	if (!silent) console.log(`hasPremium: ${hasPremium}`);
+	log(`hasPremium: ${hasPremium}`);
 
 	expect(hasPremium).toBeDefined();
 });

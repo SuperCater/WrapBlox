@@ -8,6 +8,11 @@ const groupId = 33991282;
 let preFetchedGroup: Group;
 const silent = true;
 
+const log = (message: unknown, ...optionalParams: unknown[]) => {
+	if (silent) return;
+	console.log(message, ...optionalParams);
+};
+
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")
@@ -15,7 +20,7 @@ test("login", async () => {
 	}
 
 	const user = await client.login(process.env.TESTCOOKIE)
-	if (!silent) console.log(`Logged in as ${user.name}:${user.id}`)
+	log(`Logged in as ${user.name}:${user.id}`)
 
 	expect(user).toBeDefined();
 });
@@ -25,7 +30,7 @@ test("fetchGroup", async () => {
     const groupByName = await client.fetchGroup("Purple Robotics, LLC");
 
     preFetchedGroup = groupById;
-    if (!silent) console.log(`Fetched group: ${groupById.toString()}, ${groupByName.toString()}`);
+    log(`Fetched group: ${groupById.toString()}, ${groupByName.toString()}`);
 
     expect(groupById).toBeDefined();
     expect(groupByName).toBeDefined();
@@ -33,13 +38,13 @@ test("fetchGroup", async () => {
 
 test("fetchAuditLog", async () => {
     if (!client.isLoggedIn()) {
-		if (!silent) console.log("Not logged in, skipping...")
+		log("Not logged in, skipping...")
 		return;
 	}
 
     const auditLog = await preFetchedGroup.fetchAuditLog();
 
-    if (!silent) console.log("Group audit log:\n", auditLog)
+    log("Group audit log:\n", auditLog)
 
     expect(auditLog).toBeDefined();
 })
@@ -48,7 +53,7 @@ test("fetchUniverses", async () => {
     try {
         const universes = await preFetchedGroup.fetchUniverses(1);
 
-    if (!silent) console.log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
+    log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
 
     expect(universes).toBeDefined();
     } catch (error) {

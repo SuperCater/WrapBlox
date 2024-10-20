@@ -8,6 +8,11 @@ const placeId = 24040136;
 let preFetchedPlace: Place;
 const silent = true;
 
+const log = (message: unknown, ...optionalParams: unknown[]) => {
+	if (silent) return;
+	console.log(message, ...optionalParams);
+};
+
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")
@@ -15,7 +20,7 @@ test("login", async () => {
 	}
 
 	const user = await client.login(process.env.TESTCOOKIE)
-	if (!silent) console.log(`Logged in as ${user.name}:${user.id}`)
+	log(`Logged in as ${user.name}:${user.id}`)
 
 	expect(user).toBeDefined();
 });
@@ -24,7 +29,7 @@ test("fetchPlace", async () => {
     const placeById = await client.fetchPlace(placeId);
 
     preFetchedPlace = placeById;
-    if (!silent) console.log(`Fetched place: ${placeById.toString()}`);
+    log(`Fetched place: ${placeById.toString()}`);
 
     expect(placeById).toBeDefined();
     expect(placeById).toMatchObject<Place>(placeById);
@@ -33,7 +38,7 @@ test("fetchPlace", async () => {
 test("fetchServers", async () => {
     const servers = await preFetchedPlace.fetchServers();
 
-    if (!silent) console.log(`Fetched [${servers.length}] servers:`, servers);
+    log(`Fetched [${servers.length}] servers:`, servers);
 
     expect(servers).toBeDefined();
     expect(servers).toBeInstanceOf(Array);
@@ -43,7 +48,7 @@ test("fetchServers", async () => {
 test("fetchUniverse", async () => {
     const universe = await preFetchedPlace.fetchUniverse();
 
-    if (!silent) console.log(`Fetched universe: ${universe.toString()}`);
+    log(`Fetched universe: ${universe.toString()}`);
 
     expect(universe).toBeDefined();
     expect(universe).toMatchObject<Universe>(universe);

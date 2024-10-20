@@ -6,6 +6,11 @@ const client = new WrapBlox();
 const badgeId = 1308554930906649;
 const silent = true;
 
+const log = (message: unknown, ...optionalParams: unknown[]) => {
+	if (silent) return;
+	console.log(message, ...optionalParams);
+};
+
 test("login", async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")
@@ -13,7 +18,7 @@ test("login", async () => {
 	}
 
 	const user = await client.login(process.env.TESTCOOKIE)
-	if (!silent) console.log(`Logged in as ${user.name}:${user.id}`)
+	log(`Logged in as ${user.name}:${user.id}`)
 
 	expect(user).toBeDefined();
 });
@@ -21,7 +26,7 @@ test("login", async () => {
 test("fetchBadge", async () => {
     const badge = await client.fetchBadge(badgeId);
 
-    if (!silent) console.log("Fetched badge:\n", badge)
+    log("Fetched badge:\n", badge)
 
     expect(badge).toBeDefined();
     expect(badge).toBeInstanceOf(Badge);
@@ -31,5 +36,5 @@ test("fetchIcon", async () => {
 	const badge = await client.fetchBadge(badgeId);
 	const icon = await badge.fetchIcon();
 
-	if (!silent) console.log("Fetched icon:\n", icon)
+	log("Fetched icon:\n", icon)
 });
