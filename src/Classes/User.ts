@@ -9,7 +9,7 @@ import {
 	type AvatarV1,
 	type AvatarV2,
 	type Avatar3D,
-	type FriendServiceMetadata,
+	type FriendMetadata,
 	type AvatarBustImageFormat,
 	type UserPresence,
 	type OwnedAsset,
@@ -463,7 +463,7 @@ export default class User {
 	 * @param {boolean} [useCache=true] - Determines whether to use cached data.
 	 * @returns {Promise<FriendServiceMetadata>} A promise that resolves to the friends' metadata.
 	 */
-	async fetchFriendsMetadata(useCache = true): Promise<FriendServiceMetadata> {
+	async fetchFriendsMetadata(useCache = true): Promise<FriendMetadata> {
 		return await this.client.fetchHandler.fetchEndpoint("GET", "Friends", "/metadata", {
 			useCache: useCache,
 			params: {
