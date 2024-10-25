@@ -6,11 +6,9 @@ import {
 
     GroupOwnerType,
     SortOrder,
-
-    Universe,
-
-    User
 } from "../index.js";
+import Universe from "./Universe.js";
+import User from "./User.js";
 
 export default class Group {
     readonly client: WrapBlox;

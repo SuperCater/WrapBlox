@@ -2,9 +2,9 @@ import type WrapBlox from "../index.js";
 import {
     PlaceServer,
     ServerType,
-    Universe,
     type RawPlaceData,
 } from "../index.js";
+import Universe from "./Universe.js";
 
 export default class Place {
     readonly client: WrapBlox;

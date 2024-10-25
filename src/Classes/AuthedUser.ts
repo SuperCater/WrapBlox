@@ -1,7 +1,6 @@
 import type WrapBlox from "../index.js";
-import type { BirthData, RawFriendRequest, RawUserData } from "../Types/UserTypes.js";
+import type { BirthData, RawUserData } from "../Types/UserTypes.js";
 import User from "./User.js";
-
 export default class AuthedUser extends User {
 	private cookie: string;
 	

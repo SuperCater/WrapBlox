@@ -19,11 +19,10 @@ import {
 	AvatarBustImageSize,
 	AvatarImageSize,
 	ItemTypes,
-
-	Group,
-	Badge,
-	Universe,
 } from "../index.js";
+import Group from "./Group.js";
+import Badge from "./Badge.js";
+import Universe from "./Universe.js";
 
 export default class User {
 	readonly client: WrapBlox;

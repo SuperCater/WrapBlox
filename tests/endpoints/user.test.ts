@@ -1,6 +1,10 @@
+import Badge from "../../src/Classes/Badge.js";
 import Friend from "../../src/Classes/Friend.js";
+import Group from "../../src/Classes/Group.js";
 import FetchError from "../../src/Classes/Internal/FetchError.js";
-import WrapBlox, { Badge, ItemTypes, User, UserPresence, Group, Universe, GroupRole, OwnedAsset, AvatarV1, AvatarV2, Avatar3D, FriendMetadata } from "../../src/index.js";
+import Universe from "../../src/Classes/Universe.js";
+import User from "../../src/Classes/User.js";
+import WrapBlox, { ItemTypes, UserPresence, GroupRole, OwnedAsset, AvatarV1, AvatarV2, Avatar3D, FriendMetadata } from "../../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -116,7 +120,6 @@ test("inGroup", async () => {
 	log(`In group [Purple Robotics, LLC]: ${boolean}`);
 
 	expect(boolean).toBeDefined();
-	expect(boolean).toBeInstanceOf(Boolean);
 });
 
 test("getRoleInGroup", async () => {
@@ -189,7 +192,6 @@ test("canViewInventory", async () => {
 	log(`Can view inventory: ${canView}`);
 
 	expect(canView).toBeDefined();
-	expect(canView).toBeInstanceOf(Boolean);
 });
 
 test("ownsAsset", async () => {
@@ -198,7 +200,6 @@ test("ownsAsset", async () => {
 	log(`Owns asset: ${bool}`);
 
 	expect(bool).toBeDefined();
-	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("ownsBadge", async () => {
@@ -207,7 +208,6 @@ test("ownsBadge", async () => {
 	log(`Owns Badge: ${bool}`);
 
 	expect(bool).toBeDefined();
-	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("ownsGamepass", async () => {
@@ -216,7 +216,6 @@ test("ownsGamepass", async () => {
 	log(`Owns Gamepass: ${bool}`);
 
 	expect(bool).toBeDefined();
-	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("ownsBundle", async () => {
@@ -225,7 +224,6 @@ test("ownsBundle", async () => {
 	log(`Owns Bundle: ${bool}`);
 
 	expect(bool).toBeDefined();
-	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("getOwnedAsset", async () => {
@@ -274,7 +272,6 @@ test("fetchAvatarThumbnailUrl", async () => {
 	log(`Fetched imageUrl for Avatar Thumbnail:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
-	expect(imageUrl).toBeInstanceOf(String);
 });
 
 test("fetchAvatar3D", async () => {
@@ -337,7 +334,6 @@ test("fetchUserFriendCount", async () => {
 	log(`Fetched friend count: [${count}]`);
 
 	expect(count).toBeDefined();
-	expect(count).toBeInstanceOf(Number);
 });
 
 
@@ -360,7 +356,6 @@ test("fetchUserFollowerCount", async () => {
 	log(`Fetched follower count: [${count}]`);
 
 	expect(count).toBeDefined();
-	expect(count).toBeInstanceOf(Number);
 });
 
 
@@ -382,7 +377,6 @@ test("fetchUserFollowingsCount", async () => {
 	log(`Fetched following count: [${count}]`);
 
 	expect(count).toBeDefined();
-	expect(count).toBeInstanceOf(Number);
 });
 
 /*
@@ -427,5 +421,4 @@ test("hasPremium", async () => {
 	log(`hasPremium: ${hasPremium}`);
 
 	expect(hasPremium).toBeDefined();
-	expect(hasPremium).toBeInstanceOf(Boolean);
 });

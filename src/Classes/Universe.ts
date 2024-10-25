@@ -3,9 +3,8 @@ import {
     type UniverseAvatarType,
     type RawUniverseData,
     type UniverseCreatorType,
-    
-    Place
 } from "../index.js";
+import Place from "./Place.js";
 
 export default class Universe {
     readonly client: WrapBlox;

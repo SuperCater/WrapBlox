@@ -1,4 +1,6 @@
-import WrapBlox, { Badge } from "../../src/index.js";
+import Badge from "../../src/Classes/Badge.js";
+import WrapBlox from "../../src/index.js";
+
 import dotenv from "dotenv";
 dotenv.config();
 

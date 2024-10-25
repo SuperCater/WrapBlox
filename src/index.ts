@@ -12,7 +12,7 @@ import { RawBadgeData } from "./Types/BadgeTypes.js";
 import { RawUniverseData } from "./Types/UniverseTypes.js";
 import { RawUserData } from "./Types/UserTypes.js";
 
-export { Badge, Group, Place, Universe, User };
+//export { Badge, Group, Place, Universe, User };
 
 export type * from "./Types/BaseTypes.js";
 export type * from "./Types/BadgeTypes.js";

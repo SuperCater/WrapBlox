@@ -1,4 +1,6 @@
-import WrapBlox, { Place, PlaceServer, Universe } from "../../src/index.js";
+import Place from "../../src/Classes/Place.js";
+import Universe from "../../src/Classes/Universe.js";
+import WrapBlox, { PlaceServer } from "../../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();
