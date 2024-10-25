@@ -11,6 +11,15 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 	console.log(message, ...optionalParams);
 };
 
+const authenticated = () => {
+	if (!client.isLoggedIn()) {
+		log("Not logged in, skipping...")
+		return false;
+	}
+
+	return true;
+}
+
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")

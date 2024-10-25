@@ -1,4 +1,4 @@
-import WrapBlox, { Universe } from "../../src/index.js";
+import WrapBlox, { Place, Universe } from "../../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -13,6 +13,15 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 	console.log(message, ...optionalParams);
 };
 
+const authenticated = () => {
+	if (!client.isLoggedIn()) {
+		log("Not logged in, skipping...")
+		return false;
+	}
+
+	return true;
+}
+
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")
@@ -20,7 +29,7 @@ beforeAll(async () => {
 	}
 
 	const user = await client.login(process.env.TESTCOOKIE)
-	log(`Logged in as ${user.name}:${user.id}`)
+	log(`Logged in as ${user.name}:${user.id}`);
 
 	expect(user).toBeDefined();
 });
@@ -32,6 +41,7 @@ test("fetchUniverse", async () => {
     log(`Fetched universe: ${universeById.toString()}`);
 
     expect(universeById).toBeDefined();
+	expect(universeById).toMatchObject<Universe>(universeById);
 });
 
 test("fetchRootPlace", async () => {
@@ -39,4 +49,5 @@ test("fetchRootPlace", async () => {
 
     log(`Fetched root place: ${rootPlace.toString()}`);
     expect(rootPlace).toBeDefined();
+	expect(rootPlace).toMatchObject<Place>(rootPlace);
 });

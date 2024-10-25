@@ -13,6 +13,15 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 	console.log(message, ...optionalParams);
 };
 
+const authenticated = () => {
+	if (!client.isLoggedIn()) {
+		log("Not logged in, skipping...")
+		return false;
+	}
+
+	return true;
+}
+
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")
@@ -33,14 +42,14 @@ test("fetchGroup", async () => {
     log(`Fetched group: ${groupById.toString()}, ${groupByName.toString()}`);
 
     expect(groupById).toBeDefined();
+    expect(groupById).toMatchObject<Group>(groupById);
+
     expect(groupByName).toBeDefined();
+    expect(groupByName).toMatchObject<Group>(groupByName);
 })
 
 test("fetchAuditLog", async () => {
-    if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
-		return;
-	}
+    if (!authenticated()) return;
 
     const auditLog = await preFetchedGroup.fetchAuditLog();
 
@@ -50,15 +59,13 @@ test("fetchAuditLog", async () => {
 })
 
 test("fetchUniverses", async () => {
-    try {
-        const universes = await preFetchedGroup.fetchUniverses(1);
+    const universes = await preFetchedGroup.fetchUniverses(1);
 
     log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
 
     expect(universes).toBeDefined();
-    } catch (error) {
-        if (!(error instanceof FetchError)) throw error;
-
-        console.log(await error.format());
+    expect(universes).toBeInstanceOf(Array);
+    for (const universe of universes) {
+        expect(universe).toMatchObject<Universe>(universe);
     }
 });

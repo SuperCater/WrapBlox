@@ -1,6 +1,6 @@
 import Friend from "../../src/Classes/Friend.js";
 import FetchError from "../../src/Classes/Internal/FetchError.js";
-import WrapBlox, { Badge, ItemTypes, User, UserPresence, Group, Universe } from "../../src/index.js";
+import WrapBlox, { Badge, ItemTypes, User, UserPresence, Group, Universe, GroupRole, OwnedAsset, AvatarV1, AvatarV2, Avatar3D, FriendMetadata } from "../../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -14,6 +14,15 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 	if (silent) return;
 	console.log(message, ...optionalParams);
 };
+
+const authenticated = () => {
+	if (!client.isLoggedIn()) {
+		log("Not logged in, skipping...")
+		return false;
+	}
+
+	return true;
+}
 
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
@@ -40,7 +49,10 @@ test("fetchUser", async () => {
 	log(`Fetched users: ${userbyId.toString()}, ${userbyName.toString()}`);
 
 	expect(userbyId).toBeDefined();
+	expect(userbyId).toBeInstanceOf(User);
+	
 	expect(userbyName).toBeDefined();
+	expect(userbyName).toBeInstanceOf(User);
 });
 
 test("fetchUsernameHistory", async () => {
@@ -49,6 +61,7 @@ test("fetchUsernameHistory", async () => {
 	log(`Fetched username history:\n${usernameHistory}`)
 
 	expect(usernameHistory).toBeDefined();
+	expect(usernameHistory).toBeInstanceOf(Array);
 });
 
 /*
@@ -85,6 +98,11 @@ test("fetchCreatedUniverses", async () => {
 	log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
 
 	expect(universes).toBeDefined();
+	expect(universes).toBeInstanceOf(Array);
+	
+	for (const universe of universes) {
+		expect(universe).toBeInstanceOf(Universe);
+	}
 });
 
 /*
@@ -98,18 +116,27 @@ test("inGroup", async () => {
 	log(`In group [Purple Robotics, LLC]: ${boolean}`);
 
 	expect(boolean).toBeDefined();
+	expect(boolean).toBeInstanceOf(Boolean);
 });
 
 test("getRoleInGroup", async () => {
 	const role = await preFetchedUser.getRoleInGroup(33991282);
 
 	log("Role in group [Purple Robotics, LLC]:\n", role);
+
+	if (role) {
+		expect(role).toMatchObject<GroupRole>(role);
+	};
 });
 
 test("fetchPrimaryGroup", async () => {
 	const primaryGroup = await preFetchedUser.fetchPrimaryGroup();
 
 	log(`Primary group: ${primaryGroup?.toString()}`);
+
+	if (primaryGroup) {
+		expect(primaryGroup).toBeInstanceOf(Group);
+	};
 });
 
 test("fetchGroups", async () => {
@@ -118,6 +145,10 @@ test("fetchGroups", async () => {
 	log(`Fetched [${groups.length}] groups:\n`, groups.map((data: Group) => data.toString()).join("\n"));
 
 	expect(groups).toBeDefined();
+
+	for (const group of groups) {
+		expect(group).toBeInstanceOf(Group);
+	};
 }, 60000)
 
 /*
@@ -131,12 +162,20 @@ test("fetchBadges", async () => {
 	log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: Badge) => data.toString()).join("\n"));
 
 	expect(badges).toBeDefined();
+
+	for (const badge of badges) {
+		expect(badge).toBeInstanceOf(Badge);
+	};
 });
 
 test("fetchBadgeAwardDate", async () => {
 	const date = await preFetchedUser.fetchBadgeAwardDate(2124445684);
 
-	log(`Badge awarded at: ${date?.toDateString()}`)
+	log(`Badge awarded at: ${date?.toDateString()}`);
+
+	if (date) {
+		expect(date).toBeInstanceOf(Date);
+	};
 });
 
 /*
@@ -150,6 +189,7 @@ test("canViewInventory", async () => {
 	log(`Can view inventory: ${canView}`);
 
 	expect(canView).toBeDefined();
+	expect(canView).toBeInstanceOf(Boolean);
 });
 
 test("ownsAsset", async () => {
@@ -158,6 +198,7 @@ test("ownsAsset", async () => {
 	log(`Owns asset: ${bool}`);
 
 	expect(bool).toBeDefined();
+	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("ownsBadge", async () => {
@@ -166,6 +207,7 @@ test("ownsBadge", async () => {
 	log(`Owns Badge: ${bool}`);
 
 	expect(bool).toBeDefined();
+	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("ownsGamepass", async () => {
@@ -174,6 +216,7 @@ test("ownsGamepass", async () => {
 	log(`Owns Gamepass: ${bool}`);
 
 	expect(bool).toBeDefined();
+	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("ownsBundle", async () => {
@@ -182,13 +225,17 @@ test("ownsBundle", async () => {
 	log(`Owns Bundle: ${bool}`);
 
 	expect(bool).toBeDefined();
+	expect(bool).toBeInstanceOf(Boolean);
 });
 
 test("getOwnedAsset", async () => {
-
 	const asset = await preFetchedUser.getOwnedAsset(ItemTypes.GamePass, 776368)
 
 	log("Owned asset:\n",asset)
+
+	if (asset) {
+		expect(asset).toMatchObject<OwnedAsset>(asset);
+	}
 });
 
 /*
@@ -203,6 +250,7 @@ test("fetchAvatarV1", async () => {
 	log("User AvatarV1:\n",avatar)
 
 	expect(avatar).toBeDefined();
+	expect(avatar).toMatchObject<AvatarV1>(avatar)
 });
 
 test("fetchAvatarV2", async () => {
@@ -212,6 +260,7 @@ test("fetchAvatarV2", async () => {
 	log("User AvatarV2:\n",avatar)
 
 	expect(avatar).toBeDefined();
+	expect(avatar).toMatchObject<AvatarV2>(avatar)
 });
 
 /*
@@ -220,25 +269,24 @@ test("fetchAvatarV2", async () => {
 */
 
 test("fetchAvatarThumbnailUrl", async () => {
-	
 	const imageUrl = await preFetchedUser.fetchAvatarThumbnailUrl();
 
 	log(`Fetched imageUrl for Avatar Thumbnail:\n${imageUrl}`);
 
 	expect(imageUrl).toBeDefined();
+	expect(imageUrl).toBeInstanceOf(String);
 });
 
 test("fetchAvatar3D", async () => {
-	
 	const data = await preFetchedUser.fetchAvatar3D();
 
 	log("Fetched imageUrl for Avatar 3D:\n", data);
 
 	expect(data).toBeDefined();
+	expect(data).toMatchObject<Avatar3D>(data);
 });
 
 test("fetchAvatarBustUrl", async () => {
-	
 	const imageUrl = await preFetchedUser.fetchAvatarBustUrl();
 
 	log(`Fetched imageUrl for Avatar Bust:\n${imageUrl}`);
@@ -247,7 +295,6 @@ test("fetchAvatarBustUrl", async () => {
 });
 
 test("fetchAvatarHeadshotUrl", async () => {
-	
 	const imageUrl = await preFetchedUser.fetchAvatarHeadshotUrl();
 
 	log(`Fetched imageUrl for Avatar Headshot:\n${imageUrl}`);
@@ -261,37 +308,36 @@ test("fetchAvatarHeadshotUrl", async () => {
 */
 
 test("fetchFriendsMetadata", async () => {
-	
 	const metadata = await preFetchedUser.fetchFriendsMetadata();
 
 	log("Fetched friends metadata:\n",metadata);
 
 	expect(metadata).toBeDefined();
+	expect(metadata).toMatchObject<FriendMetadata>(metadata);
 });
 
 
 test("fetchUserFriends", async () => {
-	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
-		return;
-	}
+	if (!authenticated()) return;
 
-	
 	const users = await preFetchedUser.fetchFriends();
 
 	log(`Fetched [${users.length}] friends:\n`,users.map((data: Friend) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
+	for (const friend of users) {
+		expect(friend).toBeInstanceOf(Friend);
+	}
 });
 
 
 test("fetchUserFriendCount", async () => {
-	
 	const count = await preFetchedUser.fetchFriendCount();
 
 	log(`Fetched friend count: [${count}]`);
 
 	expect(count).toBeDefined();
+	expect(count).toBeInstanceOf(Number);
 });
 
 
@@ -302,36 +348,41 @@ test("fetchUserFollowers", async () => {
 	log(`Fetched [${users.length}] followers:\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
+	for (const user of users) {
+		expect(user).toBeInstanceOf(User);
+	}
 });
 
 
 test("fetchUserFollowerCount", async () => {
-	
 	const count = await preFetchedUser.fetchFollowerCount();
 	
 	log(`Fetched follower count: [${count}]`);
 
 	expect(count).toBeDefined();
+	expect(count).toBeInstanceOf(Number);
 });
 
 
 test("fetchUserFollowings", async () => {
-	
 	const users = await preFetchedUser.fetchFollowings(10)
 
 	log(`Fetched [${users.length}] followings:\n`,users.map((data: User) => data.toString()).join("\n"))
 
 	expect(users).toBeDefined();
+	for (const user of users) {
+		expect(user).toBeInstanceOf(User);
+	}
 });
 
 
 test("fetchUserFollowingsCount", async () => {
-	
 	const count = await preFetchedUser.fetchFollowingsCount();
 	
 	log(`Fetched following count: [${count}]`);
 
 	expect(count).toBeDefined();
+	expect(count).toBeInstanceOf(Number);
 });
 
 /*
@@ -340,11 +391,7 @@ test("fetchUserFollowingsCount", async () => {
 */
 
 test("block", async () => {
-	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
-		return;
-	}
-
+	if (!authenticated()) return;
 	
 	try {
 		await preFetchedUser.block();
@@ -356,11 +403,7 @@ test("block", async () => {
 });
 
 test("unblock", async () => {
-	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
-		return;
-	}
-
+	if (!authenticated()) return;
 	
 	try {
 		await preFetchedUser.unblock();
@@ -377,15 +420,12 @@ test("unblock", async () => {
 */
 
 test("hasPremium", async () => {
-	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
-		return;
-	}
-
+	if (!authenticated()) return;
 	
 	const hasPremium = await preFetchedUser.hasPremium();
 
 	log(`hasPremium: ${hasPremium}`);
 
 	expect(hasPremium).toBeDefined();
+	expect(hasPremium).toBeInstanceOf(Boolean);
 });
