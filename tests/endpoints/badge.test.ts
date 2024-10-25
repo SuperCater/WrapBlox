@@ -11,7 +11,7 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 	console.log(message, ...optionalParams);
 };
 
-test("login", async () => {
+beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
 		console.log("No cookie provided, skipping...")
 		return;

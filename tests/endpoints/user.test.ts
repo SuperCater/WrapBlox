@@ -15,14 +15,14 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 	console.log(message, ...optionalParams);
 };
 
-test("login", async () => {
+beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
-		console.log("No cookie provided, skipping...")
+		console.log("No cookie provided, skipping...");
 		return;
 	}
 
-	const user = await client.login(process.env.TESTCOOKIE)
-	log(`Logged in as ${user.name}:${user.id}`)
+	const user = await client.login(process.env.TESTCOOKIE);
+	log(`Logged in as ${user.name}:${user.id}`);
 
 	expect(user).toBeDefined();
 });
