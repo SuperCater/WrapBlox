@@ -12,7 +12,7 @@ import {
 	type FriendServiceMetadata,
 	type AvatarBustImageFormat,
 	type UserPresence,
-	type OwnedItem,
+	type OwnedAsset,
 	type GroupRole,
 	type SortOrder,
 
@@ -283,7 +283,7 @@ export default class User {
 	 * @param useCache - Optional. Whether to use the cache for the request. Defaults to true.
 	 * @returns A promise that resolves to the owned item if found, or undefined if not found or an error occurs.
 	 */
-	async getOwnedAsset(type: ItemTypes, id: number, useCache = true): Promise<OwnedItem | undefined> {
+	async getOwnedAsset(type: ItemTypes, id: number, useCache = true): Promise<OwnedAsset | undefined> {
 		try {
 			return (await this.client.fetchHandler.fetchEndpoint('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`, { useCache: useCache })).data[0];
 		} catch {
