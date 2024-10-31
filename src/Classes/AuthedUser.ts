@@ -10,18 +10,18 @@ export default class AuthedUser extends User {
 	}
 	
 	async fetchBirthdate()  {
-		return await this.client.fetchHandler.fetchEndpoint('GET', 'Users', `/users/${this.id}/birthdate`, {cookie: this.cookie});
+		return await this.client.fetchHandler.fetchLegacyAPI('GET', 'Users', `/users/${this.id}/birthdate`, {cookie: this.cookie});
 	}
 	
 	async setBirthdate(date : BirthData & {password : string}) : Promise<void> {
-		return await this.client.fetchHandler.fetchEndpoint('POST', 'Users', `/users/${this.id}/birthdate`, {cookie : this.cookie, body: date});
+		return await this.client.fetchHandler.fetchLegacyAPI('POST', 'Users', `/users/${this.id}/birthdate`, {cookie : this.cookie, body: date});
 	}
 	
 	async setDescription(description : string) : Promise<void> {
-		return await this.client.fetchHandler.fetchEndpoint('POST', 'Users', `/users/${this.id}/description`, {cookie: this.cookie, body: {description}});
+		return await this.client.fetchHandler.fetchLegacyAPI('POST', 'Users', `/users/${this.id}/description`, {cookie: this.cookie, body: {description}});
 	}
 	
 	async fetchCountryCode() : Promise<string> {
-		return (await this.client.fetchHandler.fetchEndpoint('GET', 'Users', `/users/${this.id}/country`, {cookie: this.cookie})).countryCode;
+		return (await this.client.fetchHandler.fetchLegacyAPI('GET', 'Users', `/users/${this.id}/country`, {cookie: this.cookie})).countryCode;
 	}
 };

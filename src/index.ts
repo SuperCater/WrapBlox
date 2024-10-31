@@ -42,14 +42,14 @@ export default class WrapBlox {
 	login = async (cookie : string) => {
 		this.fetchHandler.setCredential("cookie", cookie);
 		
-		const userInfo = await this.fetchHandler.fetchEndpoint('GET', 'Users', '/users/authenticated');
+		const userInfo = await this.fetchHandler.fetchLegacyAPI('GET', 'Users', '/users/authenticated');
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		this.self = new AuthedUser(this, realUserData, cookie);
 		return this.self;
 	}
 
 	fetchAuthedUser = async (cookie : string) => {
-		const userInfo = await this.fetchHandler.fetchEndpoint('GET', 'Users', '/users/authenticated', {cookie});
+		const userInfo = await this.fetchHandler.fetchLegacyAPI('GET', 'Users', '/users/authenticated', {cookie});
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		return new AuthedUser(this, realUserData, cookie);
 	}
@@ -76,10 +76,10 @@ export default class WrapBlox {
 	 */
 	private fetchRawUser = async (query : string | number, useCache = true) : Promise<RawUserData> => {
 		if (typeof(query) === "number") {
-			return await this.fetchHandler.fetchEndpoint('GET', 'Users', `/users/${query}`, { useCache: useCache });
+			return await this.fetchHandler.fetchLegacyAPI('GET', 'Users', `/users/${query}`, { useCache: useCache });
 		}
 
-		const userId = (await this.fetchHandler.fetchEndpoint("POST", "Users", "/usernames/users", {
+		const userId = (await this.fetchHandler.fetchLegacyAPI("POST", "Users", "/usernames/users", {
 			useCache: useCache,
 			body: {
 				usernames: [query],
@@ -118,7 +118,7 @@ export default class WrapBlox {
 	 * @throws Will throw an error if the badge is not found.
 	 */
 	private fetchRawBadge = async (badgeId: number, useCache = true): Promise<RawBadgeData> => {
-		return await this.fetchHandler.fetchEndpoint("GET", "Badges", `/badges/${badgeId}`, { useCache: useCache });
+		return await this.fetchHandler.fetchLegacyAPI("GET", "Badges", `/badges/${badgeId}`, { useCache: useCache });
 	};
 
 	/**
@@ -150,7 +150,7 @@ export default class WrapBlox {
 	 */
 	private fetchRawGroup = async (query: string | number, useCache = true): Promise<RawGroupData> => {
 		if (typeof(query) === "number") {
-			return (await this.fetchHandler.fetchEndpoint("GET", "GroupsV2", "/groups", {
+			return (await this.fetchHandler.fetchLegacyAPI("GET", "GroupsV2", "/groups", {
 				useCache: useCache,
 				params: {
 					groupIds: [query]
@@ -158,7 +158,7 @@ export default class WrapBlox {
 			})).data[0];
 		}
 
-		const groupId = (await this.fetchHandler.fetchEndpoint("GET", "Groups", "/groups/search/lookup", {
+		const groupId = (await this.fetchHandler.fetchLegacyAPI("GET", "Groups", "/groups/search/lookup", {
 			useCache: useCache,
 			params: {
 				groupName: query
@@ -197,7 +197,7 @@ export default class WrapBlox {
 	 * @returns A promise that resolves to the raw universe data.
 	 */
 	private fetchRawUniverse = async (universeId: number, useCache = true) : Promise<RawUniverseData> => {
-		return (await this.fetchHandler.fetchEndpoint('GET', 'Games', "/games", {
+		return (await this.fetchHandler.fetchLegacyAPI('GET', 'Games', "/games", {
 			useCache: useCache,
 			params: {
 				universeIds: [universeId]
@@ -230,7 +230,7 @@ export default class WrapBlox {
 	 * @returns A promise that resolves to the raw place details.
 	 */
 	private fetchRawPlace = async (placeId: number, useCache = true) => {
-		return (await this.fetchHandler.fetchEndpoint("GET", "Games", "/games/multiget-place-details", {
+		return (await this.fetchHandler.fetchLegacyAPI("GET", "Games", "/games/multiget-place-details", {
 			useCache: useCache,
 			params: {
 				placeIds: [placeId]

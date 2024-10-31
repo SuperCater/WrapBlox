@@ -15,7 +15,7 @@ export default class FetchHandler {
 		APIKey: undefined
 	};
 
-	readonly Endpoints = {
+	readonly LegacyAPI = {
 		Users: 'https://users.roblox.com/v1',
 		Thumbnails: 'https://thumbnails.roblox.com/v1',
 		Friends: "https://friends.roblox.com/v1",
@@ -45,7 +45,20 @@ export default class FetchHandler {
 		AvatarV3: "https://avatar.roblox.com/v3",
 	};
 
-	readonly Services = {};
+	readonly OpenCloudV1 = {
+		Assets: "https://apis.roblox.com/assets/v1",
+
+		DataStores: "https://apis.roblox.com/datastores/v1",
+		OrderedDataStores: "https://apis.roblox.com/ordered-data-stores/v1",
+
+		MessagingService: "https://apis.roblox.com/messaging-service/v1",
+
+		PlacePublishing: "https://apis.roblox.com/universes/v1",
+	};
+
+	readonly OpenCloudV2 = {
+		
+	};
 
 	constructor(cookie?: string) {
 		this.credentials.cookie = cookie;
@@ -61,8 +74,8 @@ export default class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchEndpoint = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}): Promise<any> => {
-		let RealUrl = this.Endpoints[endpoint] + route;
+	fetchLegacyAPI = async (method: HttpMethods, api: keyof typeof this.LegacyAPI, route: string, opts: FetchOptions = {}): Promise<any> => {
+		let RealUrl = this.LegacyAPI[api] + route;
 
 		if (opts.params) {
 			const query = new URLSearchParams();
@@ -97,7 +110,7 @@ export default class FetchHandler {
 		if (!this.credentials.CSRFToken && response.headers.get("x-csrf-token")) {
 			this.credentials.CSRFToken = response.headers.get("x-csrf-token") as string;
 			if (response.status === 403) {
-				return await this.fetchEndpoint(method, endpoint, route, opts);
+				return await this.fetchLegacyAPI(method, api, route, opts);
 			}
 		}
 
@@ -115,12 +128,12 @@ export default class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchEndpointList = async (method: HttpMethods, endpoint: keyof typeof this.Endpoints, route: string, opts: FetchOptions = {}, pageOptions: { maxResults: number, perPage: 10 | 25 | 50 | 100 } = { maxResults: 100, perPage: 100 }): Promise<any> => {
+	fetchLegacyAPIList = async (method: HttpMethods, api: keyof typeof this.LegacyAPI, route: string, opts: FetchOptions = {}, pageOptions: { maxResults: number, perPage: 10 | 25 | 50 | 100 } = { maxResults: 100, perPage: 100 }): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
 			try {
-				const response = await this.fetchEndpoint(method, endpoint, `${route}?limit=${pageOptions.perPage}${cursor ? `&cursor=${cursor}` : ""}`, opts);
+				const response = await this.fetchLegacyAPI(method, api, `${route}?limit=${pageOptions.perPage}${cursor ? `&cursor=${cursor}` : ""}`, opts);
 				if (response.data) data.push(...response.data);
 
 				if (!response.nextPageCursor || data.length >= pageOptions.maxResults) {

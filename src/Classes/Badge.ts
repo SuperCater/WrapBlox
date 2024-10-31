@@ -73,7 +73,7 @@ export default class Badge {
      * @returns A promise that resolves to the badge service metadata.
      */
     async fetchServiceMetadata(useCache = true): Promise<BadgeServiceMetadata> {
-        return await this.client.fetchHandler.fetchEndpoint("GET", "Badges", "/metadata", { useCache: useCache })
+        return await this.client.fetchHandler.fetchLegacyAPI("GET", "Badges", "/metadata", { useCache: useCache })
     };
 
     /*
@@ -91,7 +91,7 @@ export default class Badge {
      * @returns {Promise<string>} - A promise that resolves to the URL of the badge image.
      */
     async fetchIcon(size: BadgeImageSize = BadgeImageSize["150x150"], format: BadgeImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-        return (await this.client.fetchHandler.fetchEndpoint("GET", "Thumbnails", "/badges/icons", {
+        return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Thumbnails", "/badges/icons", {
 			useCache: useCache,
 			params: {
 				badgeIds: [this.id],

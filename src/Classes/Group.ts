@@ -57,7 +57,7 @@ export default class Group {
      */
     async fetchAuditLog(maxResults = 100, sortOrder: SortOrder = "Asc", actionType?: GroupActionType, useCache = true): Promise<GroupAuditLog[]> {
         const returnData = [] as GroupAuditLog[];
-        const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "Groups", `/groups/${this.id}/audit-log`,
+        const rawData = await this.client.fetchHandler.fetchLegacyAPIList("GET", "Groups", `/groups/${this.id}/audit-log`,
             { useCache: useCache, params: { sortOrder: sortOrder, actionType: actionType } },
             { maxResults: maxResults, perPage: 100 });
 
@@ -83,7 +83,7 @@ export default class Group {
    
     async fetchUniverses(maxResults = 100, accessFilter: "All" | "Public" | "Private" = "Public", sortOrder: SortOrder = "Asc", useCache = true): Promise<Universe[]> {
         const returnData = [] as Universe[];
-        const rawData = await this.client.fetchHandler.fetchEndpointList("GET", "GamesV2", `/groups/${this.id}/games`, {
+        const rawData = await this.client.fetchHandler.fetchLegacyAPIList("GET", "GamesV2", `/groups/${this.id}/games`, {
             useCache: useCache,
             params: {
                 accessFilter: accessFilter,

@@ -63,7 +63,7 @@ export default class Place {
 	*/
 
     async fetchServers(maxResults = 100, serverType: ServerType = ServerType.Public, useCache = true): Promise<PlaceServer[]> {
-        return (await this.client.fetchHandler.fetchEndpointList("GET", "Games", `/games/${this.id}/servers/${serverType}`,
+        return (await this.client.fetchHandler.fetchLegacyAPIList("GET", "Games", `/games/${this.id}/servers/${serverType}`,
             { useCache: useCache, params: {} },
             { maxResults: maxResults, perPage: 100 }));
     };
