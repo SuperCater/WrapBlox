@@ -13,7 +13,7 @@
 		"run": "node .",
 		"build": "tsup",
 		"lint": "biome lint .",
-		"test": "jest"
+		"test": "jest --testPathPattern=tests --testPathIgnorePatterns=/dist/"
 	},
 	"keywords": [
 		"roblox"
