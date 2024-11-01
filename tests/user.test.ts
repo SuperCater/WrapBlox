@@ -1,10 +1,10 @@
-import Badge from "../../src/Classes/Badge.js";
-import Friend from "../../src/Classes/Friend.js";
-import Group from "../../src/Classes/Group.js";
-import FetchError from "../../src/Classes/Internal/FetchError.js";
-import Universe from "../../src/Classes/Universe.js";
-import User from "../../src/Classes/User.js";
-import WrapBlox, { ItemTypes, UserPresence, GroupRole, OwnedAsset, AvatarV1, AvatarV2, Avatar3D, FriendMetadata } from "../../src/index.js";
+import Badge from "../src/Classes/Badge.js";
+import Friend from "../src/Classes/Friend.js";
+import Group from "../src/Classes/Group.js";
+import FetchError from "../src/Classes/Internal/FetchError.js";
+import Universe from "../src/Classes/Universe.js";
+import User from "../src/Classes/User.js";
+import WrapBlox, { ItemTypes, UserPresence, GroupRole, OwnedAsset, AvatarV1, AvatarV2, Avatar3D, FriendMetadata } from "../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();

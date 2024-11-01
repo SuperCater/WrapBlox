@@ -1,6 +1,6 @@
-import Group from "../../src/Classes/Group.js";
-import Universe from "../../src/Classes/Universe.js";
-import WrapBlox from "../../src/index.js";
+import Group from "../src/Classes/Group.js";
+import Universe from "../src/Classes/Universe.js";
+import WrapBlox from "../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();
