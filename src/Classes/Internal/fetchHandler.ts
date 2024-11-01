@@ -45,21 +45,6 @@ export default class FetchHandler {
 		AvatarV3: "https://avatar.roblox.com/v3",
 	};
 
-	readonly OpenCloudV1 = {
-		Assets: "https://apis.roblox.com/assets/v1",
-
-		DataStores: "https://apis.roblox.com/datastores/v1",
-		OrderedDataStores: "https://apis.roblox.com/ordered-data-stores/v1",
-
-		MessagingService: "https://apis.roblox.com/messaging-service/v1",
-
-		PlacePublishing: "https://apis.roblox.com/universes/v1",
-	};
-
-	readonly OpenCloudV2 = {
-		
-	};
-
 	constructor(cookie?: string) {
 		this.credentials.cookie = cookie;
 	}
