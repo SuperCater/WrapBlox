@@ -77,6 +77,21 @@ export default class Group {
     }
 
     /*
+        Methods related to the Thumbnails API
+        Docs: https://thumbnails.roblox.com/docs/index.html
+    */
+
+    async fetchIcon(format: "Png" | "Webp" = "Png", size: "150x150" | "420x420" = "150x150"): Promise<string | undefined> {
+        return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Thumbnails", "/groups/icons", {
+            params: {
+				groupIds: [this.id],
+				format: format,
+				size: size,
+			}
+        })).data[0]?.imageUrl || undefined;
+    };
+
+    /*
         Methods related to the Games API
         Docs: https://games.roblox.com/docs/index.html
     */

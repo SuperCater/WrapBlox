@@ -8,7 +8,7 @@ dotenv.config();
 const client = new WrapBlox();
 const groupId = 33991282;
 let preFetchedGroup: Group;
-const silent = true;
+const silent = false;
 
 const log = (message: unknown, ...optionalParams: unknown[]) => {
 	if (silent) return;
@@ -48,7 +48,7 @@ test("fetchGroup", async () => {
 
     expect(groupByName).toBeDefined();
     expect(groupByName).toMatchObject<Group>(groupByName);
-})
+});
 
 test("fetchAuditLog", async () => {
     if (!authenticated()) return;
@@ -58,6 +58,17 @@ test("fetchAuditLog", async () => {
     log("Group audit log:\n", auditLog)
 
     expect(auditLog).toBeDefined();
+});
+
+ /*
+    Methods related to the Thumbnails API
+    Docs: https://thumbnails.roblox.com/docs/index.html
+*/
+
+test("fetchIcon", async () => {
+    const icon = await preFetchedGroup.fetchIcon();
+
+    log("Fetched icon:\n", icon)
 })
 
 test("fetchUniverses", async () => {
@@ -70,4 +81,12 @@ test("fetchUniverses", async () => {
     for (const universe of universes) {
         expect(universe).toMatchObject<Universe>(universe);
     }
+});
+
+test("fetchOwner", async () => {
+    const owner = await preFetchedGroup.fetchOwner();
+
+    log(`Fetched owner: ${owner.toString()}`);
+
+    expect(owner).toBeDefined();
 });
