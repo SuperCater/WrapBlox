@@ -24,7 +24,7 @@ export * from "./Types/Enums.js";
 
 export default class WrapBlox {
 	fetchHandler : FetchHandler;
-	self : UserSession | null = null;
+	session : UserSession | null = null;
 	
 	constructor() {
 		this.fetchHandler = new FetchHandler();
@@ -43,8 +43,8 @@ export default class WrapBlox {
 		
 		const userInfo = await this.fetchHandler.fetchLegacyAPI('GET', 'Users', '/users/authenticated');
 		const realUserData = await this.fetchRawUser(userInfo.id);
-		this.self = new UserSession(this, realUserData, cookie);
-		return this.self;
+		this.session = new UserSession(this, realUserData, cookie);
+		return this.session;
 	}
 
 	fetchSessionUser = async (cookie : string) => {
@@ -60,7 +60,7 @@ export default class WrapBlox {
 	 * @returns {this is {self: UserSession}} Returns true if `self` is not null, indicating the user is authenticated.
 	 */
 	isLoggedIn = () : this is {self : UserSession} => {
-		return this.self !== null;
+		return this.session !== null;
 	}
 	
 	//? Users
