@@ -1,7 +1,8 @@
 import type WrapBlox from "../index.js";
 import type { BirthData, RawUserData } from "../Types/UserTypes.js";
 import User from "./User.js";
-export default class AuthedUser extends User {
+
+export default class UserSession extends User {
 	private cookie: string;
 	
 	constructor(client : WrapBlox, data : RawUserData, cookie : string) {

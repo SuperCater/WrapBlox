@@ -7,7 +7,7 @@
 
 import type WrapBlox from "../../index.js";
 import type { RawBadgeData, RawFriendData, RawUniverseData, RawUserData } from "../../index.js";
-import type AuthedUser from "../AuthedUser.js";
+import UserSession from "../UserSession.js";
 import User from "../User.js";
 
 
@@ -18,7 +18,7 @@ export default {
 		return new User(client, data);
 	},
 
-	async createFriend(client: WrapBlox, data : RawFriendData, friend : User | AuthedUser) {
+	async createFriend(client: WrapBlox, data : RawFriendData, friend : User | UserSession) {
 		const Friend = (await import('../Friend.js')).default;
 		
 		return new Friend(client, data, friend);

@@ -1,6 +1,6 @@
 import type WrapBlox from "../index.js";
 import type { RawFriendData } from "../index.js";
-import AuthedUser from "./AuthedUser.js";
+import UserSession from "./UserSession.js";
 import User from "./User.js";
 
 
@@ -11,10 +11,10 @@ export default class Friend extends User {
 	/**
 	 * The other user in the friendship
 	 */
-	friend : User | AuthedUser;
+	friend : User | UserSession;
 	
 	
-	constructor(client : WrapBlox, rawdata : RawFriendData, friend : User | AuthedUser) {
+	constructor(client : WrapBlox, rawdata : RawFriendData, friend : User | UserSession) {
 		super(client, rawdata);
 		this.friendFrequentScore = rawdata.friendFrequentScore;
 		this.isOnline = rawdata.isOnline;
