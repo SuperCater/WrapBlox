@@ -4,7 +4,7 @@ import Group from "./Classes/Group.js";
 import Place from "./Classes/Place.js";
 import Universe from "./Classes/Universe.js";
 import User from "./Classes/User.js";
-import UserSession from "./Classes/UserSession.js";
+import AuthedUser from "./Classes/AuthedUser.js";
 
 import { RawGroupData } from "./Types/GroupTypes.js";
 import { RawBadgeData } from "./Types/BadgeTypes.js";
@@ -24,7 +24,7 @@ export * from "./Types/Enums.js";
 
 export default class WrapBlox {
 	fetchHandler : FetchHandler;
-	session : UserSession | null = null;
+	self : AuthedUser | null = null;
 	
 	constructor() {
 		this.fetchHandler = new FetchHandler();
@@ -43,24 +43,24 @@ export default class WrapBlox {
 		
 		const userInfo = await this.fetchHandler.fetchLegacyAPI('GET', 'Users', '/users/authenticated');
 		const realUserData = await this.fetchRawUser(userInfo.id);
-		this.session = new UserSession(this, realUserData, cookie);
-		return this.session;
+		this.self = new AuthedUser(this, realUserData, cookie);
+		return this.self;
 	}
 
 	fetchSessionUser = async (cookie : string) => {
 		const userInfo = await this.fetchHandler.fetchLegacyAPI('GET', 'Users', '/users/authenticated', {cookie});
 		const realUserData = await this.fetchRawUser(userInfo.id);
-		return new UserSession(this, realUserData, cookie);
+		return new AuthedUser(this, realUserData, cookie);
 	}
 
 	
 	/**
 	 * Checks if the user is logged in.
 	 *
-	 * @returns {this is {self: UserSession}} Returns true if `self` is not null, indicating the user is authenticated.
+	 * @returns {this is {self: AuthedUser}} Returns true if `self` is not null, indicating the user is authenticated.
 	 */
-	isLoggedIn = () : this is {self : UserSession} => {
-		return this.session !== null;
+	isLoggedIn = () : this is {self : AuthedUser} => {
+		return this.self !== null;
 	}
 	
 	//? Users
