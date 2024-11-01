@@ -47,7 +47,7 @@ export default class WrapBlox {
 		return this.self;
 	}
 
-	fetchSessionUser = async (cookie : string) => {
+	fetchAuthedUser = async (cookie : string) => {
 		const userInfo = await this.fetchHandler.fetchLegacyAPI('GET', 'Users', '/users/authenticated', {cookie});
 		const realUserData = await this.fetchRawUser(userInfo.id);
 		return new AuthedUser(this, realUserData, cookie);
