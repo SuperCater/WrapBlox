@@ -13,7 +13,7 @@ export enum AvatarImageSize {
 	"352x352" = "352x352",
 	"420x420" = "420x420",
 	"720x720" = "720x720",
-};
+}
 
 export enum AvatarBustImageSize {
 	"48x48" = "48x48",
@@ -25,27 +25,27 @@ export enum AvatarBustImageSize {
 	"180x180" = "180x180",
 	"352x352" = "352x352",
 	"420x420" = "420x420",
-};
+}
 
 export enum BadgeImageSize {
 	"150x150" = "150x150",
-};
+}
 
 export enum ItemTypes {
 	Asset = 0,
 	GamePass = 1,
 	Badge = 2,
 	Bundle = 3,
-};
+}
 
 export enum GroupOwnerType {
-	User = 0
-};
+	User = 0,
+}
 
 export enum UniverseAvatarType {
 	MorphToR6 = 1,
 	PlayerChoice = 2,
-	MorphToR15 = 3
+	MorphToR15 = 3,
 }
 
 export enum UserPresenceState {
@@ -53,10 +53,10 @@ export enum UserPresenceState {
 	Online = 1,
 	InGame = 2,
 	InStudio = 3,
-	Invisible = 4
+	Invisible = 4,
 }
 
 export enum ServerType {
 	Public = 0,
-	Private = 1
+	Private = 1,
 }

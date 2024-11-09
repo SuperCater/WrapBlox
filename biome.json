@@ -9,6 +9,9 @@
 			"recommended": true
 		}
 	},
+	"formatter": {
+		"enabled": true
+	},
 	"vcs" :{
 		"enabled": true,
 		"clientKind": "git",

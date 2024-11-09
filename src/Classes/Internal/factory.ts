@@ -6,21 +6,29 @@
 */
 
 import type WrapBlox from "../../index.js";
-import type { RawBadgeData, RawFriendData, RawUniverseData, RawUserData } from "../../index.js";
+import type {
+	RawBadgeData,
+	RawFriendData,
+	RawUniverseData,
+	RawUserData,
+} from "../../index.js";
 import AuthedUser from "../AuthedUser.js";
 import User from "../User.js";
 
-
 export default {
 	async createUser(client: WrapBlox, data: RawUserData) {
-		const User = (await import('../User.js')).default;
+		const User = (await import("../User.js")).default;
 
 		return new User(client, data);
 	},
 
-	async createFriend(client: WrapBlox, data : RawFriendData, friend : User | AuthedUser) {
-		const Friend = (await import('../Friend.js')).default;
-		
+	async createFriend(
+		client: WrapBlox,
+		data: RawFriendData,
+		friend: User | AuthedUser,
+	) {
+		const Friend = (await import("../Friend.js")).default;
+
 		return new Friend(client, data, friend);
 	},
 
@@ -34,5 +42,5 @@ export default {
 		const Universe = (await import("../Universe.js")).default;
 
 		return new Universe(client, data);
-	}
+	},
 };

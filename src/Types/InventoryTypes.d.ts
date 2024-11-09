@@ -1,6 +1,6 @@
 export type OwnedAsset = {
-	type : "Badge" | "Asset" | "GamePass" | "Bundle",
-	id : number,
-	name : string,
-	instanceId : null,
+	type: "Badge" | "Asset" | "GamePass" | "Bundle";
+	id: number;
+	name: string;
+	instanceId: null;
 };

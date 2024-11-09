@@ -1,31 +1,31 @@
 export type RawBadgeData = {
-	id: number,
+	id: number;
 
-	name: string,
-	displayName: string,
+	name: string;
+	displayName: string;
 
-	description: string,
-	displayDescription: string,
+	description: string;
+	displayDescription: string;
 
-	iconImageId: number,
-	displayIconImageId: number,
+	iconImageId: number;
+	displayIconImageId: number;
 
-	created: string,
-	updated: string,
+	created: string;
+	updated: string;
 
 	statistics: {
-		pastDayAwardedCount: number,
-		awardedCount: number,
-		winRatePercentage: number
-	},
+		pastDayAwardedCount: number;
+		awardedCount: number;
+		winRatePercentage: number;
+	};
 
 	awardingUniverse: {
-		id: number,
-		name: string,
-		rootPlaceId: number
-	}
+		id: number;
+		name: string;
+		rootPlaceId: number;
+	};
 
-	enabled: boolean,
+	enabled: boolean;
 };
 
 export type BadgeImageFormat = "Png" | "Webp";
@@ -33,12 +33,12 @@ export type BadgeCreatorType = "Place" | "Group";
 export type BadgeAwarderType = "Place";
 
 export type BadgeServiceMetadata = {
-	badgeCreationPrice: number,
-	maxBadgeNameLength: number,
-	maxBadgeDescriptionLength: number
+	badgeCreationPrice: number;
+	maxBadgeNameLength: number;
+	maxBadgeDescriptionLength: number;
 };
 
 export type AwardedBadge = {
-	badgeId : number,
-	awardedDate : string,
+	badgeId: number;
+	awardedDate: string;
 };

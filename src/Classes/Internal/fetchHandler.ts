@@ -1,8 +1,8 @@
-import type { FetchOptions, HttpMethods } from "../../Types/BaseTypes.js"
+import type { FetchOptions, HttpMethods } from "../../Types/BaseTypes.js";
 import CacheManager from "./cacheManager.js";
 import FetchError from "./FetchError.js";
 
-export default class FetchHandler {	
+export default class FetchHandler {
 	readonly cacheManager = new CacheManager<string, unknown>();
 
 	private credentials: {
@@ -12,17 +12,17 @@ export default class FetchHandler {
 	} = {
 		cookie: undefined,
 		CSRFToken: undefined,
-		APIKey: undefined
+		APIKey: undefined,
 	};
 
 	readonly LegacyAPI = {
-		Users: 'https://users.roblox.com/v1',
-		Thumbnails: 'https://thumbnails.roblox.com/v1',
+		Users: "https://users.roblox.com/v1",
+		Thumbnails: "https://thumbnails.roblox.com/v1",
 		Friends: "https://friends.roblox.com/v1",
 		Presence: "https://presence.roblox.com/v1",
 
-		Groups: 'https://groups.roblox.com/v1',
-		GroupsV2: 'https://groups.roblox.com/v2',
+		Groups: "https://groups.roblox.com/v1",
+		GroupsV2: "https://groups.roblox.com/v2",
 
 		Games: "https://games.roblox.com/v1",
 		GamesV2: "https://games.roblox.com/v2",
@@ -50,16 +50,21 @@ export default class FetchHandler {
 	}
 
 	setCredential(key: keyof typeof this.credentials, value: string) {
-		this.credentials[key] = value
-	};
+		this.credentials[key] = value;
+	}
 
 	clearCache = () => {
 		this.cacheManager.clearCache();
-	}
+	};
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchLegacyAPI = async (method: HttpMethods, api: keyof typeof this.LegacyAPI, route: string, opts: FetchOptions = {}): Promise<any> => {
+	fetchLegacyAPI = async (
+		method: HttpMethods,
+		api: keyof typeof this.LegacyAPI,
+		route: string,
+		opts: FetchOptions = {},
+	): Promise<any> => {
 		let RealUrl = this.LegacyAPI[api] + route;
 
 		if (opts.params) {
@@ -70,8 +75,8 @@ export default class FetchHandler {
 			}
 
 			if (RealUrl.includes("?")) {
-				RealUrl += `&${query.toString()}`
-			} else RealUrl += `?${query.toString()}`
+				RealUrl += `&${query.toString()}`;
+			} else RealUrl += `?${query.toString()}`;
 		}
 
 		const cached = this.cacheManager.getValues(RealUrl);
@@ -79,28 +84,35 @@ export default class FetchHandler {
 
 		const headers = new Headers();
 
-		if (this.credentials.CSRFToken) headers.set("X-Csrf-Token", this.credentials.CSRFToken);
+		if (this.credentials.CSRFToken)
+			headers.set("X-Csrf-Token", this.credentials.CSRFToken);
 		if (opts.CSRFToken) headers.set("X-Csrf-Token", opts.CSRFToken);
-		if (this.credentials.cookie) headers.set("Cookie", `.ROBLOSECURITY=${this.credentials.cookie}`);
+		if (this.credentials.cookie)
+			headers.set("Cookie", `.ROBLOSECURITY=${this.credentials.cookie}`);
 		if (opts.cookie) headers.set("Cookie", `.ROBLOSECURITY=${opts.cookie}`);
 		headers.set("Content-Type", "application/json");
 
 		const response = await fetch(RealUrl, {
 			method: method,
-			credentials: 'include',
+			credentials: "include",
 			headers: headers,
 			body: opts.body ? JSON.stringify(opts.body) : undefined,
-		})
+		});
 
 		if (!this.credentials.CSRFToken && response.headers.get("x-csrf-token")) {
-			this.credentials.CSRFToken = response.headers.get("x-csrf-token") as string;
+			this.credentials.CSRFToken = response.headers.get(
+				"x-csrf-token",
+			) as string;
 			if (response.status === 403) {
 				return await this.fetchLegacyAPI(method, api, route, opts);
 			}
 		}
 
 		if (!response.ok) {
-			throw new FetchError(`Failed to fetch data: ${response.status} ${response.statusText}`, response);
+			throw new FetchError(
+				`Failed to fetch data: ${response.status} ${response.statusText}`,
+				response,
+			);
 		}
 
 		if (!response.body) return;
@@ -113,12 +125,28 @@ export default class FetchHandler {
 
 	//! Convert to use Promise<unknown>
 	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
-	fetchLegacyAPIList = async (method: HttpMethods, api: keyof typeof this.LegacyAPI, route: string, opts: FetchOptions = {}, pageOptions: { maxResults: number, perPage: 10 | 25 | 50 | 100 } = { maxResults: 100, perPage: 100 }): Promise<any> => {
+	fetchLegacyAPIList = async (
+		method: HttpMethods,
+		api: keyof typeof this.LegacyAPI,
+		route: string,
+		opts: FetchOptions = {},
+		pageOptions: { maxResults: number; perPage: 10 | 25 | 50 | 100 } = {
+			maxResults: 100,
+			perPage: 100,
+		},
+	): Promise<any> => {
 		const data = [];
 		let cursor = "";
 		while (true) {
 			try {
-				const response = await this.fetchLegacyAPI(method, api, `${route}?limit=${pageOptions.perPage}${cursor ? `&cursor=${cursor}` : ""}`, opts);
+				const response = await this.fetchLegacyAPI(
+					method,
+					api,
+					`${route}?limit=${pageOptions.perPage}${
+						cursor ? `&cursor=${cursor}` : ""
+					}`,
+					opts,
+				);
 				if (response.data) data.push(...response.data);
 
 				if (!response.nextPageCursor || data.length >= pageOptions.maxResults) {
@@ -137,4 +165,4 @@ export default class FetchHandler {
 		}
 		return data;
 	};
-};
+}

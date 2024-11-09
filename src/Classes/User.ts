@@ -15,7 +15,6 @@ import {
 	type OwnedAsset,
 	type GroupRole,
 	type SortOrder,
-
 	AvatarBustImageSize,
 	AvatarImageSize,
 	ItemTypes,
@@ -52,8 +51,11 @@ export default class User {
 		this.isBanned = rawData.isBanned;
 		this.joinDate = new Date(rawData.created);
 
-		this.accountAge = Math.ceil(Math.abs(new Date().getTime() - this.joinDate.getTime()) / (1000 * 60 * 60 * 24));
-	};
+		this.accountAge = Math.ceil(
+			Math.abs(new Date().getTime() - this.joinDate.getTime()) /
+				(1000 * 60 * 60 * 24),
+		);
+	}
 
 	/*
 		Methods related to the Users API
@@ -67,12 +69,20 @@ export default class User {
 	 * @param {boolean} [useCache=true] - Whether to use cached data if available.
 	 * @returns {Promise<string[]>} A promise that resolves to an array of usernames.
 	 */
-	async fetchUsernameHistory(maxResults = 100, useCache = true): Promise<string[]> {
-		return (await this.client.fetchHandler.fetchLegacyAPIList("GET", "Users", `/users/${this.id}/username-history`,
-			{ useCache: useCache },
-			{ maxResults: maxResults, perPage: 100 }
-		)).map((name: {name: string}) => name.name);
-	};
+	async fetchUsernameHistory(
+		maxResults = 100,
+		useCache = true,
+	): Promise<string[]> {
+		return (
+			await this.client.fetchHandler.fetchLegacyAPIList(
+				"GET",
+				"Users",
+				`/users/${this.id}/username-history`,
+				{ useCache: useCache },
+				{ maxResults: maxResults, perPage: 100 },
+			)
+		).map((name: { name: string }) => name.name);
+	}
 
 	/*
 		Methods related to the Presence API
@@ -86,13 +96,22 @@ export default class User {
 	 * @returns {Promise<Date>} A promise that resolves to the last online date of the user.
 	 */
 	async fetchLastOnlineDate(useCache = true): Promise<Date> {
-		return new Date((await this.client.fetchHandler.fetchLegacyAPI("POST", "Presence", "/presence/last-online", {
-			useCache: useCache,
-			body: {
-				userIds: [this.id]
-			}
-		})).lastOnlineTimestamps[0].lastOnline);
-	};
+		return new Date(
+			(
+				await this.client.fetchHandler.fetchLegacyAPI(
+					"POST",
+					"Presence",
+					"/presence/last-online",
+					{
+						useCache: useCache,
+						body: {
+							userIds: [this.id],
+						},
+					},
+				)
+			).lastOnlineTimestamps[0].lastOnline,
+		);
+	}
 
 	/**
 	 * Fetches the presence status of the user.
@@ -101,13 +120,20 @@ export default class User {
 	 * @returns A promise that resolves to the user's presence status.
 	 */
 	async fetchPresence(useCache = true): Promise<UserPresence> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("POST", "Presence", "/presence/users", {
-			useCache: useCache,
-			body: {
-				userIds: [this.id]
-			}
-		})).userPresences[0];
-	};
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"POST",
+				"Presence",
+				"/presence/users",
+				{
+					useCache: useCache,
+					body: {
+						userIds: [this.id],
+					},
+				},
+			)
+		).userPresences[0];
+	}
 
 	/*
 		Methods related to the Games API
@@ -123,16 +149,27 @@ export default class User {
 	 * @param useCache - Whether to use cached data. Defaults to true.
 	 * @returns A promise that resolves to an array of Universe objects.
 	 */
-	async fetchCreatedUniverses(maxResults = 50, accessFilter: "All" | "Public" | "Private" = "All", sortOrder: SortOrder = "Asc", useCache = true): Promise<Universe[]> {
+	async fetchCreatedUniverses(
+		maxResults = 50,
+		accessFilter: "All" | "Public" | "Private" = "All",
+		sortOrder: SortOrder = "Asc",
+		useCache = true,
+	): Promise<Universe[]> {
 		const returnData = [] as Universe[];
-		const rawData = await this.client.fetchHandler.fetchLegacyAPIList("GET", "GamesV2", `/users/${this.id}/games`, {
-			useCache: useCache,
-			params: {
-				//accessFilter: accessFilter,
-				// Returns a 501 [Not Implemented]
-				sortOrder: sortOrder
-			}
-		}, { maxResults: maxResults, perPage: 50 });
+		const rawData = await this.client.fetchHandler.fetchLegacyAPIList(
+			"GET",
+			"GamesV2",
+			`/users/${this.id}/games`,
+			{
+				useCache: useCache,
+				params: {
+					//accessFilter: accessFilter,
+					// Returns a 501 [Not Implemented]
+					sortOrder: sortOrder,
+				},
+			},
+			{ maxResults: maxResults, perPage: 50 },
+		);
 
 		for (const data of rawData) {
 			const universe = await this.client.fetchUniverse(data.id, useCache);
@@ -140,7 +177,7 @@ export default class User {
 		}
 
 		return returnData;
-	};
+	}
 
 	/*
 		Methods related to the Groups API
@@ -155,15 +192,26 @@ export default class User {
 	 * @param useCache - Whether to use cached data if available. Defaults to `true`.
 	 * @returns A promise that resolves to an array of `RawUserGroupRoles`.
 	 */
-	private async fetchRawGroupRoles(includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<RawUserGroupRoles[]> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "GroupsV2", `/users/${this.id}/groups/roles`, {
-			useCache: useCache,
-			params: {
-				includeLocked: includelocked,
-				includeNotificationPreferences: includeNotificationPreferences,
-			}
-		})).data
-	};
+	private async fetchRawGroupRoles(
+		includelocked = false,
+		includeNotificationPreferences = false,
+		useCache = true,
+	): Promise<RawUserGroupRoles[]> {
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"GroupsV2",
+				`/users/${this.id}/groups/roles`,
+				{
+					useCache: useCache,
+					params: {
+						includeLocked: includelocked,
+						includeNotificationPreferences: includeNotificationPreferences,
+					},
+				},
+			)
+		).data;
+	}
 
 	/**
 	 * Checks if the user is in a specified group.
@@ -174,9 +222,20 @@ export default class User {
 	 * @param useCache - Optional. Whether to use cached data for the check. Defaults to `true`.
 	 * @returns A promise that resolves to `true` if the user is in the specified group, otherwise `false`.
 	 */
-	async inGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<boolean> {
-		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).some((entry) => entry.group.id === groupId));
-	};
+	async inGroup(
+		groupId: number,
+		includelocked = false,
+		includeNotificationPreferences = false,
+		useCache = true,
+	): Promise<boolean> {
+		return (
+			await this.fetchRawGroupRoles(
+				includelocked,
+				includeNotificationPreferences,
+				useCache,
+			)
+		).some((entry) => entry.group.id === groupId);
+	}
 
 	/**
 	 * Retrieves the role of the user in a specified group.
@@ -187,9 +246,20 @@ export default class User {
 	 * @param useCache - Optional. Whether to use cached data. Defaults to `true`.
 	 * @returns A promise that resolves to the user's role in the specified group, or `undefined` if not found.
 	 */
-	async getRoleInGroup(groupId: number, includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<GroupRole | undefined> {
-		return ((await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache)).find((entry) => entry.group.id === groupId)?.role)
-	};
+	async getRoleInGroup(
+		groupId: number,
+		includelocked = false,
+		includeNotificationPreferences = false,
+		useCache = true,
+	): Promise<GroupRole | undefined> {
+		return (
+			await this.fetchRawGroupRoles(
+				includelocked,
+				includeNotificationPreferences,
+				useCache,
+			)
+		).find((entry) => entry.group.id === groupId)?.role;
+	}
 
 	/**
 	 * Fetches the primary group of the user.
@@ -198,7 +268,13 @@ export default class User {
 	 * @returns A promise that resolves to the primary group of the user, or undefined if no primary group is found.
 	 */
 	async fetchPrimaryGroup(useCache = true): Promise<Group | undefined> {
-		const groupId = (await this.client.fetchHandler.fetchLegacyAPI("GET", "Groups", `/users/${this.id}/groups/primary/role`))?.group.id;
+		const groupId = (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Groups",
+				`/users/${this.id}/groups/primary/role`,
+			)
+		)?.group.id;
 		if (!groupId) return undefined;
 
 		return await this.client.fetchGroup(groupId, useCache);
@@ -212,11 +288,20 @@ export default class User {
 	 * @param useCache - Whether to use cached data if available.
 	 * @returns A promise that resolves to an array of Group objects.
 	 */
-	async fetchGroups(includelocked = false, includeNotificationPreferences = false, useCache = true): Promise<Group[]> {
+	async fetchGroups(
+		includelocked = false,
+		includeNotificationPreferences = false,
+		useCache = true,
+	): Promise<Group[]> {
 		const returnData = [] as Group[];
-		const rawData = await this.fetchRawGroupRoles(includelocked, includeNotificationPreferences, useCache);
+		const rawData = await this.fetchRawGroupRoles(
+			includelocked,
+			includeNotificationPreferences,
+			useCache,
+		);
 
-		for (const data of rawData) returnData.push(await this.client.fetchGroup(data.group.id, useCache));
+		for (const data of rawData)
+			returnData.push(await this.client.fetchGroup(data.group.id, useCache));
 
 		return returnData;
 	}
@@ -234,16 +319,25 @@ export default class User {
 	 * @param {boolean} [useCache=true] - Whether to use cached data or not.
 	 * @returns {Promise<Badge[]>} A promise that resolves to an array of Badge objects.
 	 */
-	async fetchBadges(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<Badge[]> {
+	async fetchBadges(
+		maxResults = 100,
+		sortOrder: SortOrder = "Asc",
+		useCache = true,
+	): Promise<Badge[]> {
 		const returnData = [] as Badge[];
-		const rawData = await this.client.fetchHandler.fetchLegacyAPIList("GET", "Badges", `/users/${this.id}/badges`,
+		const rawData = await this.client.fetchHandler.fetchLegacyAPIList(
+			"GET",
+			"Badges",
+			`/users/${this.id}/badges`,
 			{ useCache: useCache, params: { sortOrder: sortOrder } },
-			{ maxResults: maxResults, perPage: 100 });
+			{ maxResults: maxResults, perPage: 100 },
+		);
 
-		for (const data of rawData) returnData.push(await factory.createBadge(this.client, data));
+		for (const data of rawData)
+			returnData.push(await factory.createBadge(this.client, data));
 
 		return returnData;
-	};
+	}
 
 	/**
 	 * Fetches the award date of a specific badge for the user.
@@ -252,13 +346,23 @@ export default class User {
 	 * @param useCache - Optional parameter to determine whether to use cached data. Defaults to true.
 	 * @returns A promise that resolves to the award date of the badge as a Date object, or undefined if the date is not found.
 	 */
-	async fetchBadgeAwardDate(badgeId: number, useCache = true): Promise<Date | undefined> {
-		const rawDate = (await this.client.fetchHandler.fetchLegacyAPI("GET", "Badges", `/users/${this.id}/badges/${badgeId}/awarded-date`, { useCache: useCache }))?.awardedDate
+	async fetchBadgeAwardDate(
+		badgeId: number,
+		useCache = true,
+	): Promise<Date | undefined> {
+		const rawDate = (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Badges",
+				`/users/${this.id}/badges/${badgeId}/awarded-date`,
+				{ useCache: useCache },
+			)
+		)?.awardedDate;
 		if (!rawDate) return undefined;
 
-		return new Date(rawDate)
-	};
-	
+		return new Date(rawDate);
+	}
+
 	/*
 		Methods related to the Inventory API
 		Docs: https://inventory.roblox.com/docs/index.html
@@ -266,13 +370,20 @@ export default class User {
 
 	/**
 	 * Determines if the user can view the inventory.
-	 * 
+	 *
 	 * @param useCache - Optional boolean to specify whether to use cached data. Defaults to true.
 	 * @returns A promise that resolves to a boolean indicating if the user can view the inventory.
 	 */
 	async canViewInventory(useCache = true): Promise<boolean> {
-		return (await this.client.fetchHandler.fetchLegacyAPI('GET', 'Inventory', `/users/${this.id}/can-view-inventory`, { useCache: useCache })).canView;
-	};
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Inventory",
+				`/users/${this.id}/can-view-inventory`,
+				{ useCache: useCache },
+			)
+		).canView;
+	}
 
 	/**
 	 * Retrieves an owned asset for the user.
@@ -282,13 +393,24 @@ export default class User {
 	 * @param useCache - Optional. Whether to use the cache for the request. Defaults to true.
 	 * @returns A promise that resolves to the owned item if found, or undefined if not found or an error occurs.
 	 */
-	async getOwnedAsset(type: ItemTypes, id: number, useCache = true): Promise<OwnedAsset | undefined> {
+	async getOwnedAsset(
+		type: ItemTypes,
+		id: number,
+		useCache = true,
+	): Promise<OwnedAsset | undefined> {
 		try {
-			return (await this.client.fetchHandler.fetchLegacyAPI('GET', 'Inventory', `/users/${this.id}/items/${type}/${id}`, { useCache: useCache })).data[0];
+			return (
+				await this.client.fetchHandler.fetchLegacyAPI(
+					"GET",
+					"Inventory",
+					`/users/${this.id}/items/${type}/${id}`,
+					{ useCache: useCache },
+				)
+			).data[0];
 		} catch {
 			return undefined;
 		}
-	};
+	}
 
 	/**
 	 * Checks if the user owns a specific asset.
@@ -298,13 +420,22 @@ export default class User {
 	 * @param useCache - Optional. Whether to use cache for the request. Defaults to true.
 	 * @returns A promise that resolves to a boolean indicating whether the user owns the asset.
 	 */
-	async ownsAsset(type: ItemTypes, assetId: number, useCache = true): Promise<boolean> {
+	async ownsAsset(
+		type: ItemTypes,
+		assetId: number,
+		useCache = true,
+	): Promise<boolean> {
 		try {
-			return await this.client.fetchHandler.fetchLegacyAPI('GET', 'Inventory', `/users/${this.id}/items/${type}/${assetId}/is-owned`, { useCache: useCache });
+			return await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Inventory",
+				`/users/${this.id}/items/${type}/${assetId}/is-owned`,
+				{ useCache: useCache },
+			);
 		} catch {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * Checks if the user owns a specific badge.
@@ -315,7 +446,7 @@ export default class User {
 	 */
 	async ownsBadge(badgeId: number, useCache = true): Promise<boolean> {
 		return await this.ownsAsset(ItemTypes.Badge, badgeId, useCache);
-	};
+	}
 
 	/**
 	 * Checks if the user owns a specific gamepass.
@@ -326,7 +457,7 @@ export default class User {
 	 */
 	async ownsGamepass(gamepassId: number, useCache = true): Promise<boolean> {
 		return await this.ownsAsset(ItemTypes.GamePass, gamepassId, useCache);
-	};
+	}
 
 	/**
 	 * Checks if the user owns a specific bundle.
@@ -336,8 +467,8 @@ export default class User {
 	 * @returns A promise that resolves to a boolean indicating whether the user owns the bundle.
 	 */
 	async ownsBundle(bundleId: number, useCache = true): Promise<boolean> {
-		return await this.ownsAsset(ItemTypes.Bundle, bundleId, useCache)
-	};
+		return await this.ownsAsset(ItemTypes.Bundle, bundleId, useCache);
+	}
 
 	/*
 		Methods related to the Avatar API
@@ -351,18 +482,28 @@ export default class User {
 	 * @returns {Promise<AvatarV1>} A promise that resolves to the user's avatar.
 	 */
 	async fetchAvatarV1(useCache = true): Promise<AvatarV1> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Avatar", `/users/${this.id}/avatar`, { useCache: useCache }))
-	};
+		return await this.client.fetchHandler.fetchLegacyAPI(
+			"GET",
+			"Avatar",
+			`/users/${this.id}/avatar`,
+			{ useCache: useCache },
+		);
+	}
 
 	/**
 	 * Fetches the user's avatar using the AvatarV2 endpoint.
-	 * 
+	 *
 	 * @param {boolean} [useCache=true] - Determines whether to use the cache for the request.
 	 * @returns {Promise<AvatarV2>} A promise that resolves to the user's AvatarV2 data.
 	 */
 	async fetchAvatarV2(useCache = true): Promise<AvatarV2> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "AvatarV2", `/avatar/users/${this.id}/avatar`, { useCache: useCache }))
-	};
+		return await this.client.fetchHandler.fetchLegacyAPI(
+			"GET",
+			"AvatarV2",
+			`/avatar/users/${this.id}/avatar`,
+			{ useCache: useCache },
+		);
+	}
 
 	/*
 		Methods related to the Thumbnails API
@@ -378,17 +519,29 @@ export default class User {
 	 * @param useCache - Whether to use the cache for the request. Defaults to `true`.
 	 * @returns A promise that resolves to the URL of the avatar thumbnail image.
 	 */
-	async fetchAvatarThumbnailUrl(size: AvatarImageSize = AvatarImageSize["150x150"], format: AvatarImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Thumbnails", "/users/avatar", {
-			useCache: useCache,
-			params: {
-				userIds: [this.id],
-				size: size,
-				format: format,
-				isCircular: isCircular,
-			}
-		})).data[0].imageUrl;
-	};
+	async fetchAvatarThumbnailUrl(
+		size: AvatarImageSize = AvatarImageSize["150x150"],
+		format: AvatarImageFormat = "Png",
+		isCircular = false,
+		useCache = true,
+	): Promise<string> {
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Thumbnails",
+				"/users/avatar",
+				{
+					useCache: useCache,
+					params: {
+						userIds: [this.id],
+						size: size,
+						format: format,
+						isCircular: isCircular,
+					},
+				},
+			)
+		).data[0].imageUrl;
+	}
 
 	/**
 	 * Fetches the 3D avatar of the user.
@@ -397,18 +550,28 @@ export default class User {
 	 * @returns A promise that resolves to an `Avatar3D` object containing the 3D avatar data.
 	 */
 	async fetchAvatar3D(useCache = true): Promise<Avatar3D> {
-		const jsonUrl = (await this.client.fetchHandler.fetchLegacyAPI("GET", "Thumbnails", "/users/avatar-3d", {
-			useCache: useCache,
-			params: {
-				userId: this.id
-			}
-		})).imageUrl;
-		if (!jsonUrl || jsonUrl === "") throw new Error("Failed to fetch the 3D avatar data.");
+		const jsonUrl = (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Thumbnails",
+				"/users/avatar-3d",
+				{
+					useCache: useCache,
+					params: {
+						userId: this.id,
+					},
+				},
+			)
+		).imageUrl;
+		if (!jsonUrl || jsonUrl === "")
+			throw new Error("Failed to fetch the 3D avatar data.");
 
-		return (await fetch(jsonUrl, {
-			method: "GET"
-		})).json()
-	};
+		return (
+			await fetch(jsonUrl, {
+				method: "GET",
+			})
+		).json();
+	}
 
 	/**
 	 * Fetches the avatar bust URL for the user.
@@ -419,17 +582,29 @@ export default class User {
 	 * @param useCache - Whether to use the cache for fetching the avatar bust image. Defaults to `true`.
 	 * @returns A promise that resolves to the URL of the avatar bust image.
 	 */
-	async fetchAvatarBustUrl(size: AvatarBustImageSize = AvatarBustImageSize["150x150"], format: AvatarBustImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Thumbnails", "/users/avatar-bust", {
-			useCache: useCache,
-			params: {
-				userIds: [this.id],
-				size: size,
-				format: format,
-				isCircular: isCircular,
-			}
-		})).data[0].imageUrl;
-	};
+	async fetchAvatarBustUrl(
+		size: AvatarBustImageSize = AvatarBustImageSize["150x150"],
+		format: AvatarBustImageFormat = "Png",
+		isCircular = false,
+		useCache = true,
+	): Promise<string> {
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Thumbnails",
+				"/users/avatar-bust",
+				{
+					useCache: useCache,
+					params: {
+						userIds: [this.id],
+						size: size,
+						format: format,
+						isCircular: isCircular,
+					},
+				},
+			)
+		).data[0].imageUrl;
+	}
 
 	/**
 	 * Fetches the avatar headshot URL for the user.
@@ -440,17 +615,29 @@ export default class User {
 	 * @param useCache - Whether to use the cache for the request. Defaults to true.
 	 * @returns A promise that resolves to the URL of the avatar headshot image.
 	 */
-	async fetchAvatarHeadshotUrl(size: AvatarImageSize = AvatarImageSize["150x150"], format: AvatarImageFormat = "Png", isCircular = false, useCache = true): Promise<string> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Thumbnails", "/users/avatar-headshot", {
-			useCache: useCache,
-			params: {
-				userIds: [this.id],
-				size: size,
-				format: format,
-				isCircular: isCircular,
-			}
-		})).data[0].imageUrl;
-	};
+	async fetchAvatarHeadshotUrl(
+		size: AvatarImageSize = AvatarImageSize["150x150"],
+		format: AvatarImageFormat = "Png",
+		isCircular = false,
+		useCache = true,
+	): Promise<string> {
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Thumbnails",
+				"/users/avatar-headshot",
+				{
+					useCache: useCache,
+					params: {
+						userIds: [this.id],
+						size: size,
+						format: format,
+						isCircular: isCircular,
+					},
+				},
+			)
+		).data[0].imageUrl;
+	}
 
 	/*
 		Methods related to the Friends API
@@ -464,13 +651,18 @@ export default class User {
 	 * @returns {Promise<FriendServiceMetadata>} A promise that resolves to the friends' metadata.
 	 */
 	async fetchFriendsMetadata(useCache = true): Promise<FriendMetadata> {
-		return await this.client.fetchHandler.fetchLegacyAPI("GET", "Friends", "/metadata", {
-			useCache: useCache,
-			params: {
-				targetUserId: this.id
-			}
-		})
-	};
+		return await this.client.fetchHandler.fetchLegacyAPI(
+			"GET",
+			"Friends",
+			"/metadata",
+			{
+				useCache: useCache,
+				params: {
+					targetUserId: this.id,
+				},
+			},
+		);
+	}
 
 	//? Friends
 
@@ -483,16 +675,26 @@ export default class User {
 	 * @throws {Error} Throws an error if the client is not authenticated.
 	 */
 	async fetchFriends(maxResults = 100, useCache = true): Promise<Friend[]> {
-		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to view someone's friend list.");
+		if (!this.client.isLoggedIn())
+			throw new Error(
+				"You must be authenticated to view someone's friend list.",
+			);
 
 		const returnData = [] as Friend[];
-		for (const friend of (await this.client.fetchHandler.fetchLegacyAPI("GET", "Friends", `/users/${this.id}/friends`, { useCache: useCache })).data) {
-			returnData.push(await factory.createFriend(this.client, friend, this))
+		for (const friend of (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Friends",
+				`/users/${this.id}/friends`,
+				{ useCache: useCache },
+			)
+		).data) {
+			returnData.push(await factory.createFriend(this.client, friend, this));
 			if (maxResults && returnData.length >= maxResults) break;
 		}
 
 		return returnData;
-	};
+	}
 
 	/**
 	 * Fetches the count of friends for the user.
@@ -501,8 +703,15 @@ export default class User {
 	 * @returns {Promise<number>} - A promise that resolves to the number of friends.
 	 */
 	async fetchFriendCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Friends", `/users/${this.id}/friends/count`, { useCache: useCache })).count
-	};
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Friends",
+				`/users/${this.id}/friends/count`,
+				{ useCache: useCache },
+			)
+		).count;
+	}
 
 	//? Followers
 
@@ -514,18 +723,26 @@ export default class User {
 	 * @param useCache - Whether to use cached data. Defaults to true.
 	 * @returns A promise that resolves to an array of User objects representing the followers.
 	 */
-	async fetchFollowers(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
+	async fetchFollowers(
+		maxResults = 100,
+		sortOrder: SortOrder = "Asc",
+		useCache = true,
+	): Promise<User[]> {
 		const returnData = [] as User[];
-		const rawData = await this.client.fetchHandler.fetchLegacyAPIList("GET", "Friends", `/users/${this.id}/followers`,
+		const rawData = await this.client.fetchHandler.fetchLegacyAPIList(
+			"GET",
+			"Friends",
+			`/users/${this.id}/followers`,
 			{ useCache: useCache, params: { sortOrder: sortOrder } },
-			{ maxResults: maxResults, perPage: 100 });
+			{ maxResults: maxResults, perPage: 100 },
+		);
 
-		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
+		for (const data of rawData)
+			returnData.push(await factory.createUser(this.client, data));
 		//? Why not use wrapblox.fetchUser() here? Because it would use an unnecessary API request.
 
 		return returnData;
-	};
-
+	}
 
 	/**
 	 * Fetches the follower count for the user.
@@ -534,8 +751,15 @@ export default class User {
 	 * @returns {Promise<number>} A promise that resolves to the follower count.
 	 */
 	async fetchFollowerCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Friends", `/users/${this.id}/followers/count`, { useCache: useCache })).count
-	};
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Friends",
+				`/users/${this.id}/followers/count`,
+				{ useCache: useCache },
+			)
+		).count;
+	}
 
 	//? Followings
 
@@ -547,17 +771,26 @@ export default class User {
 	 * @param useCache - Whether to use cached data. Defaults to true.
 	 * @returns A promise that resolves to an array of User objects representing the followings.
 	 */
-	async fetchFollowings(maxResults = 100, sortOrder: SortOrder = "Asc", useCache = true): Promise<User[]> {
+	async fetchFollowings(
+		maxResults = 100,
+		sortOrder: SortOrder = "Asc",
+		useCache = true,
+	): Promise<User[]> {
 		const returnData = [] as User[];
-		const rawData = await this.client.fetchHandler.fetchLegacyAPIList("GET", "Friends", `/users/${this.id}/followings`,
+		const rawData = await this.client.fetchHandler.fetchLegacyAPIList(
+			"GET",
+			"Friends",
+			`/users/${this.id}/followings`,
 			{ useCache: useCache, params: { sortOrder: sortOrder } },
-			{ maxResults: maxResults, perPage: 100 });
+			{ maxResults: maxResults, perPage: 100 },
+		);
 
-		for (const data of rawData) returnData.push(await factory.createUser(this.client, data));
+		for (const data of rawData)
+			returnData.push(await factory.createUser(this.client, data));
 		//? Why not use wrapblox.fetchUser() here? Because it would use an unnecessary API request.
 
 		return returnData;
-	};
+	}
 
 	/**
 	 * Fetches the count of followings for the user.
@@ -566,8 +799,15 @@ export default class User {
 	 * @returns {Promise<number>} - A promise that resolves to the count of followings.
 	 */
 	async fetchFollowingsCount(useCache = true): Promise<number> {
-		return (await this.client.fetchHandler.fetchLegacyAPI("GET", "Friends", `/users/${this.id}/followings/count`, { useCache: useCache })).count
-	};
+		return (
+			await this.client.fetchHandler.fetchLegacyAPI(
+				"GET",
+				"Friends",
+				`/users/${this.id}/followings/count`,
+				{ useCache: useCache },
+			)
+		).count;
+	}
 
 	/*
 		Methods related to the AccountSettings API
@@ -576,27 +816,37 @@ export default class User {
 
 	/**
 	 * Blocks the user associated with this instance.
-	 * 
+	 *
 	 * @returns {Promise<void>} A promise that resolves when the user has been successfully blocked.
 	 * @throws {Error} Throws an error if the client is not authenticated.
 	 */
 	async block(): Promise<void> {
-		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to block users.");
+		if (!this.client.isLoggedIn())
+			throw new Error("You must be authenticated to block users.");
 
-		await this.client.fetchHandler.fetchLegacyAPI("POST", "AccountSettings", `/users/${this.id}/block`)
-	};
+		await this.client.fetchHandler.fetchLegacyAPI(
+			"POST",
+			"AccountSettings",
+			`/users/${this.id}/block`,
+		);
+	}
 
 	/**
 	 * Unblocks the user associated with this instance.
-	 * 
+	 *
 	 * @returns {Promise<void>} A promise that resolves when the user has been successfully unblocked.
 	 * @throws {Error} Throws an error if the client is not authenticated.
 	 */
 	async unblock(): Promise<void> {
-		if (!this.client.isLoggedIn()) throw new Error("You must be authenticated to unblock users.");
+		if (!this.client.isLoggedIn())
+			throw new Error("You must be authenticated to unblock users.");
 
-		await this.client.fetchHandler.fetchLegacyAPI("POST", "AccountSettings", `/users/${this.id}/unblock`)
-	};
+		await this.client.fetchHandler.fetchLegacyAPI(
+			"POST",
+			"AccountSettings",
+			`/users/${this.id}/unblock`,
+		);
+	}
 
 	/*
 		Methods related to the PremiumFeatures API
@@ -610,8 +860,13 @@ export default class User {
 	 * @returns {Promise<boolean>} A promise that resolves to a boolean indicating if the user has a premium membership.
 	 */
 	async hasPremium(useCache = true): Promise<boolean> {
-		return await this.client.fetchHandler.fetchLegacyAPI("GET", "PremiumFeatures", `/users/${this.id}/validate-membership`, { useCache: useCache })
-	};
+		return await this.client.fetchHandler.fetchLegacyAPI(
+			"GET",
+			"PremiumFeatures",
+			`/users/${this.id}/validate-membership`,
+			{ useCache: useCache },
+		);
+	}
 
 	// Miscellaneous
 
@@ -622,6 +877,6 @@ export default class User {
 	 * @returns {string} The formatted string.
 	 */
 	toString(): string {
-		return `${this.name}:${this.id}`
-	};
-};
+		return `${this.name}:${this.id}`;
+	}
+}
