@@ -57,13 +57,12 @@ export default class FetchHandler {
 		this.cacheManager.clearCache();
 	};
 
-	//! Convert to use Promise<unknown>
-	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
 	fetchLegacyAPI = async (
 		method: HttpMethods,
 		api: keyof typeof this.LegacyAPI,
 		route: string,
 		opts: FetchOptions = {},
+		// biome-ignore lint/suspicious/noExplicitAny: Convert to use Promise<unknown>
 	): Promise<any> => {
 		let RealUrl = this.LegacyAPI[api] + route;
 
@@ -123,8 +122,6 @@ export default class FetchHandler {
 		return json;
 	};
 
-	//! Convert to use Promise<unknown>
-	// biome-ignore lint/suspicious/noExplicitAny: shut the fuck up
 	fetchLegacyAPIList = async (
 		method: HttpMethods,
 		api: keyof typeof this.LegacyAPI,
@@ -134,6 +131,7 @@ export default class FetchHandler {
 			maxResults: 100,
 			perPage: 100,
 		},
+		// biome-ignore lint/suspicious/noExplicitAny: Convert to use Promise<unknown>
 	): Promise<any> => {
 		const data = [];
 		let cursor = "";
