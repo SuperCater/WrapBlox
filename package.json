@@ -12,7 +12,16 @@
 	"scripts": {
 		"run": "node .",
 		"build": "tsup",
+
 		"lint": "biome lint .",
+		"lint:fix": "biome lint --write .",
+
+		"format": "biome format .",
+		"format:fix": "biome format --write .",
+
+		"organize-imports": "biome check --formatter-enabled=false --linter-enabled=false --organize-imports-enabled=true .",
+		"organize-imports:fix": "biome check --formatter-enabled=false --linter-enabled=false --organize-imports-enabled=true --write .",
+
 		"test": "jest --testPathPattern=tests --testPathIgnorePatterns=/dist/"
 	},
 	"keywords": [
