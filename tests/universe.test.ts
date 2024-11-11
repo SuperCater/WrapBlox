@@ -17,39 +17,39 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 
 const authenticated = () => {
 	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
+		log("Not logged in, skipping...");
 		return false;
 	}
 
 	return true;
-}
+};
 
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
-		console.log("No cookie provided, skipping...")
+		console.log("No cookie provided, skipping...");
 		return;
 	}
 
-	const user = await client.login(process.env.TESTCOOKIE)
+	const user = await client.login(process.env.TESTCOOKIE);
 	log(`Logged in as ${user.name}:${user.id}`);
 
 	expect(user).toBeDefined();
 });
 
 test("fetchUniverse", async () => {
-    const universeById = await client.fetchUniverse(universeId);
+	const universeById = await client.fetchUniverse(universeId);
 
-    preFetchedUniverse = universeById;
-    log(`Fetched universe: ${universeById.toString()}`);
+	preFetchedUniverse = universeById;
+	log(`Fetched universe: ${universeById.toString()}`);
 
-    expect(universeById).toBeDefined();
+	expect(universeById).toBeDefined();
 	expect(universeById).toMatchObject<Universe>(universeById);
 });
 
 test("fetchRootPlace", async () => {
-    const rootPlace = await preFetchedUniverse.fetchRootPlace();
+	const rootPlace = await preFetchedUniverse.fetchRootPlace();
 
-    log(`Fetched root place: ${rootPlace.toString()}`);
-    expect(rootPlace).toBeDefined();
+	log(`Fetched root place: ${rootPlace.toString()}`);
+	expect(rootPlace).toBeDefined();
 	expect(rootPlace).toMatchObject<Place>(rootPlace);
 });

@@ -4,7 +4,16 @@ import Group from "../src/Classes/Group.js";
 import FetchError from "../src/Classes/Internal/FetchError.js";
 import Universe from "../src/Classes/Universe.js";
 import User from "../src/Classes/User.js";
-import WrapBlox, { ItemTypes, UserPresence, GroupRole, OwnedAsset, AvatarV1, AvatarV2, Avatar3D, FriendMetadata } from "../src/index.js";
+import WrapBlox, {
+	ItemTypes,
+	UserPresence,
+	GroupRole,
+	OwnedAsset,
+	AvatarV1,
+	AvatarV2,
+	Avatar3D,
+	FriendMetadata,
+} from "../src/index.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -21,12 +30,12 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 
 const authenticated = () => {
 	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
+		log("Not logged in, skipping...");
 		return false;
 	}
 
 	return true;
-}
+};
 
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
@@ -54,7 +63,7 @@ test("fetchUser", async () => {
 
 	expect(userbyId).toBeDefined();
 	expect(userbyId).toBeInstanceOf(User);
-	
+
 	expect(userbyName).toBeDefined();
 	expect(userbyName).toBeInstanceOf(User);
 });
@@ -62,7 +71,7 @@ test("fetchUser", async () => {
 test("fetchUsernameHistory", async () => {
 	const usernameHistory = await preFetchedUser.fetchUsernameHistory();
 
-	log(`Fetched username history:\n${usernameHistory}`)
+	log(`Fetched username history:\n${usernameHistory}`);
 
 	expect(usernameHistory).toBeDefined();
 	expect(usernameHistory).toBeInstanceOf(Array);
@@ -89,7 +98,7 @@ test("fetchPresence", async () => {
 
 	expect(presence).toBeDefined();
 	expect(presence).toMatchObject<UserPresence>(presence);
-})
+});
 
 /*
 	Methods related to the Games API
@@ -99,11 +108,14 @@ test("fetchPresence", async () => {
 test("fetchCreatedUniverses", async () => {
 	const universes = await preFetchedUser.fetchCreatedUniverses(1);
 
-	log(`Fetched [${universes.length}] created universes:\n`, universes.map((data: Universe) => data.toString()).join("\n"));
+	log(
+		`Fetched [${universes.length}] created universes:\n`,
+		universes.map((data: Universe) => data.toString()).join("\n"),
+	);
 
 	expect(universes).toBeDefined();
 	expect(universes).toBeInstanceOf(Array);
-	
+
 	for (const universe of universes) {
 		expect(universe).toBeInstanceOf(Universe);
 	}
@@ -129,7 +141,7 @@ test("getRoleInGroup", async () => {
 
 	if (role) {
 		expect(role).toMatchObject<GroupRole>(role);
-	};
+	}
 });
 
 test("fetchPrimaryGroup", async () => {
@@ -139,20 +151,23 @@ test("fetchPrimaryGroup", async () => {
 
 	if (primaryGroup) {
 		expect(primaryGroup).toBeInstanceOf(Group);
-	};
+	}
 });
 
 test("fetchGroups", async () => {
 	const groups = await preFetchedUser.fetchGroups();
 
-	log(`Fetched [${groups.length}] groups:\n`, groups.map((data: Group) => data.toString()).join("\n"));
+	log(
+		`Fetched [${groups.length}] groups:\n`,
+		groups.map((data: Group) => data.toString()).join("\n"),
+	);
 
 	expect(groups).toBeDefined();
 
 	for (const group of groups) {
 		expect(group).toBeInstanceOf(Group);
-	};
-}, 60000)
+	}
+}, 60000);
 
 /*
 	Methods related to the Badges API
@@ -162,13 +177,16 @@ test("fetchGroups", async () => {
 test("fetchBadges", async () => {
 	const badges = await preFetchedUser.fetchBadges(1);
 
-	log(`Fetched [${badges.length}] awarded badges:\n`, badges.map((data: Badge) => data.toString()).join("\n"));
+	log(
+		`Fetched [${badges.length}] awarded badges:\n`,
+		badges.map((data: Badge) => data.toString()).join("\n"),
+	);
 
 	expect(badges).toBeDefined();
 
 	for (const badge of badges) {
 		expect(badge).toBeInstanceOf(Badge);
-	};
+	}
 });
 
 test("fetchBadgeAwardDate", async () => {
@@ -178,7 +196,7 @@ test("fetchBadgeAwardDate", async () => {
 
 	if (date) {
 		expect(date).toBeInstanceOf(Date);
-	};
+	}
 });
 
 /*
@@ -227,9 +245,12 @@ test("ownsBundle", async () => {
 });
 
 test("getOwnedAsset", async () => {
-	const asset = await preFetchedUser.getOwnedAsset(ItemTypes.GamePass, 776368)
+	const asset = await preFetchedUser.getOwnedAsset(
+		ItemTypes.GamePass,
+		776368,
+	);
 
-	log("Owned asset:\n",asset)
+	log("Owned asset:\n", asset);
 
 	if (asset) {
 		expect(asset).toMatchObject<OwnedAsset>(asset);
@@ -242,23 +263,21 @@ test("getOwnedAsset", async () => {
 */
 
 test("fetchAvatarV1", async () => {
-	
 	const avatar = await preFetchedUser.fetchAvatarV1();
 
-	log("User AvatarV1:\n",avatar)
+	log("User AvatarV1:\n", avatar);
 
 	expect(avatar).toBeDefined();
-	expect(avatar).toMatchObject<AvatarV1>(avatar)
+	expect(avatar).toMatchObject<AvatarV1>(avatar);
 });
 
 test("fetchAvatarV2", async () => {
-	
 	const avatar = await preFetchedUser.fetchAvatarV2();
 
-	log("User AvatarV2:\n",avatar)
+	log("User AvatarV2:\n", avatar);
 
 	expect(avatar).toBeDefined();
-	expect(avatar).toMatchObject<AvatarV2>(avatar)
+	expect(avatar).toMatchObject<AvatarV2>(avatar);
 });
 
 /*
@@ -307,26 +326,27 @@ test("fetchAvatarHeadshotUrl", async () => {
 test("fetchFriendsMetadata", async () => {
 	const metadata = await preFetchedUser.fetchFriendsMetadata();
 
-	log("Fetched friends metadata:\n",metadata);
+	log("Fetched friends metadata:\n", metadata);
 
 	expect(metadata).toBeDefined();
 	expect(metadata).toMatchObject<FriendMetadata>(metadata);
 });
-
 
 test("fetchUserFriends", async () => {
 	if (!authenticated()) return;
 
 	const users = await preFetchedUser.fetchFriends();
 
-	log(`Fetched [${users.length}] friends:\n`,users.map((data: Friend) => data.toString()).join("\n"))
+	log(
+		`Fetched [${users.length}] friends:\n`,
+		users.map((data: Friend) => data.toString()).join("\n"),
+	);
 
 	expect(users).toBeDefined();
 	for (const friend of users) {
 		expect(friend).toBeInstanceOf(Friend);
 	}
 });
-
 
 test("fetchUserFriendCount", async () => {
 	const count = await preFetchedUser.fetchFriendCount();
@@ -336,12 +356,13 @@ test("fetchUserFriendCount", async () => {
 	expect(count).toBeDefined();
 });
 
-
 test("fetchUserFollowers", async () => {
-	
-	const users = await preFetchedUser.fetchFollowers(10)
+	const users = await preFetchedUser.fetchFollowers(10);
 
-	log(`Fetched [${users.length}] followers:\n`,users.map((data: User) => data.toString()).join("\n"))
+	log(
+		`Fetched [${users.length}] followers:\n`,
+		users.map((data: User) => data.toString()).join("\n"),
+	);
 
 	expect(users).toBeDefined();
 	for (const user of users) {
@@ -349,20 +370,21 @@ test("fetchUserFollowers", async () => {
 	}
 });
 
-
 test("fetchUserFollowerCount", async () => {
 	const count = await preFetchedUser.fetchFollowerCount();
-	
+
 	log(`Fetched follower count: [${count}]`);
 
 	expect(count).toBeDefined();
 });
 
-
 test("fetchUserFollowings", async () => {
-	const users = await preFetchedUser.fetchFollowings(10)
+	const users = await preFetchedUser.fetchFollowings(10);
 
-	log(`Fetched [${users.length}] followings:\n`,users.map((data: User) => data.toString()).join("\n"))
+	log(
+		`Fetched [${users.length}] followings:\n`,
+		users.map((data: User) => data.toString()).join("\n"),
+	);
 
 	expect(users).toBeDefined();
 	for (const user of users) {
@@ -370,10 +392,9 @@ test("fetchUserFollowings", async () => {
 	}
 });
 
-
 test("fetchUserFollowingsCount", async () => {
 	const count = await preFetchedUser.fetchFollowingsCount();
-	
+
 	log(`Fetched following count: [${count}]`);
 
 	expect(count).toBeDefined();
@@ -386,19 +407,19 @@ test("fetchUserFollowingsCount", async () => {
 
 test("block", async () => {
 	if (!authenticated()) return;
-	
+
 	try {
 		await preFetchedUser.block();
 	} catch (error) {
 		if (!(error instanceof FetchError)) return;
-		
+
 		log(`Failed to block\n${await error.format()}`);
 	}
 });
 
 test("unblock", async () => {
 	if (!authenticated()) return;
-	
+
 	try {
 		await preFetchedUser.unblock();
 	} catch (error) {
@@ -415,7 +436,7 @@ test("unblock", async () => {
 
 test("hasPremium", async () => {
 	if (!authenticated()) return;
-	
+
 	const hasPremium = await preFetchedUser.hasPremium();
 
 	log(`hasPremium: ${hasPremium}`);

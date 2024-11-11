@@ -79,7 +79,8 @@ export default class FetchHandler {
 		}
 
 		const cached = this.cacheManager.getValues(RealUrl);
-		if (cached && (opts.useCache || opts.useCache === undefined)) return cached;
+		if (cached && (opts.useCache || opts.useCache === undefined))
+			return cached;
 
 		const headers = new Headers();
 
@@ -98,7 +99,10 @@ export default class FetchHandler {
 			body: opts.body ? JSON.stringify(opts.body) : undefined,
 		});
 
-		if (!this.credentials.CSRFToken && response.headers.get("x-csrf-token")) {
+		if (
+			!this.credentials.CSRFToken &&
+			response.headers.get("x-csrf-token")
+		) {
 			this.credentials.CSRFToken = response.headers.get(
 				"x-csrf-token",
 			) as string;
@@ -147,14 +151,19 @@ export default class FetchHandler {
 				);
 				if (response.data) data.push(...response.data);
 
-				if (!response.nextPageCursor || data.length >= pageOptions.maxResults) {
+				if (
+					!response.nextPageCursor ||
+					data.length >= pageOptions.maxResults
+				) {
 					break;
 				}
 				cursor = response.nextPageCursor;
 			} catch (e) {
 				if (e instanceof FetchError) {
 					if (e.response.status === 429) {
-						await new Promise((resolve) => setTimeout(resolve, 1000));
+						await new Promise((resolve) =>
+							setTimeout(resolve, 1000),
+						);
 						continue;
 					}
 					throw e; // If it's not a rate limit error, throw it

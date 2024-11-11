@@ -186,12 +186,17 @@ export default class WrapBlox {
 	): Promise<RawGroupData> => {
 		if (typeof query === "number") {
 			return (
-				await this.fetchHandler.fetchLegacyAPI("GET", "GroupsV2", "/groups", {
-					useCache: useCache,
-					params: {
-						groupIds: [query],
+				await this.fetchHandler.fetchLegacyAPI(
+					"GET",
+					"GroupsV2",
+					"/groups",
+					{
+						useCache: useCache,
+						params: {
+							groupIds: [query],
+						},
 					},
-				})
+				)
 			).data[0];
 		}
 

@@ -206,7 +206,8 @@ export default class User {
 					useCache: useCache,
 					params: {
 						includeLocked: includelocked,
-						includeNotificationPreferences: includeNotificationPreferences,
+						includeNotificationPreferences:
+							includeNotificationPreferences,
 					},
 				},
 			)
@@ -301,7 +302,9 @@ export default class User {
 		);
 
 		for (const data of rawData)
-			returnData.push(await this.client.fetchGroup(data.group.id, useCache));
+			returnData.push(
+				await this.client.fetchGroup(data.group.id, useCache),
+			);
 
 		return returnData;
 	}
@@ -689,7 +692,9 @@ export default class User {
 				{ useCache: useCache },
 			)
 		).data) {
-			returnData.push(await factory.createFriend(this.client, friend, this));
+			returnData.push(
+				await factory.createFriend(this.client, friend, this),
+			);
 			if (maxResults && returnData.length >= maxResults) break;
 		}
 

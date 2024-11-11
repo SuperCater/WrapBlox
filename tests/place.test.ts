@@ -17,52 +17,52 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 
 const authenticated = () => {
 	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
+		log("Not logged in, skipping...");
 		return false;
 	}
 
 	return true;
-}
+};
 
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
-		console.log("No cookie provided, skipping...")
+		console.log("No cookie provided, skipping...");
 		return;
 	}
 
-	const user = await client.login(process.env.TESTCOOKIE)
+	const user = await client.login(process.env.TESTCOOKIE);
 	log(`Logged in as ${user.name}:${user.id}`);
 
-    expect(user).toBeDefined();
+	expect(user).toBeDefined();
 });
 
 test("fetchPlace", async () => {
-    const placeById = await client.fetchPlace(placeId);
+	const placeById = await client.fetchPlace(placeId);
 
-    preFetchedPlace = placeById;
-    log(`Fetched place: ${placeById.toString()}`);
+	preFetchedPlace = placeById;
+	log(`Fetched place: ${placeById.toString()}`);
 
-    expect(placeById).toBeDefined();
-    expect(placeById).toMatchObject<Place>(placeById);
+	expect(placeById).toBeDefined();
+	expect(placeById).toMatchObject<Place>(placeById);
 });
 
 test("fetchServers", async () => {
-    const servers = await preFetchedPlace.fetchServers();
+	const servers = await preFetchedPlace.fetchServers();
 
-    log(`Fetched [${servers.length}] servers:`, servers);
+	log(`Fetched [${servers.length}] servers:`, servers);
 
-    expect(servers).toBeDefined();
-    expect(servers).toBeInstanceOf(Array);
-    for (const server of servers) {
-        expect(server).toMatchObject<PlaceServer>(server);
-    }
+	expect(servers).toBeDefined();
+	expect(servers).toBeInstanceOf(Array);
+	for (const server of servers) {
+		expect(server).toMatchObject<PlaceServer>(server);
+	}
 });
 
 test("fetchUniverse", async () => {
-    const universe = await preFetchedPlace.fetchUniverse();
+	const universe = await preFetchedPlace.fetchUniverse();
 
-    log(`Fetched universe: ${universe.toString()}`);
+	log(`Fetched universe: ${universe.toString()}`);
 
-    expect(universe).toBeDefined();
-    expect(universe).toMatchObject<Universe>(universe);
+	expect(universe).toBeDefined();
+	expect(universe).toMatchObject<Universe>(universe);
 });

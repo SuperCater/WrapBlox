@@ -15,37 +15,37 @@ const log = (message: unknown, ...optionalParams: unknown[]) => {
 
 const authenticated = () => {
 	if (!client.isLoggedIn()) {
-		log("Not logged in, skipping...")
+		log("Not logged in, skipping...");
 		return false;
 	}
 
 	return true;
-}
+};
 
 beforeAll(async () => {
 	if (!process.env.TESTCOOKIE) {
-		console.log("No cookie provided, skipping...")
+		console.log("No cookie provided, skipping...");
 		return;
 	}
 
-	const user = await client.login(process.env.TESTCOOKIE)
-	log(`Logged in as ${user.name}:${user.id}`)
+	const user = await client.login(process.env.TESTCOOKIE);
+	log(`Logged in as ${user.name}:${user.id}`);
 
 	expect(user).toBeDefined();
 });
 
 test("fetchBadge", async () => {
-    const badge = await client.fetchBadge(badgeId);
+	const badge = await client.fetchBadge(badgeId);
 
-    log("Fetched badge:\n", badge)
+	log("Fetched badge:\n", badge);
 
-    expect(badge).toBeDefined();
-    expect(badge).toBeInstanceOf(Badge);
+	expect(badge).toBeDefined();
+	expect(badge).toBeInstanceOf(Badge);
 });
 
 test("fetchIcon", async () => {
 	const badge = await client.fetchBadge(badgeId);
 	const icon = await badge.fetchIcon();
 
-	log("Fetched icon:\n", icon)
+	log("Fetched icon:\n", icon);
 });
