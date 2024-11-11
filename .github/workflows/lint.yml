@@ -1,4 +1,4 @@
-name: Biome Lint
+name: BiomeJS
 
 on:
     push:
@@ -8,7 +8,7 @@ on:
         
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
