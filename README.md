@@ -1,5 +1,9 @@
 # WrapBlox
 
+uhh hii this is for future purple to not forget ok ignore this thanks:
+docs locally: mkdocs serve
+deploy to pages: mkdocs gh-deploy
+
 Wrapblox is a promise based API wrapper for the Roblox API written in typescript. It is currently in development and really isnt meant for production.
 
 ## Installation

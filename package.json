@@ -1,6 +1,6 @@
 {
 	"name": "wrapblox",
-	"version": "0.5.8",
+	"version": "0.6.0",
 	"description": "A wrapper for Roblox's API",
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
@@ -12,8 +12,20 @@
 	"scripts": {
 		"run": "node .",
 		"build": "tsup",
+
 		"lint": "biome lint .",
-		"test": "jest"
+		"lint:fix": "biome lint --write .",
+
+		"format": "biome format .",
+		"format:fix": "biome format --write .",
+
+		"organize-imports": "biome check --formatter-enabled=false --linter-enabled=false --organize-imports-enabled=true .",
+		"organize-imports:fix": "biome check --formatter-enabled=false --linter-enabled=false --organize-imports-enabled=true --write .",
+
+		"check": "biome check .",
+		"check:fix": "biome check --write .",
+
+		"test": "jest --testPathPattern=tests --testPathIgnorePatterns=/dist/"
 	},
 	"keywords": [
 		"roblox"

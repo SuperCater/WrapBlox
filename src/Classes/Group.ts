@@ -1,171 +1,171 @@
-import { APIGroupSettings, APIRoles, RawGroupData, RawMemberData, RawShout } from "../Types/GroupTypes.js";
-import WrapBlox, { SortOrder } from "../index.js";
-import Member from "./Member.js";
-import Role from "./Role.js";
+import type WrapBlox from "../index.js";
+import {
+	type GroupActionType,
+	type GroupAuditLog,
+	type RawGroupData,
+	GroupOwnerType,
+	SortOrder,
+} from "../index.js";
+import Universe from "./Universe.js";
+import User from "./User.js";
 
-class Group {
-	rawdata: RawGroupData;
+export default class Group {
+	readonly client: WrapBlox;
+	readonly rawData: RawGroupData;
 
-	name: string;
-	description: string;
-	id: number;
-	client: WrapBlox;
+	readonly id: number;
+	readonly name: string;
+	readonly description: string;
+	readonly owner: {
+		readonly id: number;
+		readonly type: GroupOwnerType;
+		readonly name: string;
+	};
 
+	readonly memberCount: number;
+	readonly created: Date;
+	readonly hasVerifiedBadge: boolean;
 
-
-	constructor(client: WrapBlox, rawdata: RawGroupData) {
+	constructor(client: WrapBlox, rawData: RawGroupData) {
 		this.client = client;
-		this.rawdata = rawdata;
-		this.name = rawdata.name;
-		this.description = rawdata.description;
-		this.id = rawdata.id;
+		this.rawData = rawData;
+
+		this.id = rawData.id;
+		this.name = rawData.name;
+		this.description = rawData.description;
+		this.owner = rawData.owner;
+
+		this.memberCount = rawData.memberCount;
+		this.created = new Date(rawData.created);
+		this.hasVerifiedBadge = rawData.hasVerifiedBadge;
 	}
 
-	async fetchOwner() {
-		return await this.client.fetchUser(this.rawdata.owner.userId);
+	/*
+		Methods related to the Groups API
+		Docs: https://groups.roblox.com/docs/index.html
+	*/
+
+	/**
+	 * Fetches the audit log for the group.
+	 *
+	 * @param maxResults - The maximum number of results to return. Defaults to 100.
+	 * @param sortOrder - The order in which to sort the results. Defaults to "Asc".
+	 * @param actionType - The type of action to filter the audit log by. Optional.
+	 * @param useCache - Whether to use cached data. Defaults to true.
+	 * @returns A promise that resolves to an array of GroupAuditLog objects.
+	 */
+	async fetchAuditLog(
+		maxResults = 100,
+		sortOrder: SortOrder = "Asc",
+		actionType?: GroupActionType,
+		useCache = true,
+	): Promise<GroupAuditLog[]> {
+		const returnData = [] as GroupAuditLog[];
+		const rawData = await this.client.fetchHandler.fetchLegacyAPIList(
+			"GET",
+			"Groups",
+			`/groups/${this.id}/audit-log`,
+			{
+				useCache: useCache,
+				params: { sortOrder: sortOrder, actionType: actionType },
+			},
+			{ maxResults: maxResults, perPage: 100 },
+		);
+
+		for (const data of rawData) {
+			returnData.push({
+				actor: {
+					user: data.actor.user,
+					role: data.actor.role,
+				},
+				actionType: data.actionType,
+				description: data.description,
+				created: new Date(data.created),
+			});
+		}
+
+		return returnData;
 	}
 
-	async fetchJoinRequests() {
-		return await this.client.fetchHandler.fetchAll('GET', 'Groups', `/groups/${this.id}/join-requests`);
+	/*
+        Methods related to the Thumbnails API
+        Docs: https://thumbnails.roblox.com/docs/index.html
+    */
+
+	async fetchIcon(
+		format: "Png" | "Webp" = "Png",
+		size: "150x150" | "420x420" = "150x150",
+	): Promise<string | undefined> {
+		return (
+			(
+				await this.client.fetchHandler.fetchLegacyAPI(
+					"GET",
+					"Thumbnails",
+					"/groups/icons",
+					{
+						params: {
+							groupIds: [this.id],
+							format: format,
+							size: size,
+						},
+					},
+				)
+			).data[0]?.imageUrl || undefined
+		);
 	}
 
-	async fetchMembers(): Promise<Member[]> {
-		const ret = await this.client.fetchHandler.fetchAll('GET', 'Groups', `/groups/${this.id}/users`)
-		return ret.map((member: RawMemberData) => {
-			return new Member(this.client, this, member);
-		});
+	/*
+        Methods related to the Games API
+        Docs: https://games.roblox.com/docs/index.html
+    */
+
+	async fetchUniverses(
+		maxResults = 100,
+		accessFilter: "All" | "Public" | "Private" = "Public",
+		sortOrder: SortOrder = "Asc",
+		useCache = true,
+	): Promise<Universe[]> {
+		const returnData = [] as Universe[];
+		const rawData = await this.client.fetchHandler.fetchLegacyAPIList(
+			"GET",
+			"GamesV2",
+			`/groups/${this.id}/games`,
+			{
+				useCache: useCache,
+				params: {
+					accessFilter: accessFilter,
+					sortOrder: sortOrder,
+				},
+			},
+			{ maxResults: maxResults, perPage: 50 },
+		);
+
+		for (const data of rawData) {
+			const universe = await this.client.fetchUniverse(data.id, useCache);
+			returnData.push(universe);
+		}
+
+		return returnData;
 	}
 
-	async fetchIcon(format: "Png" | "Webp" = "Png", size: "150x150" | "420x420" = "150x150"): Promise<string | undefined> {
-		const ret = await this.client.fetchHandler.fetch('GET', 'Thumbnails', "/groups/icons", {
-			params: {
-				groupIds: [this.id],
-				format: format,
-				size: size,
-			}
-		});
+	// Miscellaneous
 
-		const real = ret.data[0];
-		if (!real) return undefined;
-		return real.imageUrl;
-
-
+	/**
+	 * Fetches the owner of the group.
+	 *
+	 * @returns {Promise<User>} A promise that resolves to the User object representing the owner.
+	 */
+	async fetchOwner(): Promise<User> {
+		return await this.client.fetchUser(this.owner.id);
 	}
 
-	async fetchSettings(): Promise<APIGroupSettings> {
-		return await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/settings`);
+	/**
+	 * Converts the Group object to a string representation.
+	 * The string in the format `${this.name}:${this.id}`.
+	 *
+	 * @returns {string} The formatted string.
+	 */
+	toString(): string {
+		return `${this.name}:${this.id}`;
 	}
-
-	async fetchPayoutInfo() {
-		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/payouts`);
-		return ret.data;
-	}
-
-	async payoutUser(userId: number, amount: number) {
-		return await this.client.fetchHandler.fetch('POST', 'Groups', `/groups/${this.id}/payouts`, {
-			body: {
-				PayoutType: 1,
-				Recipients: [{
-					recipientId: userId,
-					recipientType: 1,
-					amount: amount
-
-				}]
-			}
-		});
-	}
-
-	async fetchRawRoles(): Promise<APIRoles[]> {
-		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/roles`);
-		return ret.roles;
-	}
-
-	async fetchRoles() {
-		const ret = await this.fetchRawRoles();
-		return ret.map((role: APIRoles) => {
-			return new Role(this.client, this, role);
-		});
-	}
-
-	async fetchRole(roleId: number): Promise<Role | undefined> {
-		const roles = await this.fetchRoles();
-		return roles.find((role) => role.id === roleId);
-	}
-	
-	async fetchRoleByName(name: string): Promise<Role | undefined> {
-		const roles = await this.fetchRoles();
-		return roles.find((role) => role.name === name);
-	}
-	
-	async fetchRoleByRank(rank: number): Promise<Role | undefined> {
-		const roles = await this.fetchRoles();
-		return roles.find((role) => role.rank === rank);
-	
-	}
-
-	async fetchWallPosts(limit: 25 | 50 | 100 = 25, order: SortOrder = "Asc", cursor?: string) {
-		const ret = await this.client.fetchHandler.fetch('GET', 'Groups', `/groups/${this.id}/wall/posts`, {
-			params: {
-				limit: limit,
-				cursor: cursor,
-				sortOrder: order
-			}
-		});
-		return ret.data;
-	}
-	
-	
-	async setRoleByRank(userid : number, rank : number) {
-		const role = await this.fetchRoleByRank(rank);
-		if (!role) throw new Error('Role not found');
-		
-		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/users/${userid}`, {
-			body: {
-				roleId: role.id,
-			}
-		});
-	}
-	
-	async setRoleByName(userid : number, name : string) {
-		const role = await this.fetchRoleByName(name);
-		if (!role) throw new Error('Role not found');
-		
-		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/users/${userid}`, {
-			body: {
-				roleId: role.id,
-			}
-		});
-	}
-	
-	async setRoleById(userid : number, roleid : number) {
-		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/users/${userid}`, {
-			body: {
-				roleId: roleid,
-			}
-		});
-	}
-	
-	async setShout(message : string): Promise<RawShout> {
-		return await this.client.fetchHandler.fetch('PATCH', 'Groups', `/groups/${this.id}/status`, {
-			body: {
-				message: message
-			}
-		});
-	}
-	
-	
-	toString() {
-		return this.name;
-	}
-
-
-
-
-
-
-
-
-
 }
-
-export default Group;
