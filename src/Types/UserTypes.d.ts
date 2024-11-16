@@ -1,5 +1,5 @@
 import { IntRange } from "./BaseTypes.js";
-import { userPresenceState } from "./Enums.ts";
+import { UserPresenceState } from "./Enums.ts";
 import type { GroupRole } from "./GroupTypes.js";
 
 export type RawUserData = {
