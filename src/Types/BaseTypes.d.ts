@@ -1,13 +1,24 @@
-export type ValidUrls = "Users" | "Groups" | "Thumbnails" | "Friends" | "GamesV2" | "Games" | "Badges" | "Inventory"
+export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-export type HttpMethods = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
-
-export type SortOrder = "Asc" | "Desc"
+export type SortOrder = "Asc" | "Desc";
 
 export type FetchOptions = {
-	usecache?: boolean,
-	cookie?: string,
-	CsrfToken?: string,
-	params?: { [key: string | number]: unknown },
-	body?: { [key: string]: unknown },
-}
+	useCache?: boolean;
+	cookie?: string;
+	CSRFToken?: string;
+	APIKey?: string;
+	params?: { [key: string | number]: unknown };
+	body?: { [key: string]: unknown };
+};
+
+export type Enumerate<
+	N extends number,
+	Acc extends number[] = [],
+> = Acc["length"] extends N
+	? Acc[number]
+	: Enumerate<N, [...Acc, Acc["length"]]>;
+
+export type IntRange<F extends number, T extends number> = Exclude<
+	Enumerate<T>,
+	Enumerate<F>
+>;

@@ -1,0 +1,32 @@
+site_name: WrapBlox
+site_author: PurpleCreativity
+
+repo_name: WrapBlox
+repo_url: https://github.com/SuperCater/WrapBlox
+
+theme:
+  name: material
+  features:
+    # - navigation.tabs
+    #- navigation.instant
+    #- navigation.sections
+  palette:
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: purple
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: purple
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+  highlightjs: true
+  hljs_languages:
+    - javascript
